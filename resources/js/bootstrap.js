@@ -6,12 +6,15 @@ window._ = require('lodash');
  * for JavaScript based Bootstrap features such as modals and tabs. This
  * code may be modified to fit the specific needs of your application.
  */
-
 try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
-
     require('bootstrap');
+    require('datatables.net-bs4' )();
+    window.dt = require( 'datatables.net' )( window, $ );
+    window.moment = require('moment');
+    // require('fullcalendar');
+   
 } catch (e) {}
 
 /**
