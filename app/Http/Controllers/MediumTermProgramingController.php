@@ -40,7 +40,7 @@ class MediumTermProgramingController extends Controller
     public function store(Request $request)
     {
         //
-        $pmp = new MediumTermProgramingController; //programacion a mediano plazo
+        $pmp = new MediumTermPrograming; //programacion a mediano plazo
         $pmp->pilar = $request->pilar;
         $pmp->meta = $request->meta;
         $pmp->resultado = $request->resultado;
@@ -49,7 +49,7 @@ class MediumTermProgramingController extends Controller
         $pmp->tipo = $request->tipo;
         $pmp->resultado_intermedio = $request->resultado_intermedio;
         $pmp->linea_base = $request->linea_base;
-        $pmp->indicador_resultado = $request->indicador_resultado;
+        $pmp->indicador_resultado_intermedio = $request->indicador_resultado;
         $pmp->alcance_meta = $request->alcance_meta;
         $pmp->save();
 
@@ -101,22 +101,4 @@ class MediumTermProgramingController extends Controller
         //
     }
 
-    public function save($request){
-        $id=$request->id??null;
-        if($id)
-        {
-            $pmp = new MediumTermProgramingController; //programacion a mediano plazo
-            $pmp->pilar = $request->pilar;
-            $pmp->meta = $request->meta;
-            $pmp->resultado = $request->resultado;
-            $pmp->accion = $request->accion;
-            $pmp->descripcion = $request->descripcion;
-            $pmp->tipo = $request->tipo;
-            $pmp->resultado_intermedio = $request->resultado_intermedio;
-            $pmp->linea_base = $request->linea_base;
-            $pmp->indicador_resultado = $request->indicador_resultado;
-            $pmp->alcance_meta = $request->alcance_meta;
-            $pmp->save();
-        }
-    }
 }

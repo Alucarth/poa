@@ -15,19 +15,19 @@
                 {!! Form::open(['action' => 'MediumTermProgramingController@store']) !!}
                     <legend>Estructura del POES</legend>    
                     <div class="row">
-                        <div class="form-group  col-md-4">
+                        <div class="form-group  col-md-3">
                             {!! Form::label('pilar', 'Pilar')!!}
                             {!! Form::text('pilar','Pilar',['class'=>'form-control'])!!}
                         </div>
-                        <div class="form-group  col-md-4">
+                        <div class="form-group  col-md-3">
                             {!! Form::label('meta', 'Meta')!!}
                             {!! Form::text('meta','Meta',['class'=>'form-control'])!!}
                         </div>
-                        <div class="form-group  col-md-4">
+                        <div class="form-group  col-md-3">
                             {!! Form::label('resultado', 'Resultado')!!}
                             {!! Form::text('resultado','Resultado',['class'=>'form-control'])!!}
                         </div>
-                        <div class="form-group  col-md-4">
+                        <div class="form-group  col-md-3">
                             {!! Form::label('accion', 'Accion')!!}
                             {!! Form::text('accion','Accion',['class'=>'form-control'])!!}
                         </div>
