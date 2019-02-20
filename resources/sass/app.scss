@@ -1,15 +1,18 @@
 
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+// @import url('https://fonts.googleapis.com/css?family=Nunito');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700');
 // @import url('https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css');
 
 // Variables
-@import 'variables';
+// @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import '~admin-lte/dist/css/adminlte';
+@import '~admin-lte/plugins/font-awesome/css/font-awesome.min.css';
+// @import '~admin-lte/plugins/jvectormap/jquery-jvectormap-1.2.2.css';
 @import '~datatables.net-bs4/css/dataTables.bootstrap4';
 @import '~fullcalendar/dist/fullcalendar';
 

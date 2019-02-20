@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.5.22"
     },
     "dependencies": {
+        "admin-lte": "3.0.0-alpha.2",
         "datatables.net-bs4": "^1.10.19",
         "datatables.net-dt": "^1.10.19",
         "fullcalendar": "^3.10.0",
