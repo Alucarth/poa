@@ -27,6 +27,8 @@ class MediumTermProgramingController extends Controller
     public function create()
     {
         //
+        $title ='Registrar Programacion Mediano Plazo';
+        return view('programing.medium_term.edit',compact('title'));
     }
 
     /**
@@ -38,6 +40,20 @@ class MediumTermProgramingController extends Controller
     public function store(Request $request)
     {
         //
+        $pmp = new MediumTermProgramingController; //programacion a mediano plazo
+        $pmp->pilar = $request->pilar;
+        $pmp->meta = $request->meta;
+        $pmp->resultado = $request->resultado;
+        $pmp->accion = $request->accion;
+        $pmp->descripcion = $request->descripcion;
+        $pmp->tipo = $request->tipo;
+        $pmp->resultado_intermedio = $request->resultado_intermedio;
+        $pmp->linea_base = $request->linea_base;
+        $pmp->indicador_resultado = $request->indicador_resultado;
+        $pmp->alcance_meta = $request->alcance_meta;
+        $pmp->save();
+
+        return redirect('programacion_medio_plazo');
     }
 
     /**
@@ -83,5 +99,24 @@ class MediumTermProgramingController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function save($request){
+        $id=$request->id??null;
+        if($id)
+        {
+            $pmp = new MediumTermProgramingController; //programacion a mediano plazo
+            $pmp->pilar = $request->pilar;
+            $pmp->meta = $request->meta;
+            $pmp->resultado = $request->resultado;
+            $pmp->accion = $request->accion;
+            $pmp->descripcion = $request->descripcion;
+            $pmp->tipo = $request->tipo;
+            $pmp->resultado_intermedio = $request->resultado_intermedio;
+            $pmp->linea_base = $request->linea_base;
+            $pmp->indicador_resultado = $request->indicador_resultado;
+            $pmp->alcance_meta = $request->alcance_meta;
+            $pmp->save();
+        }
     }
 }
