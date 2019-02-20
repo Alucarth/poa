@@ -1,6 +1,6 @@
 @extends('layouts.adminlte')
 @section('title')
-    {{$title??''}}
+    {{$title??'Inicio'}}
 @endsection
 @section('breadcrums')
     {{ Breadcrumbs::render('home') }}

@@ -1,5 +1,10 @@
-@extends('layouts.app')
-
+@extends('layouts.adminlte')
+@section('title')
+    {{$title}}
+@endsection
+@section('breadcrums')
+{{ Breadcrumbs::render('roles') }}
+@endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

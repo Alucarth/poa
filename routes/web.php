@@ -18,5 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('roles','RolController');
-Route::resource('users','UserController');
+Route::resource('roles','RolController',['names'=>['index'=>'roles']]);
+Route::resource('programacion_medio_plazo','MediumTermProgramingController',['names'=>['index'=>'programacion_medio_plazo']]);
+Route::resource('users','UserController',[
+    'names' => [
+        'index' => 'users',
+        //'store' => 'users.store',
+        // etc...
+    ]
+]);
