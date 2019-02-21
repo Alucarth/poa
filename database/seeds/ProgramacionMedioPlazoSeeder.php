@@ -13,6 +13,7 @@ class ProgramacionMedioPlazoSeeder extends Seeder
     {
         //
         DB::table('programacion_medio_plazo')->insert([
+            'codigo' =>  'AM-1',
             'pilar' =>  6,
             'meta' =>  2,
             'resultado' =>  150,
@@ -25,6 +26,7 @@ class ProgramacionMedioPlazoSeeder extends Seeder
             'alcance_meta' => '75%',
         ]);
         DB::table('programacion_medio_plazo')->insert([
+            'codigo' =>  'AM-2',
             'pilar' =>  6,
             'meta' =>  2,
             'resultado' =>  150,

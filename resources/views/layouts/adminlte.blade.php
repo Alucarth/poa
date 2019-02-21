@@ -24,7 +24,7 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
-    <div class="wrapper" id="app">
+    <div class="wrapper" >
 
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-light border-bottom">
@@ -138,7 +138,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="pages/charts/chartjs.html" class="nav-link">
+                                <a href="{{url('programacion_corto_plazo')}}" class="nav-link">
                                         <i class="fa fa-calendar-o nav-icon"></i>
                                         <p>Corto Plazo</p>
                                     </a>
@@ -192,7 +192,9 @@
 
             <!-- Main content -->
             <section class="content">
-                @yield('content')
+                    <div id="app">
+                        @yield('content')
+                    </div>
             </section>
             <!-- /.content -->
         </div>

@@ -15,6 +15,7 @@ class CreateProgramacionMedioPlazoTable extends Migration
     {
         Schema::create('programacion_medio_plazo', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('codigo')->nullable();
             $table->integer('pilar');
             $table->integer('meta');
             $table->integer('resultado');

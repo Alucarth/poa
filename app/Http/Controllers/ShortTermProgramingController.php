@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\ShortTermPrograming;
+use App\MediumTermPrograming;
+use App\PcpIndicator;
 class ShortTermProgramingController extends Controller
 {
     /**
@@ -13,12 +15,9 @@ class ShortTermProgramingController extends Controller
      */
     public function index()
     {
-        //
-        // $medium_term =[
-        //     ['id'=>0,'accion'=>15,'resultado'=>'Gestion Administrativa','alcance'=>2],
-        //     ['id'=>1,'accion'=>15,'resultado'=>'Gestion Administrativa','alcance'=>2],
-        //     ['id'=>2,'accion'=>15,'resultado'=>'Gestion Administrativa','alcance'=>2]
-        // ];
+        $title = 'Programacion Corto Plazo';
+        $lista = MediumTermPrograming::all();
+        return view('programing.short_term.index',compact('title','lista'));
         
     }
 
@@ -41,6 +40,26 @@ class ShortTermProgramingController extends Controller
     public function store(Request $request)
     {
         //
+        $pcp = new ShortTermPrograming;
+        $pcp->pmp_id = $request->pmp_id;
+        $pcp->descripcion = $request->descripcion;
+        $pcp->save();
+        $pcp->codigo ="ACP-".$pcp->id;
+        $pcp->save();
+
+        $indicadores = json_decode($request->indicadores);
+        
+        foreach($indicadores as $indicador){
+            $pcp_indicator = new PcpIndicator;
+            $pcp_indicator->descripcion = $indicador->descripcion;
+            $pcp_indicator->unidad_de_medida = $indicador->unidad;
+            $pcp_indicator->linea_base = $indicador->linea_base;
+            $pcp_indicator->meta = $indicador->meta;
+            $pcp_indicator->resultado_intermedio = $indicador->resultado_intermedio;
+            $pcp_indicator->save();
+        }
+   
+        return redirect('programacion_corto_plazo');
     }
 
     /**
@@ -54,7 +73,12 @@ class ShortTermProgramingController extends Controller
         //
         
     }
-
+    public function createPCP($id)
+    {
+        $pmp = MediumTermPrograming::find($id);
+        $title = 'Programacion Corto Plazo';
+        return view('programing.short_term.create_pcp',compact('pmp','title'));
+    }
     /**
      * Show the form for editing the specified resource.
      *

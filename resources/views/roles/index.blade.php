@@ -30,14 +30,14 @@
                                     <td> <i class="fa fa-eye"></i> <i class="fa fa-pencil"></i>  <i class="fa fa-trash"></i> </td>
 								</tr>  
 								@endforeach
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-										<th>Nombre</th>
-										<th>Descripcion</th>
-										<th>Opciones</th>
-									</tr>
-                                </tfoot>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Descripcion</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </tfoot>
                         </table> 
                 </div>
             </div>

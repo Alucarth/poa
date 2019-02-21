@@ -21,3 +21,13 @@ Breadcrumbs::for('programacion_medio_plazo_nuevo', function ($trail) {
     $trail->parent('programacion_medio_plazo');
     $trail->push('Nuevo', route('medio_plazo_nuevo'));
 });
+
+Breadcrumbs::for('programacion_corto_plazo', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Programacion Corto Plazo', route('programacion_corto_plazo'));
+});
+Breadcrumbs::for('programacion_corto_plazo_nuevo', function ($trail) {
+   
+    $trail->parent('programacion_corto_plazo');
+    $trail->push('Nuevo', route('corto_plazo_nuevo'));
+});

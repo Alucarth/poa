@@ -1,9 +1,9 @@
 @extends('layouts.adminlte')
 @section('title')
-    {{$title??'Inicio'}}
+    {{$title??''}}
 @endsection
 @section('breadcrums')
-    {{ Breadcrumbs::render('programacion_medio_plazo') }}
+    {{ Breadcrumbs::render('programacion_corto_plazo') }}
 @endsection
 @section('content')
 <div class="container">
@@ -11,9 +11,9 @@
         <div class="col-md-12">
             <div class="card">
                 
-                <div class="card-header">
+                {{-- <div class="card-header">
                     <h3 class="card-title text-right"> <a href="{{url('programacion_medio_plazo/create')}}" class="btn btn-primary btn-sm"> Nuevo  <i class="fa fa-plus-circle"></i> </a></h3>
-                </div>
+                </div> --}}
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -39,9 +39,7 @@
                                 <td>{{$item->resultado_intermedio}}</td>
                                 <td>{{$item->alcance_meta }}</td>
                                 <td>
-                                    <a href="#"><i class="fa fa-eye text-info"></i></a>
-                                    <a href="#"><i class="fa fa-edit text-primary"></i></a>
-                                    <a href="#"><i class="fa fa-trash text-danger"></i></a>
+                                <a href="{{url('corto_plazo_nuevo/'.$item->id)}}"><i class="fa fa-plus-circle text-primary"></i></a>
                                 </td>
                                 
                             </tr>
