@@ -31,3 +31,7 @@ Breadcrumbs::for('programacion_corto_plazo_nuevo', function ($trail) {
     $trail->parent('programacion_corto_plazo');
     $trail->push('Nuevo', route('corto_plazo_nuevo'));
 });
+Breadcrumbs::for('operaciones', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Operaciones', route('operaciones'));
+});

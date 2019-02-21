@@ -40,4 +40,10 @@ Route::group(['middleware' => ['auth']], function () {
             // etc...
         ]
     ]);
+    Route::resource('operaciones','OperacionController',
+    ['names'=>[
+        'index'=>'operaciones',
+        'edit'=>'operaciones.edit'
+            ]
+    ]);
 }); 
