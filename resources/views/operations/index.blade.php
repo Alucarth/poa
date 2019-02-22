@@ -21,22 +21,32 @@
                     <table id="lista" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Cod.</th>
-                                <th>Denomicion</th>
-                                <th>Resultado</th>
-                                <th>Alcance</th>
+                                <th>Cod. ACP</th>
+                                <th>Descripcion</th>
+                                {{-- <th>Resultado</th>
+                                <th>Alcance</th> --}}
                                 <th>Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($lista as $item)
                             <tr>
-                                <td>{{$item->codigo}}</td>
+                                <td>{{$item->short_term_programing->codigo}}</td>
                                 <td>{{$item->descripcion}}</td>
-                                <td>{{$item->resultado_intermedio}}</td>
-                                <td>{{$item->alcance_meta }}</td>
+                                {{-- <td>{{$item->resultado_intermedio}}</td>
+                                <td>{{$item->alcance_meta }}</td> --}}
                                 <td>
-                                <a href="{{url('operaciones/'.$item->id.'/edit')}}"><i class="fa fa-plus-circle text-primary"></i></a>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-dark btn-xsm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Accion
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#"><i class="fa fa-edit"></i> Editar</a>
+                                            <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Eliminar</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="{{url('asignar_tarea/'.$item->id)}}"> <i class="fa fa-file-o"></i> Asignar Tareas</a>
+                                        </div>
+                                    </div>
                                 </td>
                         
                             </tr>

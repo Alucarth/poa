@@ -12,22 +12,21 @@
             <div class="card">
 			
                 <div class="card-body">
-                {!! Form::open(['action' => 'OperacionController@store']) !!}
-                    <input type="text" name="pcp_id" class="form-control" value="{{$pcp->id}}" hidden>
+                {{-- {!! Form::open(['action' => 'OperacionController@store']) !!} --}}
+                    <input type="text" name="operacion_id" class="form-control" value="{{$operacion->id}}" hidden>
 					
                     <div class="row">
                         <div class="form-group  col-md-3">
                             {!! Form::label('codigo', 'Codigo')!!}
-                            {!! Form::text('codigo',$pcp->codigo,['class'=>'form-control','readonly'])!!}
+                            {!! Form::text('codigo',$operacion->id,['class'=>'form-control','readonly'])!!}
                         </div>
                         <div class="form-group  col-md-9">
                             {!! Form::label('descripcion', 'Accion a Corto Plazo')!!}
-                            {!! Form::text('descripcion',$pcp->descripcion,['class'=>'form-control','readonly'])!!}
+                            {!! Form::text('descripcion',$operacion->descripcion,['class'=>'form-control','readonly'])!!}
                         </div>
             
                     </div>    
-                    
-                    <operaciones-component></operaciones-component>
+					<tareas-component></tareas-component>
 
                     <div class="row">
                         <div class="d-flex justify-content-center">
@@ -41,7 +40,7 @@
                     </div>
 
                 </div>
-                {!! Form::close() !!}
+                {{-- {!! Form::close() !!} --}}
             </div>
         </div>
     </div>

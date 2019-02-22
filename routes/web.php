@@ -46,4 +46,5 @@ Route::group(['middleware' => ['auth']], function () {
         'edit'=>'operaciones.edit'
             ]
     ]);
+    Route::get('asignar_tarea/{operation_id}','OperacionController@asignar_tarea');
 }); 
