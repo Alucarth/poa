@@ -52,7 +52,7 @@ class MediumTermProgramingController extends Controller
         $pmp->indicador_resultado_intermedio = $request->indicador_resultado;
         $pmp->alcance_meta = $request->alcance_meta;
         $pmp->save();
-        $pmp->codigo='PMP-'.$pmp->id;
+        $pmp->codigo='AMP-'.$pmp->id;
         $pmp->save();
 
         return redirect('programacion_medio_plazo');

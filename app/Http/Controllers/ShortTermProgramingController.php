@@ -16,7 +16,8 @@ class ShortTermProgramingController extends Controller
     public function index()
     {
         $title = 'Programacion Corto Plazo';
-        $lista = MediumTermPrograming::all();
+        $lista = ShortTermPrograming::all();
+        // return $lista;
         return view('programing.short_term.index',compact('title','lista'));
         
     }

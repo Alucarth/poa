@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\ShortTermPrograming;
 use App\MediumTermPrograming;
+use App\Operacion;
 class OperacionController extends Controller
 {
     /**
@@ -16,7 +17,7 @@ class OperacionController extends Controller
     {
         //
         $title = 'Operaciones';
-        $lista = MediumTermPrograming::all();
+        $lista = Operacion::all();
         return view('operations.index',compact('title','lista'));
         
     }
@@ -40,8 +41,24 @@ class OperacionController extends Controller
     public function store(Request $request)
     {
         //
+        $operaciones = json_decode($request->operaciones);
+        
+        foreach($operaciones as $operacion){
+            $op = new Operacion;
+            $op->pcp_id = $request->pcp_id;
+            $op->descripcion = $operacion->descripcion;
+            $op->save();
+        }
+        return redirect('operaciones');
     }
 
+
+    public function asignar_tarea($operation_id){
+        $operacion = Operacion::find($operation_id);
+        $title = 'Asignacion de Tareas';
+
+        return view('operations.tasks',compact("operacion","title"));
+    }
     /**
      * Display the specified resource.
      *
@@ -62,8 +79,8 @@ class OperacionController extends Controller
     public function edit($id)
     {
         //
-        $pmp = MediumTermPrograming::find($id);
-        $pcp = ShortTermPrograming::where('pmp_id','=',$pmp->id)->first();
+       
+        $pcp = ShortTermPrograming::find($id);
         $title="Operaciones";
         return view('operations.edit',compact('pmp','pcp','title'));
     }

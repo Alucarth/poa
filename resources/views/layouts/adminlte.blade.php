@@ -149,7 +149,7 @@
                         <a href="{{url('operaciones')}}" class="nav-link">
                                 <i class="nav-icon fa  fa-list"></i>
                                 <p>
-                                    Asignacion de Tareas
+                                    Operaciones
                                 </p>
                             </a>
                         </li>

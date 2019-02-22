@@ -26,7 +26,7 @@
                             <tr>
                                 <th>Cod.</th>
                                 <th>Denomicion</th>
-                                <th>Resultado</th>
+                                <th>Cod. AMP</th>
                                 <th>Alcance</th>
                                 <th>Opciones</th>
                             </tr>
@@ -36,10 +36,20 @@
                             <tr>
                                 <td>{{$item->codigo}}</td>
                                 <td>{{$item->descripcion}}</td>
-                                <td>{{$item->resultado_intermedio}}</td>
-                                <td>{{$item->alcance_meta }}</td>
+                                <td>{{$item->medium_term_programing->codigo}}</td>
+                                <td>{{$item->medium_term_programing->alcance_meta }}</td>
                                 <td>
-                                <a href="{{url('corto_plazo_nuevo/'.$item->id)}}"><i class="fa fa-plus-circle text-primary"></i></a>
+                                        <div class="btn-group">
+                                                <button type="button" class="btn btn-dark btn-xsm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                   Accion
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="#"><i class="fa fa-edit"></i> Editar</a>
+                                                    <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Eliminar</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="{{url('operaciones/'.$item->id.'/edit')}}"> <i class="fa fa-file-o"></i> Adicionar Operaciones</a>
+                                                </div>
+                                            </div>
                                 </td>
                                 
                             </tr>

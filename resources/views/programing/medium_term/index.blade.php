@@ -25,10 +25,10 @@
                         <thead>
                             <tr>
                                 <th>Cod.</th>
-                                <th>Denomicion</th>
+                                <th>Accion Mediano Plazo</th>
                                 <th>Resultado</th>
                                 <th>Alcance</th>
-                                <th>Opciones</th>
+                                <th>Opcion</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,9 +39,20 @@
                                 <td>{{$item->resultado_intermedio}}</td>
                                 <td>{{$item->alcance_meta }}</td>
                                 <td>
-                                    <a href="#"><i class="fa fa-eye text-info"></i></a>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-dark btn-xsm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           Accion
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#"><i class="fa fa-edit"></i> Editar</a>
+                                            <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Eliminar</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="{{url('corto_plazo_nuevo/'.$item->id)}}"> <i class="fa fa-file-o"></i> Programacion Corto Plazo</a>
+                                        </div>
+                                    </div>
+                                    {{-- <a href="#"><i class="fa fa-eye text-info"></i></a>
                                     <a href="#"><i class="fa fa-edit text-primary"></i></a>
-                                    <a href="#"><i class="fa fa-trash text-danger"></i></a>
+                                    <a href="#"><i class="fa fa-trash text-danger"></i></a> --}}
                                 </td>
                                 
                             </tr>

@@ -6,12 +6,12 @@
 	    <div class="row">
 		   <div class="d-flex justify-content-center">
 				<div class="p-2 ">
-					<button type="button" class="btn btn-primary btn-sm " @click="addItem()"> Adicionar Indicador <i class="fa fa-plus-circle"></i> </button>
+					<button type="button" class="btn btn-primary btn-sm " @click="addItem()"> Adicionar Operacion <i class="fa fa-plus-circle"></i> </button>
 				</div>
 				<div class="p-2">
-					<button type="button" class="btn btn-danger btn-sm " @click="addItem()"> Eliminar Todo <i class="fa fa-trash"></i> </button>
+					<button type="button" class="btn btn-danger btn-sm " @click="removeAll()"> Eliminar Todo <i class="fa fa-trash"></i> </button>
 				</div>
-				<input type="text" name="operaciones" :value="JSON.stringify(operaciones)" class="form-control">
+				<input type="text" name="operaciones" :value="JSON.stringify(operaciones)" class="form-control" hidden>
 			</div>
 		</div>
        
@@ -19,7 +19,7 @@
 		<thead class="thead-dark">
 			<tr>
 				<th scope="col">Descripcion</th>
-				<th scope="col">Asignar tareas</th>
+				<!-- <th scope="col">Asignar tareas</th> -->
 			</tr>
 		</thead>
 		<tbody>
