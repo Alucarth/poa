@@ -56,7 +56,7 @@ class ShortTermProgramingController extends Controller
             $pcp_indicator->unidad_de_medida = $indicador->unidad;
             $pcp_indicator->linea_base = $indicador->linea_base;
             $pcp_indicator->meta = $indicador->meta;
-            $pcp_indicator->resultado_intermedio = $indicador->resultado_intermedio;
+            $pcp_indicator->producto_esperado = $indicador->producto_esperado;
             $pcp_indicator->save();
         }
    

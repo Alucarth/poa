@@ -23,9 +23,9 @@ class CreateProgramacionMedioPlazoTable extends Migration
             $table->string('descripcion');
             $table->enum('tipo', ['Proceso', 'Apoyo'])->default('Proceso')->nullable();
             $table->string('resultado_intermedio');
-            $table->string('linea_base');
+            $table->string('linea_base')->nullable();
             $table->string('indicador_resultado_intermedio');
-            $table->string('alcance_meta');
+            $table->double('alcance_meta',8,2);
             $table->timestamps();
         });
     }

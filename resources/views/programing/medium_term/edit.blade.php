@@ -17,26 +17,26 @@
                     <div class="row">
                         <div class="form-group  col-md-3">
                             {!! Form::label('pilar', 'Pilar')!!}
-                            {!! Form::text('pilar','Pilar',['class'=>'form-control'])!!}
+                            {!! Form::number('pilar','',['class'=>'form-control','placeholder'=>'Pilar'])!!}
                         </div>
                         <div class="form-group  col-md-3">
                             {!! Form::label('meta', 'Meta')!!}
-                            {!! Form::text('meta','Meta',['class'=>'form-control'])!!}
+                            {!! Form::number('meta','',['class'=>'form-control','placeholder'=>'Meta'])!!}
                         </div>
                         <div class="form-group  col-md-3">
                             {!! Form::label('resultado', 'Resultado')!!}
-                            {!! Form::text('resultado','Resultado',['class'=>'form-control'])!!}
+                            {!! Form::number('resultado','',['class'=>'form-control','placeholder'=>'Resultado'])!!}
                         </div>
                         <div class="form-group  col-md-3">
                             {!! Form::label('accion', 'Accion')!!}
-                            {!! Form::text('accion','Accion',['class'=>'form-control'])!!}
+                            {!! Form::number('accion','',['class'=>'form-control','placeholder'=>'Accion'])!!}
                         </div>
                     </div>    
                     <legend>Accion de Mediano Plazo del PEE</legend>
                     <div class="row">
                         <div class="form-group  col-md-10">
                             {!! Form::label('descripcion', 'Descripcion')!!}
-                            {!! Form::text('descripcion','Descripcion',['class'=>'form-control'])!!}
+                            {!! Form::text('descripcion','',['class'=>'form-control','placeholder'=>'Descripcion'])!!}
                         </div>
                         <div class="form-group  col-md-4">
                             {!! Form::label('tipo', 'Tipo')!!}
@@ -44,19 +44,19 @@
                         </div>
                         <div class="form-group  col-md-8">
                             {!! Form::label('resultado_intermedio', 'Resultado Intermedio')!!}
-                            {!! Form::text('resultado_intermedio','Resultado Intermedio',['class'=>'form-control'])!!}
+                            {!! Form::text('resultado_intermedio','',['class'=>'form-control','placeholder'=>'Resultado Intermedio'])!!}
                         </div>
                         <div class="form-group  col-md-8">
                             {!! Form::label('linea_base', 'Linea Base')!!}
-                            {!! Form::text('linea_base','Linea Base',['class'=>'form-control'])!!}
+                            {!! Form::text('linea_base','',['class'=>'form-control','placeholder'=>'Linea Base'])!!}
                         </div>
                         <div class="form-group  col-md-8">
                             {!! Form::label('indicador_resultado', 'Indicador de Resultado')!!}
-                            {!! Form::text('indicador_resultado','Indicador de Resultado',['class'=>'form-control'])!!}
+                            {!! Form::text('indicador_resultado','',['class'=>'form-control','placeholder'=>' Indicador de Resultado'])!!}
                         </div>
                         <div class="form-group  col-md-8">
                             {!! Form::label('alcance_meta', 'Alcance de Meta')!!}
-                            {!! Form::text('alcance_meta','Alcance de Meta',['class'=>'form-control'])!!}
+                            {!! Form::number('alcance_meta','',['class'=>'form-control','placeholder'=>'Alcance de Meta','step'=>'any'])!!}
                         </div>
                     </div>
                     <div class="row">

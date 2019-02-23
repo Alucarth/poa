@@ -19,9 +19,9 @@ class CreateIndicadoresCortoPlazoTable extends Migration
             $table->foreign('pcp_id')->references('id')->on('programacion_corto_plazo');
             $table->string('descripcion');
             $table->string('unidad_de_medida');
-            $table->string('linea_base');
-            $table->string('meta');
-            $table->string('resultado_intermedio');//viene del mediano plzo
+            $table->string('linea_base')->nullable();
+            $table->double('meta',8,2);
+            $table->string('producto_esperado');//viene del mediano plzo
             $table->timestamps();
         });
     }

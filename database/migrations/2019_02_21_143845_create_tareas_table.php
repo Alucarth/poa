@@ -19,8 +19,8 @@ class CreateTareasTable extends Migration
             $table->foreign('operacion_id')->references('id')->on('operaciones'); 
             $table->string('descripciones');
             $table->string('meta');
-            //ingresar los 12 meses en teoria
             $table->timestamps();
+            //se registro una tabla denomidada programaciones que almacena el valor de los meses
         });
     }
 

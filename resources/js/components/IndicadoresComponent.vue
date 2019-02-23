@@ -22,7 +22,7 @@
 				<th scope="col">Unidad</th>
 				<th scope="col">Linea Base</th>
 				<th scope="col">Meta</th>
-				<th scope="col">Resultado Intermendio</th>
+				<th scope="col">Producto Esperado</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,8 +31,8 @@
 				<td><input type="text" v-model="indicador.descripcion" class="form-control"></td>
 				<td><input type="text" v-model="indicador.unidad" class="form-control"></td>
 				<td><input type="text" v-model="indicador.linea_base" class="form-control"></td>
-				<td><input type="text" v-model="indicador.meta" class="form-control"></td>
-				<td><input type="text" v-model="indicador.resultado_intermedio" class="form-control"></td>
+				<td><input type="number" step="any" v-model="indicador.meta" class="form-control"></td>
+				<td><input type="text" v-model="indicador.producto_esperado" class="form-control"></td>
 				<td><button type="button" class="btn btn-danger btn-sm" @click="removeItem(indicador)"><i class="fa fa-trash"></i></button></td>
 			</tr>
 			
@@ -49,11 +49,11 @@
         }),
         mounted() {
 			console.log('Componente Indicadores XD')
-			this.indicadores.push({descripcion:'',unidad:'',linea_base:'',meta:'',resultado_intermedio:''});
+			this.indicadores.push({descripcion:'',unidad:'',linea_base:'',meta:'',producto_esperado:''});
 		},
 		methods:{
 			addItem(){
-				this.indicadores.push({descripcion:'',unidad:'',linea_base:'',meta:'',resultado_intermedio:''});
+				this.indicadores.push({descripcion:'',unidad:'',linea_base:'',meta:'',producto_esperado:''});
 			},
 			removeItem(item){
 				const index = this.indicadores.indexOf(item)
@@ -61,7 +61,7 @@
 			},
 			removeAll(){
 				this.indicadores =[];
-				this.indicadores.push({descripcion:'',unidad:'',linea_base:'',meta:'',resultado_intermedio:''});
+				this.indicadores.push({descripcion:'',unidad:'',linea_base:'',meta:'',producto_esperado:''});
 			}
 		}
     }

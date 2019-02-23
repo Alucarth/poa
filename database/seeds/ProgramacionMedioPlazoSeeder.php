@@ -21,9 +21,9 @@ class ProgramacionMedioPlazoSeeder extends Seeder
             'descripcion' =>  'apoyar al menos 75% de las operaciones de la empresa de manera transversal',
             'tipo' => 'Apoyo',
             'resultado_intermedio' => 'Gestion Administrativa',
-            'linea_base' => '-',
+            'linea_base' => null,
             'indicador_resultado_intermedio' => 'Promedio del cumplimiento de las operaciones',
-            'alcance_meta' => '75%',
+            'alcance_meta' => '75.25',
         ]);
         DB::table('programacion_medio_plazo')->insert([
             'codigo' =>  'AMP-2',
@@ -34,9 +34,9 @@ class ProgramacionMedioPlazoSeeder extends Seeder
             'descripcion' =>  'Producir 4789,9 toneladas de productos derivados acorder a necesisadades  al  mercado nacion e internacional',
             'tipo' => 'Proceso',
             'resultado_intermedio' => 'Produccion de Derivados',
-            'linea_base' => '-',
+            'linea_base' => null,
             'indicador_resultado_intermedio' => 'Toneladas de Derivados producidos',
-            'alcance_meta' => '4789,9',
+            'alcance_meta' => '4789.9',
         ]);
     }
 }
