@@ -17,6 +17,8 @@ class CreateProgramacionesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('tarea_id');
             $table->foreign('tarea_id')->references('id')->on('tareas');
+            $table->unsignedInteger('mes_id');
+            $table->foreign('mes_id')->references('id')->on('meses');
             $table->string('value');
             $table->timestamps();
         });

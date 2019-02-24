@@ -17,7 +17,7 @@ class CreateTareasTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('operacion_id');
             $table->foreign('operacion_id')->references('id')->on('operaciones'); 
-            $table->string('descripciones');
+            $table->string('descripcion');
             $table->string('meta');
             $table->timestamps();
             //se registro una tabla denomidada programaciones que almacena el valor de los meses

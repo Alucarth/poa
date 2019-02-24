@@ -12,7 +12,7 @@
             <div class="card">
 			
                 <div class="card-body">
-                {{-- {!! Form::open(['action' => 'OperacionController@store']) !!} --}}
+                {!! Form::open(['action' => 'OperacionController@store_task','id'=>'form_xd']) !!}
                     <input type="text" name="operacion_id" class="form-control" value="{{$operacion->id}}" hidden>
 					
                     <div class="row">
@@ -26,7 +26,7 @@
                         </div>
             
                     </div>    
-					<tareas-component></tareas-component>
+					<tareas-component :meses={{$meses}} ></tareas-component>
 
                     <div class="row">
                         <div class="d-flex justify-content-center">
@@ -40,7 +40,7 @@
                     </div>
 
                 </div>
-                {{-- {!! Form::close() !!} --}}
+                {!! Form::close() !!}
             </div>
         </div>
     </div>
@@ -49,10 +49,13 @@
 @section('script')
 <script>
         window.onload = function () {
-            // $('#lista').DataTable();
-            // $('#calendar').fullCalendar({
-            //     weekends: false // will hide Saturdays and Sundays
-            // });
+            $('#form_xd').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) { 
+                e.preventDefault();
+                return false;
+            }
+            });
         };
     </script>    
 @endsection

@@ -53,4 +53,5 @@ Route::group(['middleware' => ['auth']], function () {
             ]
     ]);
     Route::get('asignar_tarea/{operation_id}','OperacionController@asignar_tarea');
+    Route::post('asignar_tarea','OperacionController@store_task');
 }); 

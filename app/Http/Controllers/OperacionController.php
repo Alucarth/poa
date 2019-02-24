@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\ShortTermPrograming;
 use App\MediumTermPrograming;
 use App\Operacion;
+use App\Month;
+use App\Programming;
+use App\Task;
+
 class OperacionController extends Controller
 {
     /**
@@ -55,10 +59,35 @@ class OperacionController extends Controller
 
     public function asignar_tarea($operation_id){
         $operacion = Operacion::find($operation_id);
+        $meses = Month::all();
+    
         $title = 'Asignacion de Tareas';
 
-        return view('operations.tasks',compact("operacion","title"));
+        return view('operations.tasks',compact("operacion","title","meses"));
     }
+
+    public function store_task(Request $request)
+    {
+        $tareas = json_decode($request->tareas);
+        foreach($tareas as $tarea)
+        {
+            $task = new Task;
+            $task->operacion_id =$request->operacion_id;
+            $task->descripcion = $tarea->descripcion;
+            $task->meta = $tarea->meta;
+            $task->save();
+
+            foreach($tarea->programaciones as $programacion){
+                $programming = new Programming;
+                $programming->tarea_id = $task->id;
+                $programming->mes_id = $programacion->id;
+                $programming->value = $programacion->value;
+                $programming->save();
+            }
+        }
+        return redirect('operaciones');
+    }
+
     /**
      * Display the specified resource.
      *
