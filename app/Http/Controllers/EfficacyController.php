@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Eficacia;
-class EficaciaController extends Controller
+use App\MediumTermPrograming;
+
+class EfficacyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +15,9 @@ class EficaciaController extends Controller
     public function index()
     {
         //
-        $eficacias = Eficacia::all();
-        $title = "Eficacia";
-        return view('eficacia.index',compact('eficacias','title'));
+        $title = 'Efectividad de Acciones Programadas vs Ejecutadas';
+        $lista =MediumTermPrograming::all();
+        return view('efficacy.index',compact('title','lista'));
     }
 
     /**
@@ -37,7 +38,14 @@ class EficaciaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // return $request->all();
+        $mpm = MediumTermPrograming::find($request->mpm_id);
+        // return $mpm;
+        
+        $mpm->ejecutado= $request->ejectuado;
+        $mpm->eficacia= $request->eficacia;
+        $mpm->save();
+        return redirect('eficacias');
     }
 
     /**

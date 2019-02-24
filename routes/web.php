@@ -46,7 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
         'edit'=>'operaciones.edit'
             ]
     ]);
-    Route::resource('eficacias','EficaciaController',
+    Route::resource('eficacias','EfficacyController',
     ['names'=>[
         'index'=>'eficacias',
         'edit'=>'eficacias.edit'
