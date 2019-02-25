@@ -26,7 +26,7 @@
                                 <th>Resultado</th>
                                 <th>Alcance</th>
                                 <th>Ejectuado</th>
-                                <th>Eficacia (%)</th>
+                                <th>Eficacia</th>
                                 <th>Opciones</th>
                             </tr>
                         </thead>
@@ -38,7 +38,7 @@
                                 <td>{{$item->resultado_intermedio}}</td>
                                 <td>{{$item->alcance_meta }}</td>
                                 <td>{{$item->ejecutado }}</td>
-                                <td>{{$item->eficacia }}</td>
+                                <td>{{$item->eficacia?$item->eficacia.' %':'' }}</td>
                                 <td>
                                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-object="{{$item}}" data-target="#efficacyModal" > <i class="fa fa-calculator"></i> </button>
                                 
