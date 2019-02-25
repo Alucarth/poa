@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\MediumTermPrograming;
+use Maatwebsite\Excel\Facades\Excel;
 class MediumTermProgramingController extends Controller
 {
     /**
@@ -101,6 +102,22 @@ class MediumTermProgramingController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function report_excel(){
+        
+        // return 'hola';
+       Excel::create('Reporte Mediano Plazo', function($excel) {
+
+            $excel->sheet('New sheet', function($sheet) {
+                
+                $amps = MediumTermPrograming::all();
+                $sheet->loadView('programing.medium_term.excel',compact('amps'));
+        
+            });
+        
+        })->download('xls');
+        #
     }
 
 }

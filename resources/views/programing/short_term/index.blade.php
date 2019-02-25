@@ -11,9 +11,9 @@
         <div class="col-md-12">
             <div class="card">
                 
-                {{-- <div class="card-header">
-                    <h3 class="card-title text-right"> <a href="{{url('programacion_medio_plazo/create')}}" class="btn btn-primary btn-sm"> Nuevo  <i class="fa fa-plus-circle"></i> </a></h3>
-                </div> --}}
+                <div class="card-header">
+                    <h3 class="card-title text-right"> <a href="{{url('acp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a></h3>
+                </div>
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">

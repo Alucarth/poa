@@ -54,4 +54,8 @@ Route::group(['middleware' => ['auth']], function () {
     ]);
     Route::get('asignar_tarea/{operation_id}','OperacionController@asignar_tarea');
     Route::post('asignar_tarea','OperacionController@store_task');
+
+    //reportes
+    Route::get('amp_report_excel','MediumTermProgramingController@report_excel');
+    Route::get('acp_report_excel','ShortTermProgramingController@report_excel');
 }); 

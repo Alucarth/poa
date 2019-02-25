@@ -11,7 +11,7 @@
 				<div class="p-2">
 					<button type="button" class="btn btn-danger btn-sm " @click="addItem()"> Eliminar Todo <i class="fa fa-trash"></i> </button>
 				</div>
-				<input type="text" name="indicadores" :value="JSON.stringify(indicadores)" class="form-control">
+				<input type="text" name="indicadores" :value="JSON.stringify(indicadores)" class="form-control" hidden>
 			</div>
 		</div>
        

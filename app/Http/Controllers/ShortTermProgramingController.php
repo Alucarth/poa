@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\ShortTermPrograming;
 use App\MediumTermPrograming;
 use App\PcpIndicator;
+use Maatwebsite\Excel\Facades\Excel;
 class ShortTermProgramingController extends Controller
 {
     /**
@@ -112,5 +113,20 @@ class ShortTermProgramingController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function report_excel(){
+        
+        // return 'hola';
+       Excel::create('reporte corto plazo', function($excel) {
+
+            $excel->sheet('New sheet', function($sheet) {
+                
+                $acps = ShortTermPrograming::all();
+                $sheet->loadView('programing.short_term.excel',compact('acps'));
+        
+            });
+        
+        })->download('xls');
+        #
     }
 }

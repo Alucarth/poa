@@ -9,8 +9,8 @@ class MediumTermPrograming extends Model
     //
     protected $table='programacion_medio_plazo';
     
-    public function ShortTermPrograming()
+    public function short_term_programing()
     {
-        return $this->hasOne('App\ShortTermPrograming');    
+        return $this->belongsTo('App\ShortTermPrograming','pmp_id');    
     }
 }
