@@ -15,8 +15,8 @@ class CreateProgramacionCortoPlazoTable extends Migration
     {
         Schema::create('programacion_corto_plazo', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('pmp_id');
-            $table->foreign('pmp_id')->references('id')->on('programacion_medio_plazo');
+            $table->unsignedInteger('programacion_medio_plazo_id');
+            $table->foreign('programacion_medio_plazo_id')->references('id')->on('programacion_medio_plazo');
             $table->string('codigo')->nullable();
             $table->string('descripcion');
             $table->timestamps();

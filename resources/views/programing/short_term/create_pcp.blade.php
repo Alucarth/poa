@@ -13,7 +13,7 @@
 			
                 <div class="card-body">
                 {!! Form::open(['action' => 'ShortTermProgramingController@store']) !!}
-                    <input type="text" name="pmp_id" class="form-control" value="{{$pmp->id}}" hidden>
+                    <input type="text" name="programacion_medio_plazo_id" class="form-control" value="{{$pmp->id}}" hidden>
 					<legend>Accion de Mediano Plazo</legend>
                     <div class="row">
                         <div class="form-group  col-md-3">

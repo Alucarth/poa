@@ -11,10 +11,10 @@ class ShortTermPrograming extends Model
 
     public function medium_term_programing() //relacion con el medio plazo no tocar 
     {
-        return $this->belongsTo('App\MediumTermPrograming','pmp_id');
+        return $this->belongsTo('App\MediumTermPrograming', 'programacion_medio_plazo_id');
     }
-    // public function indicadores()
-    // {
-    //     return $this->belongsToMany('App\PcpIndicator');
-    // }
+    public function indicadores()
+    {
+        return $this->belongsToMany('App\PcpIndicator','programacion_corto_plazo_id');
+    }
 }

@@ -43,7 +43,7 @@ class ShortTermProgramingController extends Controller
     {
         //
         $pcp = new ShortTermPrograming;
-        $pcp->pmp_id = $request->pmp_id;
+        $pcp->programacion_medio_plazo_id = $request->programacion_medio_plazo_id;
         $pcp->descripcion = $request->descripcion;
         $pcp->save();
         $pcp->codigo ="ACP-".$pcp->id;

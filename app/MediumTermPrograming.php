@@ -13,4 +13,5 @@ class MediumTermPrograming extends Model
     {
         return $this->belongsTo('App\ShortTermPrograming','pmp_id');    
     }
+    
 }

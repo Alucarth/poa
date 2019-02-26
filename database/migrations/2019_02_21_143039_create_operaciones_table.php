@@ -15,8 +15,8 @@ class CreateOperacionesTable extends Migration
     {
         Schema::create('operaciones', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('pcp_id')->nullable();
-            $table->foreign('pcp_id')->references('id')->on('programacion_corto_plazo'); 
+            $table->unsignedInteger('programacion_corto_plazo_id')->nullable();
+            $table->foreign('programacion_corto_plazo_id')->references('id')->on('programacion_corto_plazo'); 
             $table->string('descripcion');
             $table->timestamps();
         });
