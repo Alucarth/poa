@@ -12,7 +12,7 @@ class MonthSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('meses')->insert([
+        DB::table('months')->insert([
             ['name'=>'Enero'],
             ['name'=>'Febrero'],
             ['name'=>'Marzo'],

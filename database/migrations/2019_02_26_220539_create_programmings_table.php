@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOperacionesTable extends Migration
+class CreateProgrammingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateOperacionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('operaciones', function (Blueprint $table) {
+        Schema::create('programmings', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('programacion_corto_plazo_id')->nullable();
-            $table->foreign('programacion_corto_plazo_id')->references('id')->on('programacion_corto_plazo'); 
-            $table->string('descripcion');
+            $table->unsignedInteger('task_id');
+            $table->foreign('task_id')->references('id')->on('tasks');
+            $table->unsignedInteger('month_id');
+            $table->foreign('month_id')->references('id')->on('months');
+            $table->string('value');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateOperacionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('operaciones');
+        Schema::dropIfExists('programmings');
     }
 }
