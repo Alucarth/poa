@@ -22,9 +22,10 @@
 <body >
     
     <div id="app">
-        <nav class="navbar  navbar-expand-md navbar-dark fixed-top navbar-laravel">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top navbar-laravel elevation-3">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="/img/logosedem.png" alt="EBA Logo" class="brand-image img-circle  elevation-3 " style="height: 3vw; width: 3vw;opacity: .8">
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -34,13 +35,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                       
+                        <li class="nav-item"> <a  class="nav-link" href="{{ url('programacion_medio_plazo') }}" id="pmp_tooltip" data-toggle="tooltip" data-placement="bottom" title="Programacion a Mediano Plazo"><i class="fa fa-calendar"></i>  </a> </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"> <a  class="nav-link" href="{{ url('users') }}"><i class="fa fa-users"></i> usuarios </a> </li>
-                            <li class="nav-item"> <a  class="nav-link" href="{{ url('roles') }}"><i class="fa fa-building"></i> roles </a> </li>
+                        <li class="nav-item"> <a  class="nav-link" href="{{ url('users') }}"><i class="fa fa-users"></i>  </a> </li>
+                        <li class="nav-item"> <a  class="nav-link" href="{{ url('roles') }}"><i class="fa fa-building"></i>  </a> </li>
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -76,12 +77,36 @@
         </nav>
 
         <main  role="main">
+            
             <div class="container" style=" padding-top: 60px">
+                    <div class="content-header">
+                        <div class="container-fluid">
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <h1 class="m-0 text-dark"> @yield('title') </h1>
+                                </div><!-- /.col -->
+                                <div class="col-sm-6">
+                                    {{--  --}}
+                                    <ol class="breadcrumb float-sm-right">
+                                            @yield('breadcrums')
+                                        {{-- <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                        <li class="breadcrumb-item active">Dashboard v2</li> --}}
+                                    </ol>
+                                </div><!-- /.col -->
+                            </div><!-- /.row -->
+                        </div><!-- /.container-fluid -->
+                    </div>
+                          
                 @yield('content')
             </div>
         </main>
     </div>
-  
+    
+    <script>
+         window.onload = function () {
+            $('#pmp_tooltip').tooltip();
+        };
+    </script>
         @yield("script");
  
 </body>
