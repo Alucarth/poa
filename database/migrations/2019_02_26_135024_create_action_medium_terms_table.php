@@ -15,7 +15,7 @@ class CreateActionMediumTermsTable extends Migration
     {
         Schema::create('action_medium_terms', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('codigo')->nullable();
+            $table->string('code')->nullable();
             $table->integer('pilar');
             $table->integer('meta');
             $table->integer('resultado');
@@ -26,8 +26,8 @@ class CreateActionMediumTermsTable extends Migration
             $table->string('linea_base')->nullable();
             $table->string('indicador_resultado_intermedio');
             $table->double('alcance_meta',8,2);
-            $table->double('ejecutado',8,2)->nullable();
-            $table->double('eficacia',8,2)->nullable();
+            $table->double('executed',8,2)->nullable();
+            $table->double('efficacy',8,2)->nullable();
         });
     }
 

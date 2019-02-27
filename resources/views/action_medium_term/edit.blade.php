@@ -1,18 +1,22 @@
-@extends('layouts.adminlte')
-@section('title')
-    {{$title??''}}
-@endsection
-@section('breadcrums')
-    {{ Breadcrumbs::render('programacion_medio_plazo_nuevo') }}
-@endsection
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                
-                <div class="card-body">
-                {!! Form::open(['action' => 'MediumTermProgramingController@store']) !!}
+
+<h3 class="card-title text-right">
+    <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a> 
+    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ActionMediumTermModal" data-json="{}" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
+</h3>
+{{-- modal dialog --}}
+
+    <div class="modal fade" id="ActionMediumTermModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            {!! Form::open(['action' => 'ActionMediumTermController@store']) !!}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
                     <legend>Estructura del POES</legend>    
                     <div class="row">
                         <div class="form-group  col-md-3">
@@ -59,31 +63,28 @@
                             {!! Form::number('alcance_meta','',['class'=>'form-control','placeholder'=>'Alcance de Meta','step'=>'any'])!!}
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="d-flex justify-content-center">
-                            <div class="p-2 ">
-                                <a href="#" class="btn btn-danger">Cancelar</a>
-                            </div>
-                            <div class="p-2">
-                                <button type="submit" class="btn btn-success">Guardar</button>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- <div id='calendar'></div> --}}
                 </div>
-                {!! Form::close() !!}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
             </div>
+            {!! Form::close() !!}
         </div>
     </div>
-</div>
-@endsection
-@section('script')
+
+
 <script>
         window.onload = function () {
-            // $('#lista').DataTable();
-            // $('#calendar').fullCalendar({
-            //     weekends: false // will hide Saturdays and Sundays
-            // });
+            // $('#ActionMediumTermModal').on('show.bs.modal', function (event) {
+            // var button = $(event.relatedTarget) // Button that triggered the modal
+            // var recipient = button.data('json') // Extract info from data-* attributes
+            // console.log(recipient);
+            // // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            // var modal = $(this)
+            // modal.find('.modal-title').text('New message to ' + recipient)
+            // modal.find('.modal-body input').val(recipient)
+            // })
         };
-    </script>    
-@endsection
+</script>    

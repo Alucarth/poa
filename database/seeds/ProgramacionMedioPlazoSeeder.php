@@ -13,7 +13,7 @@ class ProgramacionMedioPlazoSeeder extends Seeder
     {
         //
         DB::table('action_medium_terms')->insert([
-            'codigo' =>  'AMP-1',
+            'code' =>  'AMP-1',
             'pilar' =>  6,
             'meta' =>  2,
             'resultado' =>  150,
@@ -26,7 +26,7 @@ class ProgramacionMedioPlazoSeeder extends Seeder
             'alcance_meta' => '5000',
         ]);
         DB::table('action_medium_terms')->insert([
-            'codigo' =>  'AMP-2',
+            'code' =>  'AMP-2',
             'pilar' =>  6,
             'meta' =>  2,
             'resultado' =>  150,
