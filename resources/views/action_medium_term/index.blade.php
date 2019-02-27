@@ -118,11 +118,13 @@
                                 {!! Form::label('indicador_resultado', 'Indicador de Resultado')!!}
                                 {!! Form::text('indicador_resultado','',['class'=>'form-control','placeholder'=>' Indicador de Resultado'])!!}
                             </div>
-                            <div class="form-group  col-md-6">
+                            {{-- <div class="form-group  col-md-6">
                                 {!! Form::label('alcance_meta', 'Alcance de Meta')!!}
                                 {!! Form::number('alcance_meta','',['class'=>'form-control','placeholder'=>'Alcance de Meta','step'=>'any'])!!}
-                            </div>
+                            </div> --}}
+                            
                         </div>
+                        <years-component></years-component>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
