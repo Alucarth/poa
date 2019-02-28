@@ -40,6 +40,7 @@ class ActionMediumTermController extends Controller
     public function store(Request $request)
     {
         //
+        return $request->all();
         $action_medium_term = new ActionMediumTerm(); //programacion a mediano plazo
         $action_medium_term->pilar = $request->pilar;
         $action_medium_term->meta = $request->meta;

@@ -29,6 +29,10 @@
         "datatables.net-dt": "^1.10.19",
         "fullcalendar": "^3.10.0",
         "moment": "^2.24.0",
-        "numeral": "^2.0.6"
+        "numeral": "^2.0.6",
+        "sweetalert": "^2.1.2",
+        "sweetalert2": "^8.2.6",
+        "toastr": "^2.1.4",
+        "vee-validate": "^2.1.7"
     }
 }

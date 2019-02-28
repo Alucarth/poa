@@ -3,7 +3,7 @@
     {{$title??'Inicio'}}
 @endsection
 @section('breadcrums')
-    {{ Breadcrumbs::render('programacion_medio_plazo') }}
+    {{-- {{ Breadcrumbs::render('action_medium_term') }} --}}
 @endsection
 @section('content')
 <div class="container">
@@ -65,9 +65,11 @@
         </div>
 
         {{-- aqui los modals --}}
-        <div class="modal fade" id="ActionMediumTermModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <years-component url='{{url('action_medium_term')}}' csrf='{!! csrf_field('POST') !!}'></year-component>
+        {{-- <div class="modal fade" id="ActionMediumTermModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
-                {!! Form::open(['action' => 'ActionMediumTermController@store']) !!}
+                <form method="post" action="{{ url('action_medium_term') }}" @submit.prevent="validateBeforeSubmit" >
+                        {!! csrf_field('POST') !!}
                 <div class="modal-content">
                     <div class="modal-header laravel-modal-bg">
                         <h5 class="modal-title" id="exampleModalLabel">New message</h5>
@@ -76,10 +78,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
-    
+                                                
+                        
                         <legend>Estructura del POES</legend>    
                         <div class="row">
                             <div class="form-group  col-md-3">
+                              
                                 {!! Form::label('pilar', 'Pilar')!!}
                                 {!! Form::number('pilar','',['class'=>'form-control','placeholder'=>'Pilar'])!!}
                             </div>
@@ -118,13 +122,9 @@
                                 {!! Form::label('indicador_resultado', 'Indicador de Resultado')!!}
                                 {!! Form::text('indicador_resultado','',['class'=>'form-control','placeholder'=>' Indicador de Resultado'])!!}
                             </div>
-                            {{-- <div class="form-group  col-md-6">
-                                {!! Form::label('alcance_meta', 'Alcance de Meta')!!}
-                                {!! Form::number('alcance_meta','',['class'=>'form-control','placeholder'=>'Alcance de Meta','step'=>'any'])!!}
-                            </div> --}}
                             
                         </div>
-                        <years-component></years-component>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -133,8 +133,8 @@
                 </div>
                 {!! Form::close() !!}
             </div>
-        </div>
-
+        </div> --}}
+         
     </div>
 </div>
 @endsection

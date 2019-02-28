@@ -21,12 +21,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('roles','RolController',['names'=>['index'=>'roles']]);
 
-    Route::resource('programacion_medio_plazo','ActionMediumTermController',
-                    ['names'=>[
-                        'index'=>'programacion_medio_plazo',
-                        'create'=>'medio_plazo_nuevo'
-                            ]
-                    ]);
+    Route::resource('action_medium_term','ActionMediumTermController');
     Route::get('action_short_term_year/{year_id}','ActionShortTermController@action_short_term_year')->name('action_short_term_year');
     // Route::resource('programacion_corto_plazo','ShortTermProgramingController',
     //                 ['names'=>[
