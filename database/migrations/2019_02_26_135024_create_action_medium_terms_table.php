@@ -28,6 +28,7 @@ class CreateActionMediumTermsTable extends Migration
             $table->double('alcance_meta',8,2);
             $table->double('executed',8,2)->nullable();
             $table->double('efficacy',8,2)->nullable();
+            $table->timestamps();
         });
     }
 

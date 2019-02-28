@@ -3,7 +3,7 @@
     
 @endsection
 @section('breadcrums')
-    {{ Breadcrumbs::render('programacion_medio_plazo') }}
+    {{-- {{ Breadcrumbs::render('programacion_medio_plazo') }} --}}
 @endsection
 @section('content')
 <div class="container">

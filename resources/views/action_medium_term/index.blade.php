@@ -65,75 +65,8 @@
         </div>
 
         {{-- aqui los modals --}}
-    <years-component url='{{url('action_medium_term')}}' csrf='{!! csrf_field('POST') !!}'></year-component>
-        {{-- <div class="modal fade" id="ActionMediumTermModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <form method="post" action="{{ url('action_medium_term') }}" @submit.prevent="validateBeforeSubmit" >
-                        {!! csrf_field('POST') !!}
-                <div class="modal-content">
-                    <div class="modal-header laravel-modal-bg">
-                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                                                
-                        
-                        <legend>Estructura del POES</legend>    
-                        <div class="row">
-                            <div class="form-group  col-md-3">
-                              
-                                {!! Form::label('pilar', 'Pilar')!!}
-                                {!! Form::number('pilar','',['class'=>'form-control','placeholder'=>'Pilar'])!!}
-                            </div>
-                            <div class="form-group  col-md-3">
-                                {!! Form::label('meta', 'Meta')!!}
-                                {!! Form::number('meta','',['class'=>'form-control','placeholder'=>'Meta'])!!}
-                            </div>
-                            <div class="form-group  col-md-3">
-                                {!! Form::label('resultado', 'Resultado')!!}
-                                {!! Form::number('resultado','',['class'=>'form-control','placeholder'=>'Resultado'])!!}
-                            </div>
-                            <div class="form-group  col-md-3">
-                                {!! Form::label('accion', 'Accion')!!}
-                                {!! Form::number('accion','',['class'=>'form-control','placeholder'=>'Accion'])!!}
-                            </div>
-                        </div>    
-                        <legend>Accion de Mediano Plazo del PEE</legend>
-                        <div class="row">
-                            <div class="form-group  col-md-12">
-                                {!! Form::label('descripcion', 'Descripcion')!!}
-                                {!! Form::text('descripcion','',['class'=>'form-control','placeholder'=>'Descripcion'])!!}
-                            </div>
-                            <div class="form-group  col-md-4">
-                                {!! Form::label('tipo', 'Tipo')!!}
-                                {!! Form::select('tipo', ['Proceso' => 'Proceso', 'Apoyo' => 'Apoyo'],null,['class'=>'form-control'])!!}
-                            </div>
-                            <div class="form-group  col-md-8">
-                                {!! Form::label('resultado_intermedio', 'Resultado Intermedio')!!}
-                                {!! Form::text('resultado_intermedio','',['class'=>'form-control','placeholder'=>'Resultado Intermedio'])!!}
-                            </div>
-                            <div class="form-group  col-md-6">
-                                {!! Form::label('linea_base', 'Linea Base')!!}
-                                {!! Form::text('linea_base','',['class'=>'form-control','placeholder'=>'Linea Base'])!!}
-                            </div>
-                            <div class="form-group  col-md-6">
-                                {!! Form::label('indicador_resultado', 'Indicador de Resultado')!!}
-                                {!! Form::text('indicador_resultado','',['class'=>'form-control','placeholder'=>' Indicador de Resultado'])!!}
-                            </div>
-                            
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
-                </div>
-                {!! Form::close() !!}
-            </div>
-        </div> --}}
+        <years-component url='{{url('action_medium_term')}}' csrf='{!! csrf_field('POST') !!}'></year-component>
+  
          
     </div>
 </div>
@@ -142,21 +75,7 @@
 <script>
         window.onload = function () {
             $('#lista').DataTable();
-            $('#ActionMediumTermModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget) // Button that triggered the modal
-                var amt = button.data('json') // Extract info from data-* attributes
-                var title ='Nueva Accion a Mediano Plazo';
-                if(amt)
-                {
-                    title='Editar '+amt.code;
-                }
-                console.log(amt);
-                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                var modal = $(this)
-                modal.find('.modal-title').text(title)
-                modal.find('.modal-body input').val(amt)
-            })
+
         };
     </script>    
 @endsection

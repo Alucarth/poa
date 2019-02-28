@@ -35,7 +35,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"> <a  class="nav-link" href="{{ url('programacion_medio_plazo') }}" id="pmp_tooltip" data-toggle="tooltip" data-placement="bottom" title="Programacion a Mediano Plazo"><i class="fa fa-calendar"></i>  </a> </li>
+                        <li class="nav-item"> <a  class="nav-link" href="{{ url('action_medium_term') }}" id="pmp_tooltip" data-toggle="tooltip" data-placement="bottom" title="Programacion a Mediano Plazo"><i class="fa fa-calendar"></i>  </a> </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

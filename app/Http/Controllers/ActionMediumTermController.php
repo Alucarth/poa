@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ActionMediumTerm;
+use App\Year;
 class ActionMediumTermController extends Controller
 {
     /**
@@ -40,7 +41,7 @@ class ActionMediumTermController extends Controller
     public function store(Request $request)
     {
         //
-        return $request->all();
+        // return $request->all();
         $action_medium_term = new ActionMediumTerm(); //programacion a mediano plazo
         $action_medium_term->pilar = $request->pilar;
         $action_medium_term->meta = $request->meta;
@@ -50,13 +51,24 @@ class ActionMediumTermController extends Controller
         $action_medium_term->tipo = $request->tipo;
         $action_medium_term->resultado_intermedio = $request->resultado_intermedio;
         $action_medium_term->linea_base = $request->linea_base;
-        $action_medium_term->indicador_resultado_intermedio = $request->indicador_resultado;
+        $action_medium_term->indicador_resultado_intermedio = $request->indicador_resultado_intermedio;
         $action_medium_term->alcance_meta = $request->alcance_meta;
         $action_medium_term->save();
         $action_medium_term->code='AMP-'.$action_medium_term->id;
         $action_medium_term->save();
 
-        return redirect('programacion_medio_plazo');
+        $gestiones = json_decode($request->gestiones);
+        // 
+        foreach($gestiones as $gestion){
+            $year = new Year;
+            $year->action_medium_term_id = $action_medium_term->id;
+            $year->year = $gestion->year;
+            $year->meta = $gestion->meta;
+            $year->save();
+            
+        }
+
+        return redirect('action_medium_term');
     }
 
     /**

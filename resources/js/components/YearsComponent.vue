@@ -9,7 +9,7 @@
                         <div v-html='csrf'></div>
                 
                         <div class="modal-header laravel-modal-bg">
-                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                            <h5 class="modal-title" >{{title}}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="linea_base">Linea Base</label>
-                                    <input type="text" id="linea_base" name="linea_base" v-model="linea_base" class="form-control" placeholder="Linea Base" v-validate="'required'" />
+                                    <input type="text" id="linea_base" name="linea_base" v-model="linea_base" class="form-control" placeholder="Linea Base" v-validate="''" />
                                     <div class="invalid-feedback">{{ errors.first("linea_base") }}</div>
                                 </div>
                                 <div class="form-group col-md-4">
@@ -70,22 +70,33 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="alcance_meta">Alcance Meta</label>
-                                    <input type="text" id="alcance_meta" name="alcance_meta" v-model="alcance_meta" class="form-control" placeholder="Alcance Meta" v-validate="'required|decimal:2'" />
+                                    <input type="text" id="alcance_meta" name="alcance_meta" v-model="alcance_meta" class="form-control" placeholder="Alcance Meta" v-validate="'required|decimal:2|min_value:1'" />
                                     <div class="invalid-feedback">{{ errors.first("alcance_meta") }}</div> 
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="initial_year">Año inicial</label>
-                                    <input type="text" id="initial_year" name="initial_year" v-model="initial_year" class="form-control" placeholder="Año inicial" v-validate="'required|decimal:2'" />
+                                    <input type="text" id="initial_year" name="initial_year" v-model="initial_year" class="form-control" placeholder="Año inicial" v-validate="'required|numeric'" />
                                     <div class="invalid-feedback">{{ errors.first("initial_year") }}</div> 
                                 </div>
                                 
                             </div>
-                            <div class="row">
-                                <!-- <div class="form-group col-md-4" v-for="(year,index) in getList()" :key="index" >
-                                    <label :for="year.year">{{year.year}}</label>
-                                    <input type="text" :id="year.year" :name="year.year" v-model="year.meta" class="form-control" :placeholder="year.year" v-validate="'required|decimal:2'" />
-                                    <div class="invalid-feedback">{{ errors.first(year.year) }}</div> 
-                                </div>     -->
+
+                            <div class="row" v-if="parseInt(initial_year)>0">
+                                <legend>Gestiones</legend>
+                                <input type="text" name="gestiones" :value="JSON.stringify(years)" hidden>
+                                <div class="form-group col-md-2" v-for="(year,index) in getList" :key="index" >
+                                    <label :for="year.meta">{{year.year}}</label>
+                                    <input type="text" :id="year.meta" :name="year.meta" v-model="year.meta" class="form-control" :placeholder="year.year" v-validate="'required|decimal:2'" />
+                                    <!-- <div class="invalid-feedback">{{ errors.first(""+year.meta) }}</div>  -->
+                                </div>   
+                                <div class="alert alert-warning col-md-12" role="alert" v-show="subTotalYears==parseFloat(alcance_meta)?false:true">
+                                    <p v-if="subTotalYears<parseFloat(alcance_meta)" >
+                                      Falta <strong> {{parseFloat(alcance_meta)-subTotalYears}}</strong> para llegar a <strong>Alcance Meta : {{alcance_meta}}</strong>
+                                    </p>
+                                    <p v-else>
+                                      Se sobrepaso <strong>{{subTotalYears-parseFloat(alcance_meta)}}</strong> de<strong>Alcance Meta : {{alcance_meta}}</strong>
+                                    </p>
+                                </div> 
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -118,6 +129,7 @@ export default {
         alcance_meta:0,
         resultado_intermedio:0,
         linea_base:'',
+        title:'',
         
         // form:null,
 
@@ -127,22 +139,38 @@ export default {
         console.log(this.url);
         // this.form = 
         // console.log(this.form);
+        $('#ActionMediumTermModal').on('show.bs.modal',(event)=> {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var amt = button.data('json') // Extract info from data-* attributes
+            this.title ='Nueva Accion a Mediano Plazo';
+            if(amt)
+            {
+                this.title='Editar '+amt.code;
+            }
+            console.log(amt);
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        
+        })
     },
     methods:{
         validateBeforeSubmit() {
             this.$validator.validateAll().then((result) => {
                 if (result) {
-                // eslint-disable-next-line
-                 let form = document.getElementById("formActionMediumTerm");
-                    console.log(form);
-                    form.submit();
-                    // console.log(result);
-                return;
-                }
 
-                toastr.error('Debe llenar todos los campos solicitados')
+                let form = document.getElementById("formActionMediumTerm");
+                    if(this.subTotalYears==parseFloat(this.alcance_meta)){
+                        form.submit();
+                    }else{
+                        toastr.info(' La Meta de la Accion: '+this.alcance_meta+' es distinta a la sumatoria de las Total metas por gestion: '+this.subTotalYears+'');
+                    }
+                    // console.log(result);
+                    return;
+                }
+                toastr.error('Debe completar la informacion correctamente')
             });
         },
+      
         goobye(){
             swal({
             title: "Good job!",
@@ -151,17 +179,23 @@ export default {
             button: "Aww yiss!",
             });
         },
+        
+    },
+    computed:{
         getList(){
-            //revisar XD
-            this.years =[];
+            this.years=[];
             for (let i = 0; i < 5; i++) {
-                this.years.push({year:this.initial_year+i,meta:0});      
+                this.years.push({year: parseInt(this.initial_year)+i,meta:0});      
             }
             return this.years;
-        }
-    },
-    conputed:{
-        
+        },
+        subTotalYears(){
+            let amount=0;
+            this.years.forEach(element => {
+                 amount+=parseFloat(element.meta);   
+            });
+            return amount;
+        },
     }
 }
 </script>
