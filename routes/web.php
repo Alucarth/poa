@@ -22,7 +22,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles','RolController',['names'=>['index'=>'roles']]);
 
     Route::resource('action_medium_term','ActionMediumTermController');
+
     Route::get('action_short_term_year/{year_id}','ActionShortTermController@action_short_term_year')->name('action_short_term_year');
+
+    Route::resource('action_short_term','ActionShortTermController');
+    
+    Route::get('ast_operations/{action_short_term_id}','OperationController@ast_operations')->name('ast_operations');
+
+    Route::resource('operations','OperationController');
+
+    Route::get ('operation_tasks/{operation_id}','TaskController@operation_tasks')->name('operation_tasks');
+
+    Route::resource('tasks','TaskController');
     // Route::resource('programacion_corto_plazo','ShortTermProgramingController',
     //                 ['names'=>[
     //                     'index'=>'programacion_corto_plazo',

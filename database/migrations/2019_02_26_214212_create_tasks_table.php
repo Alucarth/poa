@@ -17,10 +17,11 @@ class CreateTasksTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('operation_id');
             $table->foreign('operation_id')->references('id')->on('operations');
+            $table->string('code')->nullable();
             $table->string('description');
             $table->double('meta',8,2);
-            $table->double('executed',8,2); //todo lo ejecutado se debe comparar con el 100%
-            $table->double('efficacy',8,2);// 
+            $table->double('executed',8,2)->nullable(); //todo lo ejecutado se debe comparar con el 100%
+            $table->double('efficacy',8,2)->nullable();// 
             $table->timestamps();
         });
     }

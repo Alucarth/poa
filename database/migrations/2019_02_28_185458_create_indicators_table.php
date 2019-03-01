@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOperationsTable extends Migration
+class CreateIndicatorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateOperationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('operations', function (Blueprint $table) {
+        Schema::create('indicators', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('action_short_term_id');
+            $table->unsignedInteger('action_short_term_id')->nullable();//programacion corto plazo
             $table->foreign('action_short_term_id')->references('id')->on('action_short_terms');
-            $table->string('description');
-            $table->string('code')->nullable();
+            $table->string('descripcion');
+            $table->string('unidad_de_medida');
+            $table->string('linea_base')->nullable();
             $table->double('meta',8,2);
-            $table->double('executed',8,2)->nullable(); //todo lo ejecutado se debe comparar con el 100%
-            $table->double('efficacy',8,2)->nullable();// 
+            $table->string('producto_esperado');//viene del mediano plzo
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateOperationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('operations');
+        Schema::dropIfExists('indicators');
     }
 }

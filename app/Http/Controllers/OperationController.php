@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ActionShortTerm;
-use App\Year;
 use App\Operation;
-use App\Indicator;
-class ActionShortTermController extends Controller
+use App\Month;
+
+class OperationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,26 +39,16 @@ class ActionShortTermController extends Controller
     {
         //
         // return $request->all();
-        $action_short_term = new ActionShortTerm;
-        $action_short_term->year_id = $request->year_id;
-        $action_short_term->description = $request->description;
-        $action_short_term->meta = $request->meta;
-        $action_short_term->save();
-        $action_short_term->code = 'ACP-'.$action_short_term->id;
-        $action_short_term->save();
-        
-        $indicadores = json_decode($request->indicadores);
-        
-        foreach($indicadores as $indicador){
-            $indicator = new Indicator;
-            $indicator->descripcion = $indicador->descripcion;
-            $indicator->unidad_de_medida = $indicador->unidad;
-            $indicator->linea_base = $indicador->linea_base;
-            $indicator->meta = $indicador->meta;
-            $indicator->producto_esperado = $indicador->producto_esperado;
-            $indicator->save();
-        }
+        $operation = new Operation;
+        $operation->action_short_term_id = $request->action_short_term_id;
+        $operation->description = $request->description;
+        $operation->meta = $request->meta;
+        $operation->save();
+        $operation->code= 'OP-'.$operation->id;
+        $operation->save();
+
         return back()->withInput();
+
     }
 
     /**
@@ -105,11 +95,11 @@ class ActionShortTermController extends Controller
     {
         //
     }
-    //adicionando logica para el flujo
-    public function action_short_term_year($year_id){
-        $year = Year::find($year_id);
-        $lista = ActionShortTerm::where('year_id',$year_id)->get();
-        $title = 'Acciones a Corto Plazo '.$year->year;
-        return view('action_short_term.index',compact('lista','title','year'));
+    public function ast_operations($action_short_term_id){
+        
+        $action_short_term= ActionShortTerm::find($action_short_term_id);
+      
+        $title = 'Operaciones '. $action_short_term->code;
+        return view('operation.index',compact('action_short_term','title'));
     }
 }

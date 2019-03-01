@@ -30,3 +30,14 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   color: #ffffff
 }
+.laravel-table-bg {
+  background-color: #b0d6facc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+// para la transision
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}

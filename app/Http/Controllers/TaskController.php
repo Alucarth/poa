@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\ActionShortTerm;
-use App\Year;
 use App\Operation;
-use App\Indicator;
-class ActionShortTermController extends Controller
+use App\Task;
+use App\Month;
+use App\Programming;
+class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,24 +39,20 @@ class ActionShortTermController extends Controller
     {
         //
         // return $request->all();
-        $action_short_term = new ActionShortTerm;
-        $action_short_term->year_id = $request->year_id;
-        $action_short_term->description = $request->description;
-        $action_short_term->meta = $request->meta;
-        $action_short_term->save();
-        $action_short_term->code = 'ACP-'.$action_short_term->id;
-        $action_short_term->save();
-        
-        $indicadores = json_decode($request->indicadores);
-        
-        foreach($indicadores as $indicador){
-            $indicator = new Indicator;
-            $indicator->descripcion = $indicador->descripcion;
-            $indicator->unidad_de_medida = $indicador->unidad;
-            $indicator->linea_base = $indicador->linea_base;
-            $indicator->meta = $indicador->meta;
-            $indicator->producto_esperado = $indicador->producto_esperado;
-            $indicator->save();
+        $task = new Task;
+        $task->operation_id =$request->operation_id;
+        $task->description = $request->description;
+        $task->meta = $request->meta;
+        $task->save();
+        $task->meta = 'T-'.$task->id;
+        $task->save();
+        $programaciones = json_decode($request->programacion);
+        foreach($programaciones as $programacion){
+            $programming = new Programming;
+            $programming->task_id = $task->id;
+            $programming->month_id = $programacion->id;
+            $programming->value = $programacion->value;
+            $programming->save();
         }
         return back()->withInput();
     }
@@ -105,11 +101,12 @@ class ActionShortTermController extends Controller
     {
         //
     }
-    //adicionando logica para el flujo
-    public function action_short_term_year($year_id){
-        $year = Year::find($year_id);
-        $lista = ActionShortTerm::where('year_id',$year_id)->get();
-        $title = 'Acciones a Corto Plazo '.$year->year;
-        return view('action_short_term.index',compact('lista','title','year'));
+
+    public function operation_tasks($operation_id)
+    {
+        $operation = Operation::find($operation_id);
+        $title = "Tareas de ".$operation->code;
+        $meses = Month::all();
+        return view('task.index',compact('operation','title','meses'));
     }
 }

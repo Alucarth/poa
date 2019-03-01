@@ -20,8 +20,8 @@ class CreateActionShortTermsTable extends Migration
             $table->string('code')->nullable();
             $table->string('description');
             $table->double('meta',8,2);
-            $table->double('executed',8,2);
-            $table->double('efficacy',8,2);//la suma de todas las 
+            $table->double('executed',8,2)->nullable();
+            $table->double('efficacy',8,2)->nullable();//la suma de todas las 
             $table->timestamps();
         });
     }

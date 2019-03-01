@@ -41,6 +41,8 @@ Vue.component('indicadores-component', require('./components/IndicadoresComponen
 Vue.component('operaciones-component', require('./components/OperacionesComponent.vue').default);
 Vue.component('tareas-component', require('./components/TareasComponent.vue').default);
 Vue.component('years-component', require('./components/YearsComponent.vue').default);
+Vue.component('operations-component', require('./components/OperationsComponent.vue').default);
+Vue.component('tasks-component', require('./components/TasksComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
