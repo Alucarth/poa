@@ -44,7 +44,7 @@ class TaskController extends Controller
         $task->description = $request->description;
         $task->meta = $request->meta;
         $task->save();
-        $task->meta = 'T-'.$task->id;
+        $task->code = 'T-'.$task->id;
         $task->save();
         $programaciones = json_decode($request->programacion);
         foreach($programaciones as $programacion){
