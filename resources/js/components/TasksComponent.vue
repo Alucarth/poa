@@ -17,6 +17,7 @@
 							<input type="text" name="operation_id" v-model="operation.id" hidden>
 							<legend>Operacion</legend>
 							<div class="row">
+								
 								<div class="form-group col-md-9">
 									<label>Descripcion </label>
 									<input type="text" class="form-control" v-model="operation.description" disabled>
@@ -28,6 +29,7 @@
 							</div>
 							<legend>Tarea</legend>
                             <div class="row">
+								<input type="text" name="task_id" v-model="form.id" hidden>
                                 <div class="form-group col-md-9">
                                     <label for="description">Descripcion</label>
                                     <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
@@ -43,11 +45,11 @@
 							<input type="text" name="programacion" :value="JSON.stringify(getPrograming)" class="form-control" hidden>
 							<div class="row">
 								<div class="col-md-3"  v-for="(item,index) in months" :key="index">
-									<div :class="item.value.length>0?'small-box bg-primary':'small-box bg-success'" >
+									<div :class="item.meta.length>0?'small-box bg-primary':'small-box bg-success'" >
 										<div class="inner">
 										<h4>{{item.name}}<sup style="font-size: 15px"></sup></h4>
 
-										<span>{{item.value}}</span>
+										<span>{{item.meta}}</span>
 										</div>
 						
 										<a href="#" class="small-box-footer" @click="item.edit=!item.edit" >
@@ -55,7 +57,7 @@
 										<i :class="item.edit==true?'fa fa-arrow-circle-up':'fa fa-arrow-circle-down'"></i>
 										</a>
 										<transition  name="fade">
-											<input v-if="item.edit" v-model="item.value" v-on:keyup.enter="item.edit=false" type="text" class="form-control" >
+											<input v-if="item.edit" v-model="item.meta" v-on:keyup.enter="item.edit=false" type="number" step="any" class="form-control" >
 										</transition>
 									</div>
 								</div>
@@ -98,26 +100,49 @@
 			console.log(this.meses);
 			this.meses.forEach(month => {
 				month.edit =false;
-				month.value ='';
+				month.meta ='';
 			});
 			console.log('Componente Tasks XD')
-			this.operation = JSON.parse(this.optask);
+			// this.operation = JSON.parse(this.optask);
+			this.operation = this.optask;
 			
 			console.log(this.optask);
 			this.months = this.meses;//asignacion de este siempre tiene que ser declarado en el data por la reactividad XD
 			// console.log(this.gestion
 
 			$('#TaskModal').on('show.bs.modal',(event)=> {
-				var button = $(event.relatedTarget) // Button that triggered the modal
-				var amt = button.data('json') // Extract info from data-* attributes
+				let button = $(event.relatedTarget) // Button that triggered the modal
+				let object = button.data('json') // Extract info from data-* attributes
+				let programmings = button.data('programmings');
 				this.title ='Nueva Tarea ';
-				if(amt)
+				if(object)
 				{
-					this.title='Editar '+amt.code;
+					this.title='Editar Tarea '+object.code;
+					this.form.description = object.description;
+					this.form.meta = object.meta;
+					this.form.id = object.id;
+					console.log(programmings);
+					this.months.forEach((month) => {
+						// console.log(tarea);
+						let month_id=month.id;
+						let mes_tarea = programmings.find((mes)=>{return mes.id == month_id });
+						console.log(mes_tarea)
+						if(mes_tarea){
+							month.meta =mes_tarea.pivot.meta;
+						}else{
+							month.meta='';
+						}
+					});
 				}else{
 					this.months=this.meses
+					this.form.description = '';
+					this.form.meta = '';
+					this.form.id = '';
+					this.months.forEach((month) => {
+							month.meta='';
+					});
 				}
-				console.log(amt);
+				console.log(object);
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 			
@@ -131,13 +156,26 @@
 			{
 				this.$validator.validateAll().then((result) => {
 					if (result) {
-					let form = document.getElementById("formTask");
-					
-						form.submit();
-						return;
+						
+						let form = document.getElementById("formTask");
+						if( this.subTotalTask() == this.form.meta )
+						{
+							form.submit();
+						}else{
+							toastr.info('La meta del Tarea:'+this.form.meta+' debe ser igual a la Suma de las Tareas:'+this.subTotalTask()+' por mes')
+						}
+
+						 return;
 					}
 					toastr.error('Debe completar la informacion correctamente')
 				});
+			},
+			subTotalTask(){
+				let sum=0;
+				this.getPrograming.forEach(element => {
+					sum+= parseFloat(element.meta);
+				});
+				return sum;
 			}
 			
 		},
@@ -145,7 +183,7 @@
 			getPrograming(){
 				this.programming=[];
 				this.months.forEach(month => {
-					if(month.value!=''){
+					if(month.meta!=''){
 						this.programming.push(month);
 					}
 				});

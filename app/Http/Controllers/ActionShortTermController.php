@@ -43,21 +43,24 @@ class ActionShortTermController extends Controller
         $action_short_term->year_id = $request->year_id;
         $action_short_term->description = $request->description;
         $action_short_term->meta = $request->meta;
+        $action_short_term->unidad_de_medida = $request->unidad_de_medida;
+        $action_short_term->linea_base = $request->linea_base;
+        $action_short_term->producto_esperado = $request->producto_esperado;
         $action_short_term->save();
         $action_short_term->code = 'ACP-'.$action_short_term->id;
         $action_short_term->save();
         
-        $indicadores = json_decode($request->indicadores);
+        // $indicadores = json_decode($request->indicadores);
         
-        foreach($indicadores as $indicador){
-            $indicator = new Indicator;
-            $indicator->descripcion = $indicador->descripcion;
-            $indicator->unidad_de_medida = $indicador->unidad;
-            $indicator->linea_base = $indicador->linea_base;
-            $indicator->meta = $indicador->meta;
-            $indicator->producto_esperado = $indicador->producto_esperado;
-            $indicator->save();
-        }
+        // foreach($indicadores as $indicador){
+        //     $indicator = new Indicator;
+        //     $indicator->descripcion = $indicador->descripcion;
+        //     $indicator->unidad_de_medida = $indicador->unidad;
+        //     $indicator->linea_base = $indicador->linea_base;
+        //     $indicator->meta = $indicador->meta;
+           
+        //     $indicator->save();
+        // }
         return back()->withInput();
     }
 

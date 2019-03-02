@@ -82,8 +82,8 @@
                                     <td>{{$item->executed??'' }}</td>
                                     <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
                                     <td>
-                                        <a href="{{url('operation_tasks/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a>
-                                        <a href="#"><i class="material-icons text-primary">edit</i></a>
+                                        {{-- <a href="{{url('operation_tasks/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a> --}}
+                                    <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#TaskModal" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
                                         <a href="#"><i class="material-icons text-danger">delete</i></a>
                                     </td>
 
@@ -102,7 +102,7 @@
     </div>
 	{{-- aqui los modals --}}
 	
-	<tasks-component url='{{url('tasks')}}' csrf='{!! csrf_field('POST') !!}' optask="{{$operation}}" :meses="{{$meses}}" ></operations-component>
+	<tasks-component url='{{url('tasks')}}' csrf='{!! csrf_field('POST') !!}' :optask="{{$operation}}" :meses="{{$meses}}" ></operations-component>
     {{-- <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}"  ></indicadores-component> --}}
 </div>
 @endsection

@@ -19,6 +19,9 @@ class CreateActionShortTermsTable extends Migration
             $table->foreign('year_id')->references('id')->on('years');
             $table->string('code')->nullable();
             $table->string('description');
+            $table->string('unidad_de_medida');
+            $table->string('producto_esperado');//viene del mediano plzo
+            $table->string('linea_base')->nullable();
             $table->double('meta',8,2);
             $table->double('executed',8,2)->nullable();
             $table->double('efficacy',8,2)->nullable();//la suma de todas las 

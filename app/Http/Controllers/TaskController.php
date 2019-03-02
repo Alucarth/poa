@@ -39,21 +39,32 @@ class TaskController extends Controller
     {
         //
         // return $request->all();
-        $task = new Task;
+        $programaciones = json_decode($request->programacion);
+        // dd($programaciones) ;
+        $programmings=[];
+        foreach($programaciones as $programacion){
+            // $programming = new Programming;
+            // $programming->task_id = $task->id;
+            // $programming->month_id = $programacion->id;
+            // $programming->meta = $programacion->meta;
+            // $programming->save();
+           
+            $programmings+=array(''.$programacion->id => ['meta' => $programacion->meta]);
+       
+        }
+        // dd($programmings);
+        if($request->task_id!=''){
+            $task = Task::find($request->task_id);
+        }else{
+            $task = new Task;
+        }
         $task->operation_id =$request->operation_id;
         $task->description = $request->description;
         $task->meta = $request->meta;
         $task->save();
         $task->code = 'T-'.$task->id;
         $task->save();
-        $programaciones = json_decode($request->programacion);
-        foreach($programaciones as $programacion){
-            $programming = new Programming;
-            $programming->task_id = $task->id;
-            $programming->month_id = $programacion->id;
-            $programming->value = $programacion->value;
-            $programming->save();
-        }
+        $task->programmings()->sync($programmings);
         return back()->withInput();
     }
 

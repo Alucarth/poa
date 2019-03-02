@@ -29,17 +29,32 @@
                                     <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
                                     <div class="invalid-feedback">{{ errors.first("description") }}</div>
                                 </div>
+                            </div>
+
+                            <legend>Indicador</legend>
+
+							<div class="row">
+								<div class="form-group col-md-4">
+                                    <label for="unidad_de_medida">Unidad de Medida</label>
+                                    <input type="text" id="unidad_de_medida" name="unidad_de_medida" v-model="form.unidad_de_medida" class="form-control" placeholder="Unidad de Medida" v-validate="'required'" />
+                                    <div class="invalid-feedback">{{ errors.first("unidad_de_medida") }}</div>
+                                </div>
+								<div class="form-group col-md-4">
+                                    <label for="producto_esperado">Producto Esperado</label>
+                                    <input type="text" id="producto_esperado" name="producto_esperado" v-model="form.producto_esperado" class="form-control" placeholder="Producto Esperado" v-validate="'required'" />
+                                    <div class="invalid-feedback">{{ errors.first("producto_esperado") }}</div>
+                                </div>
+								<div class="form-group col-md-4">
+                                    <label for="linea_base">Linea Base</label>
+                                    <input type="text" id="linea_base" name="linea_base" v-model="form.linea_base" class="form-control" placeholder="Linea Base" v-validate="''" />
+                                    <div class="invalid-feedback">{{ errors.first("linea_base") }}</div>
+                                </div>
 								<div class="form-group col-md-3">
                                     <label for="meta">Meta</label>
                                     <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
                                     <div class="invalid-feedback">{{ errors.first("meta") }}</div> 
                                 </div>
-                            </div>
-
-                            <legend>Indicadores</legend>
-
-							<div class="row">
-								<div class="d-flex justify-content-center">
+								<!-- <div class="d-flex justify-content-center">
 									<div class="p-2 ">
 										<button type="button" class="btn btn-primary btn-sm " @click="addItem()"> Adicionar Indicador <i class="fa fa-plus-circle"></i> </button>
 									</div>
@@ -47,33 +62,11 @@
 										<button type="button" class="btn btn-danger btn-sm " @click="addItem()"> Eliminar Todo <i class="fa fa-trash"></i> </button>
 									</div>
 									<input type="text" name="indicadores" :value="JSON.stringify(indicadores)" class="form-control" hidden>
-								</div>
+								</div> -->
 							</div>
 						
-							<table class="table">
-								<thead class="laravel-table-bg">
-									<tr>
-										<th scope="col">Descripcion</th>
-										<th scope="col">Unidad</th>
-										<th scope="col">Linea Base</th>
-										<th scope="col">Meta</th>
-										<th scope="col">Producto</th>
-										<th scope="col"></th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr v-for="(indicador,index) in indicadores" :key="index">
-										<td><input type="text" v-model="indicador.descripcion" class="form-control" v-validate="'required'"></td>
-										<td><input type="text" v-model="indicador.unidad" class="form-control" v-validate="'required'"></td>
-										<td><input type="text" v-model="indicador.linea_base" class="form-control" v-validate="''"></td>
-										<td><input type="number" step="any" v-model="indicador.meta" class="form-control" v-validate="'required|decimal:2'"></td>
-										<td><input type="text" v-model="indicador.producto_esperado" class="form-control" v-validate="'required'"></td>
-										<td><button type="button" class="btn btn-danger btn-sm" @click="removeItem(indicador)"><i class="fa fa-trash"></i></button></td>
-									</tr>
-									
-								</tbody>
-							</table>
-							<div class="row" v-if="parseInt(form.meta)>0">
+							
+							<!-- <div class="row" v-if="parseInt(form.meta)>0">
 								<div class="alert alert-warning col-md-12" role="alert" v-show="subTotalIndicadores==parseFloat(form.meta)?false:true">
 									<span v-if="subTotalIndicadores < parseFloat(form.meta)" >
 										Falta <strong> {{parseFloat(form.meta)-subTotalIndicadores}}</strong> para llegar a la <strong> Meta : {{form.meta}}</strong>
@@ -82,7 +75,7 @@
 										Se sobrepaso <strong>{{subTotalIndicadores-parseFloat(form.meta)}}</strong> de la <strong> Meta : {{form.meta}}</strong>
 									</span>
 								</div> 
-							</div>
+							</div> -->
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cancelar</button>
@@ -133,10 +126,10 @@
 
 					let form = document.getElementById("formActionShortTerm");
 						
-						if(this.subTotalIndicadores==parseFloat(this.form.meta)){
+						if(parseFloat(this.gestion.meta)>=parseFloat(this.form.meta)){
 						form.submit();
 						}else{
-							toastr.info(' La Meta a Corto Plazo: '+this.form.meta+' es distinta a la sumatoria de metas por Indicador: '+this.subTotalIndicadores+'');
+							toastr.info(' La Meta de la Accion a Mediano Plazo: '+this.form.meta+' no puede ser mayor la Meda de la Gestion: '+this.gestion.meta+'');
 						}
 						return;
 					}
