@@ -51,5 +51,9 @@ Vue.component('tasks-component', require('./components/TasksComponent.vue').defa
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    mounted(){
+        //loading config default
+        $('[data-toggle="tooltip"]').tooltip();
+    }
 });

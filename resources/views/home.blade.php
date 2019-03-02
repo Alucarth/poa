@@ -117,6 +117,7 @@
 <script>
         window.onload = function () {
             // $('#example').DataTable();
+            console.log('del defer');
             $('#calendar').fullCalendar({
                 weekends: false // will hide Saturdays and Sundays
             });

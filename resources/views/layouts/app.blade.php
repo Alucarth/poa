@@ -22,7 +22,7 @@
 <body >
     
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top navbar-laravel elevation-3">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top navbar-laravel shadow ">
             <div class="container">
                 <img src="/img/logosedem.png" alt="EBA Logo" class="brand-image img-circle  elevation-3 " style="height: 3vw; width: 3vw;opacity: .8">
                 <a class="navbar-brand" href="{{ url('/home') }}">
@@ -35,7 +35,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"> <a  class="nav-link" href="{{ url('action_medium_term') }}" id="pmp_tooltip" data-toggle="tooltip" data-placement="bottom" title="Programacion a Mediano Plazo"><i class="fa fa-calendar"></i>  </a> </li>
+                        <li class="nav-item"> <a  class="nav-link" href="{{ url('action_medium_term') }}" id="pmp_tooltip" data-toggle="tooltip" data-placement="bottom" title="Acciones a Mediano Plazo" ><i class="fa fa-calendar"></i>  </a> </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -102,12 +102,6 @@
         </main>
     </div>
     
-    <script>
-         window.onload = function () {
-            $('#pmp_tooltip').tooltip();
-        };
-    </script>
-        @yield("script");
- 
+    @yield("script");
 </body>
 </html>
