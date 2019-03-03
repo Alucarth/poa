@@ -8,7 +8,17 @@
 require('./bootstrap');
 import 'fullcalendar';
 import VeeValidate from "vee-validate";
+// import {MDCList} from '@material/list';
+import {MDCComponent, MDCFoundation} from '@material/base';
+import {MDCRipple} from '@material/ripple';
 
+const selector = '.mdc-button, .mdc-icon-button, .mdc-card__primary-action';
+const ripples = [].map.call(document.querySelectorAll(selector), function(el) {
+  return new MDCRipple(el);
+});
+// const list = new MDCList(document.querySelector('.mdc-list'));
+// const MDCComponent = require('mdc-base').MDCComponent;
+// const MDCFoundation = require('mdc-base').MDCFoundation;
 window.Vue = require('vue');
 window.numeral = require('numeral');
 window.toastr = require('toastr');

@@ -2,7 +2,7 @@
 // Fonts
 // @import url('https://fonts.googleapis.com/css?family=Nunito');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700');
 // @import url('https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css');
 
@@ -10,8 +10,8 @@
 // @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/dist/css/bootstrap';
-@import '~admin-lte/dist/css/adminlte';
+// @import '~bootstrap/dist/css/bootstrap';
+@import '~admin-lte/dist/css/adminlte.css';
 @import '~admin-lte/plugins/font-awesome/css/font-awesome.min.css';
 // @import '~admin-lte/plugins/jvectormap/jquery-jvectormap-1.2.2.css';
 @import '~datatables.net-bs4/css/dataTables.bootstrap4';
@@ -20,6 +20,41 @@
 @import '~toastr/build/toastr';
 @import '~sweetalert2/dist/sweetalert2';
 // @import url('https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css');
+@import "~@material/card/mdc-card";
+@import "~@material/button/mdc-button";
+@import "~@material/fab/mdc-fab";
+@import "~@material/typography/mdc-typography";
+@import "~@material/icon-button/mdc-icon-button";
+@import "~@material/layout-grid/mdc-layout-grid";
+@import "~@material/elevation/mdc-elevation";
+// @import "~@material/ripple/mdc-ripple"; falta corregir algunas variables para su implementacionde acuero a documentaicon segun google se tiene que definir un template  o algo asi
+$primary-card: #00407b;
+$blanco: #ffffff;
+$blanco2: #c4c8e4;
+// @import "~@material/button/mdc-button";
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.element-card {
+  width: 15em;
+  margin: 16px;
+}
+
+.element-card > .mdc-card__media {
+  height: 6em;
+  padding: 16px;
+
+}
+.element-card.wind {
+  background-color:$primary-card;
+  color: $blanco
+}
+.subtitulo{
+  color: $blanco2;
+}
+
 
 .navbar-laravel {
   background-color: #005aa4;

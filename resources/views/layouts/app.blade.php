@@ -36,6 +36,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item"> <a  class="nav-link" href="{{ url('action_medium_term') }}" id="pmp_tooltip" data-toggle="tooltip" data-placement="bottom" title="Acciones a Mediano Plazo" ><i class="fa fa-calendar"></i>  </a> </li>
+                        <li class="nav-item"> <a  class="nav-link" href="{{ url('/') }}" id="pmp_tooltip" data-toggle="tooltip" data-placement="bottom" title="Ejecucion" ><i class="fa fa-calendar-check-o"></i>  </a> </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

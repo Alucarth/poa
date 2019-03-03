@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Year;
+use Illuminate\Support\Facades\DB;
 class ExecutionController extends Controller
 {
     /**
@@ -14,6 +15,11 @@ class ExecutionController extends Controller
     public function index()
     {
         //
+        $title = 'Inicio';
+        $years = Year::select('year',DB::raw('count(action_medium_term_id) as action_medium_terms'))->groupBy('year')->orderBy('year')->get();
+        // return $years;
+        return view('execution.index',compact('title','years'));
+        
     }
 
     /**
@@ -81,4 +87,12 @@ class ExecutionController extends Controller
     {
         //
     }
+
+    public function execution_year($year_id)
+    {
+        $title='Tareas';
+        return $year_id;
+        return view('execution.index',compact('title'));
+    }
+
 }

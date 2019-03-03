@@ -11,14 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/', 'ExecutionController@index')->name('home');
     Route::resource('roles','RolController',['names'=>['index'=>'roles']]);
 
     Route::resource('action_medium_term','ActionMediumTermController');
@@ -34,6 +34,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get ('operation_tasks/{operation_id}','TaskController@operation_tasks')->name('operation_tasks');
 
     Route::resource('tasks','TaskController');
+
+    Route::get('execution_year/{year_id}','ExecutionController@execution_year')->name('exection_year');
     // Route::resource('programacion_corto_plazo','ShortTermProgramingController',
     //                 ['names'=>[
     //                     'index'=>'programacion_corto_plazo',
