@@ -6,11 +6,11 @@
     {{-- {{ Breadcrumbs::render('programacion_medio_plazo') }} --}}
 @endsection
 @section('content')
-<div class="container">
+
     <div class="row">
         
           {{-- card material design --}}
-        @foreach ($years as $year)
+        {{-- @foreach ($years as $year)
         
             <div class="cards col-md-3">
                 <div class="mdc-card element-card wind mdc-elevation--z9">
@@ -25,13 +25,11 @@
                     </div>
                 </div>
             </div>
-        @endforeach
-			  
-       
-        
+        @endforeach --}}
+
     </div>
-    
-</div>
+    <executions-component></executions-component>
+
 @endsection
 @section('script')
 <script>

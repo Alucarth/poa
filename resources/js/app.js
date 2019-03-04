@@ -8,6 +8,8 @@
 require('./bootstrap');
 import 'fullcalendar';
 import VeeValidate from "vee-validate";
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css' ;
 // import {MDCList} from '@material/list';
 import {MDCComponent, MDCFoundation} from '@material/base';
 import {MDCRipple} from '@material/ripple';
@@ -16,6 +18,9 @@ const selector = '.mdc-button, .mdc-icon-button, .mdc-card__primary-action';
 const ripples = [].map.call(document.querySelectorAll(selector), function(el) {
   return new MDCRipple(el);
 });
+
+
+
 // const list = new MDCList(document.querySelector('.mdc-list'));
 // const MDCComponent = require('mdc-base').MDCComponent;
 // const MDCFoundation = require('mdc-base').MDCFoundation;
@@ -28,6 +33,8 @@ toastr.options = {
     "closeButton": false,
     "progressBar": true,
   }
+
+Vue.use(Vuetify);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -53,6 +60,7 @@ Vue.component('tareas-component', require('./components/TareasComponent.vue').de
 Vue.component('years-component', require('./components/YearsComponent.vue').default);
 Vue.component('operations-component', require('./components/OperationsComponent.vue').default);
 Vue.component('tasks-component', require('./components/TasksComponent.vue').default);
+Vue.component('executions-component', require('./components/ExecutionsComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

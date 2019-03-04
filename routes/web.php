@@ -35,36 +35,10 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('tasks','TaskController');
 
-    Route::get('execution_year/{year_id}','ExecutionController@execution_year')->name('exection_year');
-    // Route::resource('programacion_corto_plazo','ShortTermProgramingController',
-    //                 ['names'=>[
-    //                     'index'=>'programacion_corto_plazo',
-    //                     // 'create'=>'corto_plazo_nuevo'
-    //                         ]
-    //                 ]);
-    // Route::get('corto_plazo_nuevo/{id}','ShortTermProgramingController@createPCP')->name('corto_plazo_nuevo');
-    // Route::resource('users','UserController',[
-    //     'names' => [
-    //         'index' => 'users',
-    //         //'store' => 'users.store',
-    //         // etc...
-    //     ]
-    // ]);
-    // Route::resource('operaciones','OperacionController',
-    // ['names'=>[
-    //     'index'=>'operaciones',
-    //     'edit'=>'operaciones.edit'
-    //         ]
-    // ]);
-    // Route::resource('eficacias','EfficacyController',
-    // ['names'=>[
-    //     'index'=>'eficacias',
-    //     'edit'=>'eficacias.edit'
-    //         ]
-    // ]);
-    // Route::get('asignar_tarea/{operation_id}','OperacionController@asignar_tarea');
-    // Route::post('asignar_tarea','OperacionController@store_task');
+    Route::get('execution_year/{year_month}','ExecutionController@execution_year')->name('exection_year');
 
+    Route::resource('executions','ExecutionController');
+  
     // //reportes
     // Route::get('amp_report_excel','MediumTermProgramingController@report_excel');
     // Route::get('acp_report_excel','ShortTermProgramingController@report_excel');

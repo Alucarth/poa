@@ -6585,6 +6585,13 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-bootstrap4-table@^1.0.27:
+  version "1.0.27"
+  resolved "https://registry.yarnpkg.com/vue-bootstrap4-table/-/vue-bootstrap4-table-1.0.27.tgz#c6a1caee1af215aabd4e65ac4e37ae97ce5dd7b5"
+  integrity sha512-hTqbEEf1uM9KC30vMVlTpDJTi4q7vRrA0dN+QJKhL0KG16l75ZS8RqsIBQGwOb4reI8r1MZ7iJeO9PhrvSq24g==
+  dependencies:
+    lodash "^4.17.11"
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.1.tgz#b2d3d95402a811602380783ea4f566eb875569a2"
@@ -6626,6 +6633,11 @@ vue@^2.5.17:
   version "2.5.22"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.22.tgz#3bf88041af08b8539c37b268b70ca79245e9cc30"
   integrity sha512-pxY3ZHlXNJMFQbkjEgGVMaMMkSV1ONpz+4qB55kZuJzyJOhn6MSy/YZdzhdnumegNzVTL/Dn3Pp4UrVBYt1j/g==
+
+vuetify@^1.5.4:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.5.4.tgz#2f0f3a457ba0dcbf5bb1931b644532ae1e46533d"
+  integrity sha512-hlTJHh4a1vAZQq4XwIcEpdDXoKNPqXbE95iV2a780FXvFnacu7qjHO4BrOUOkWGeAuFb1NTQM2vJtb4Jhxn26Q==
 
 watchpack@^1.5.0:
   version "1.6.0"

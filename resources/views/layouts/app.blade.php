@@ -22,8 +22,8 @@
 <body >
     
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top navbar-laravel shadow ">
-            <div class="container">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top navbar-laravel shadow " >
+            {{-- <div class="container"> --}}
                 <img src="/img/logosedem.png" alt="EBA Logo" class="brand-image img-circle  elevation-3 " style="height: 3vw; width: 3vw;opacity: .8">
                 <a class="navbar-brand" href="{{ url('/home') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -74,12 +74,12 @@
                         @endguest
                     </ul>
                 </div>
-            </div>
+            {{-- </div> --}}
         </nav>
 
         <main  role="main">
             
-            <div class="container" style=" padding-top: 60px">
+            <div class="container" style=" padding-top: 60px;padding-left: 0px:padding-right: 0px">
                     <div class="content-header">
                         <div class="container-fluid">
                             <div class="row mb-2">
