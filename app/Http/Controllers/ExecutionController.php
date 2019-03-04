@@ -85,10 +85,10 @@ class ExecutionController extends Controller
         
         $action_medium_term = ActionMediumTerm::find($year->action_medium_term_id);
         $action_medium_term->executed= $subtotal[0]->subtotal;
-        $action_medium_term->efficacy= self::porcentaje($subtotal[0]->subtotal,$action_medium_term->meta) ;
+        $action_medium_term->efficacy= self::porcentaje($subtotal[0]->subtotal,$action_medium_term->alcance_meta) ;
         $action_medium_term->save();
         
-        return response()->json(compact('programming','task','operation','action_short_term','year','action_medium_term'));;
+        return response()->json(compact('programming','task','operation','action_short_term','year','action_medium_term'));
 
     }
 
@@ -101,6 +101,14 @@ class ExecutionController extends Controller
     public function show($id)
     {
         //
+        $programming = Programming::find($id);        
+        $task = Task::find($programming->task_id);
+        $operation = Operation::find($task->operation_id);       
+        $action_short_term = ActionShortTerm::find($operation->action_short_term_id);
+        $year = Year::find($action_short_term->year_id);
+        $action_medium_term = ActionMediumTerm::find($year->action_medium_term_id);
+        
+        return response()->json(compact('programming','task','operation','action_short_term','year','action_medium_term'));
     }
 
     /**
