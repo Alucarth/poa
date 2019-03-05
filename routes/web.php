@@ -11,9 +11,11 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('adm3', function () {
+    return view('layouts.adm3');
+});
+
+
 
 Auth::routes();
 Route::group(['middleware' => ['auth']], function () {

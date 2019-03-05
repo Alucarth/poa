@@ -66,11 +66,15 @@ $blanco2: #c4c8e4;
 }
 
 .navbar-laravel {
-  background-color: #005aa4;
+  background-color: #00407b;
+  color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+.navbar-laravel a{
+  color: #fff;
+}
 .laravel-modal-bg {
-  background-color: #005aa4;
+  background-color: #00407b;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   color: #ffffff
 }

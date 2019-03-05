@@ -16,6 +16,7 @@
     <!-- Fonts -->
     {{--
     <link rel="dns-prefetch" href="//fonts.gstatic.com"> --}}
+
     {{--
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css"> --}}
 
@@ -24,17 +25,17 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
-    <div class="wrapper" >
-
+    <!-- Site wrapper -->
+    <div class="wrapper">
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-light border-bottom">
+        <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom fixed-top">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
                 </li>
                 {{-- <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
+                    <a href="../../index3.html" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Contact</a>
@@ -42,125 +43,105 @@
             </ul>
 
             <!-- SEARCH FORM -->
-            {{-- <form class="form-inline ml-3">
-                <div class="input-group input-group-sm">
-                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-navbar" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form> --}}
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Messages Dropdown Menu -->
 
-               
-				<li class="nav-item d-none d-sm-inline-block">
-					<a href="{{ url('users') }}" class="nav-link"> <i class="fa fa-users"></i> </a>
-				</li>
-				<li class="nav-item d-none d-sm-inline-block">
-					<a href="{{ url('roles') }}" class="nav-link"> <i class="fa fa-building"></i> </a>
-				</li>
-                <li class="nav-item dropdown">
-						<a class="nav-link" data-toggle="dropdown" href="#">
-								<img src="/img/user2-160x160.jpg" class="img-circle " alt="User Image" style="height: 2vw; width: 2vw; border: 2px solid #fff;border-radius: 50%;box-shadow: 0 0 5px gray;display: inline-block;margin-left: auto;margin-right: auto;">
-						</a>
-						<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-							<span class="dropdown-item dropdown-header"> <strong>{{ Auth::user()->name}}</strong> </span>
-							<div class="dropdown-divider"></div>
-							<a href="#" class="dropdown-item">
-								<i class="fa fa-user mr-2"></i> Editar Perfil
-							</a>
-							<div class="dropdown-divider"></div>
-							<a href="#" class="dropdown-item">
-								<i class="fa fa-sign-out mr-2"></i> Cerrar Sesion
-							</a>
-							
-							
-						</div>
-					</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('users') }}" data-toggle="tooltip" data-placement="bottom" title="Gestion de Usuarios">
+                        <i class="fa fa-users"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('roles') }}" data-toggle="tooltip" data-placement="bottom" title="Gestion de Roles">
+                        <i class="fa fa-building"></i>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar elevation-4 sidebar-dark-primary">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link bg-primary" >
-                <img src="/img/logosedem.png" alt="EBA Logo" class="brand-image img-circle  elevation-3 " style="height: 2vw; width: 2vw;opacity: .8">
-                <span class="brand-text font-weight-light"> {{ config('app.name', 'Laravel') }}</span>
+            <a href="../../index3.html" class="brand-link bg-white ">
+                <img src="../img/logob.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
             </a>
 
             <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="sidebar ">
+                <!-- Sidebar user (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex ">
                     <div class="image">
-                        <img src="/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-					</div>
-			
+                        <img src="../img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    </div>
                     <div class="info">
 
-                    <a href="#" class="d-block">{{ Auth::user()->name}}</a>
+						{{-- <a href="#" class="d-block">Alexander Pierce</a> --}}
+						<nav class="mt-2">
+								<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+									<!-- Add icons to the links using the .nav-icon class
+							   with font-awesome or any other icon font library -->
+										
+								<li class="nav-item has-treeview">
+									<a href="#" class="nav-link d-block">
+										<p>
+											Alexander Pierce
+											<i class="right fa fa-angle-left"></i>
+										</p>
+									</a>
+									<ul class="nav nav-treeview">
+										<li class="nav-item">
+											<a href="../../index.html" class="nav-link">
+												<i class="fa fa-user nav-icon"></i>
+												<p>Perfil</p>
+											</a>
+										</li>
+										<li class="nav-item">
+											<a href="../../index2.html" class="nav-link">
+												<i class="fa fa-sign-out nav-icon"></i>
+												<p>Salir</p>
+											</a>
+										</li>
+										{{-- <li class="nav-item">
+											<a href="../../index3.html" class="nav-link">
+												<i class="fa fa-circle-o nav-icon"></i>
+												<p>Dashboard v3</p>
+											</a>
+										</li> --}}
+									</ul>
+								</li>
+			
+								</ul>
+						</nav>
                     </div>
                 </div>
-			
+
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-					   with font-awesome or any other icon font library -->
+				   with font-awesome or any other icon font library -->
+
                         <li class="nav-item">
-                                <a href="{{ url('home')}}" class="nav-link">
-                                <i class="nav-icon fa fa-dashboard"></i>
+                            <a href="{{ url('/') }}" class="nav-link">
+                                <i class="nav-icon fa fa-calendar-check-o"></i>
                                 <p>
-                                    Inicio
+                                    Tareas
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('action_medium_term') }}" class="nav-link">
+                                <i class="nav-icon fa fa-calendar"></i>
+                                <p>
+                                    Acciones a Mediano Plazo
                                 </p>
                             </a>
                         </li>
 
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fa fa-pie-chart"></i>
-                                <p>
-                                    Programacion
-                                    <i class="right fa fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{url('programacion_medio_plazo')}}" class="nav-link">
-                                        <i class="fa fa-calendar nav-icon"></i>
-                                        <p>Mediano Plazo</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                <a href="{{url('programacion_corto_plazo')}}" class="nav-link">
-                                        <i class="fa fa-calendar-o nav-icon"></i>
-                                        <p>Corto Plazo</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                        <a href="{{url('operaciones')}}" class="nav-link">
-                                <i class="nav-icon fa  fa-list"></i>
-                                <p>
-                                    Operaciones
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="{{url('eficacias')}}" class="nav-link">
-                                <i class="nav-icon fa fa-shield"></i>
-                                <p>
-                                    Efectividad de Accion
-                                </p>
-                            </a>
-                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -171,41 +152,64 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="content-header">
+            <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark"> @yield('title') </h1>
-                        </div><!-- /.col -->
+                            <h1> @yield('title')</h1>
+                        </div>
                         <div class="col-sm-6">
-                            {{--  --}}
                             <ol class="breadcrumb float-sm-right">
-                                    @yield('breadcrums')
+								@yield('breadcrums')
                                 {{-- <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard v2</li> --}}
+                                <li class="breadcrumb-item active">Blank Page</li> --}}
                             </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
+                        </div>
+                    </div>
                 </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content-header -->
+            </section>
 
             <!-- Main content -->
             <section class="content">
-                    <div id="app">
-                        @yield('content')
+
+                <!-- Default box -->
+                {{-- <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Title</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-widget="collapse" data-toggle="tooltip"
+                                title="Collapse">
+                                <i class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                                <i class="fa fa-times"></i></button>
+                        </div>
                     </div>
+                    <div class="card-body">
+                        Start creating your amazing application!
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        Footer
+                    </div>
+                    <!-- /.card-footer-->
+                </div> --}}
+                <!-- /.card -->
+                <div id="app">
+                    @yield('content')
+                </div>
+
             </section>
             <!-- /.content -->
         </div>
-					{{-- <footer class="main-footer">
-						<strong>Copyright &copy; 2014-2018 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-						All rights reserved.
-						<div class="float-right d-none d-sm-inline-block">
-							<b>Version</b> 3.0.0-alpha
-						</div>
-					</footer> --}}
         <!-- /.content-wrapper -->
+
+        <footer class="main-footer fixed-bottom">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 3.0.0-alpha
+            </div>
+            <strong>Copyright &copy; 2019 <a href="http://adminlte.io">EBA</a>.</strong> Todos los derechos reservados.
+        </footer>
 
 
     </div>

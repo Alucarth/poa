@@ -36,12 +36,12 @@
                                 Operaciones 
                             </a>
                         </li>
-                        <li class="nav-item" >
+                        {{-- <li class="nav-item" >
                             <a href="{{url('ast_indicators/'.$action_short_term->id)}}" class="nav-link">
                                 <i class="fa fa-folder text-warning"></i>
                                 Indicadores 
                             </a>
-                        </li>
+                        </li> --}}
                         
                     </ul>
                 </div>
