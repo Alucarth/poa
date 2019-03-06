@@ -9,7 +9,8 @@ require('./bootstrap');
 import 'fullcalendar';
 import VeeValidate from "vee-validate";
 import Vuetify from 'vuetify';
-import 'vuetify/dist/vuetify.min.css' ;
+
+// import 'vuetify/dist/vuetify.min.css'     ;
 // import {MDCList} from '@material/list';
 import {MDCComponent, MDCFoundation} from '@material/base';
 import {MDCRipple} from '@material/ripple';

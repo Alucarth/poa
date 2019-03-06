@@ -15,4 +15,6 @@ mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css', {
       includePaths: [path.resolve(__dirname, 'node_modules')]
    })
+   .stylus('resources/sass/vuetify.styl', 'public/css')
    .sass('resources/sass/table.scss', 'public/css');
+   

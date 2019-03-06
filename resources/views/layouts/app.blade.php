@@ -22,6 +22,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/vuetify.css') }}" rel="stylesheet">
 </head>
 
 <body class="hold-transition sidebar-mini">
