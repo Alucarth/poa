@@ -316,7 +316,7 @@ export default {
                     console.log(response.data);
                     this.dialog = false;
                     this.getData();
-                    toastr.success('Se Registro Correctamente');
+                    toastr.success(response.data.task.code,'Se Actualizo');
 
                     // this.form = response.data;
                 });
