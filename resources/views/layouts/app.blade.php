@@ -25,7 +25,7 @@
     <link href="{{ asset('css/vuetify.css') }}" rel="stylesheet">
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-collapse sidebar-mini">
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->

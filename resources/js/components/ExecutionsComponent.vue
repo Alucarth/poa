@@ -1,81 +1,54 @@
 <template>
     <div >
-      <v-container grid-list-xl> 
-        <v-layout row>
-          <v-flex   >
-            <v-date-picker class="elevation-6" v-model="date" with="290" type="month" color="green" header-color="#00407b" locale="es" @input="getData()"></v-date-picker>
-          </v-flex>
-          <v-flex   >
-            <v-card class="elevation-6 ">
-                <v-card-title primary-title class="card-calendar">
-                    <div>
-                        <div class="headline">Tareas</div>
-                        <span class="grey--text">{{date}}</span>
-                    </div>
-                </v-card-title>
-                <v-card-text>
-                  <vue-bootstrap4-table :rows="rows" :columns="columns" :config="config"  >
-                    <template slot="sort-asc-icon">
-                        <i class="fa fa-sort-asc"></i>
-                    </template>
-                    <template slot="sort-desc-icon">
-                        <i class="fa fa-sort-desc"></i>
-                    </template>
-                    <template slot="no-sort-icon">
-                        <i class="fa fa-sort"></i>
-                    </template>
-                    
-                    <template slot="option" slot-scope="props">
-                        <v-icon @click="getDetail(props)" data-toggle="modal" data-target="#taskModalDetail" small>
-                        remove_red_eye
-                        </v-icon>
-                        <v-icon @click="edit(props)" data-toggle="modal" data-target="#taskModalExecuted" small>
-                        edit
-                        </v-icon>
-                    </template>
-                  </vue-bootstrap4-table>
-                </v-card-text>
-      
-            </v-card> 
-          </v-flex>
-        </v-layout>
+      <v-container grid-list-xl>
+          <v-layout row>
+              <v-flex>
+                  <v-date-picker class="elevation-6" 
+                      v-model="date"
+                      with="290"
+                      type="month"
+                      color="green"
+                      header-color="#00407b"
+                      locale="es"
+                      @input="getData()">
+                  </v-date-picker>
+              </v-flex>
+              <v-flex>
+                  <v-card class="elevation-6 ">
+                      <v-card-title primary-title class="card-calendar">
+                          <div>
+                              <div class="headline">Tareas</div>
+                              <span class="grey--text">{{date}}</span>
+                          </div>
+                      </v-card-title>
+                      <v-card-text>
+                          <vue-bootstrap4-table :rows="rows" :columns="columns" :config="config">
+                              <template slot="sort-asc-icon">
+                                  <i class="fa fa-sort-asc"></i>
+                              </template>
+                              <template slot="sort-desc-icon">
+                                  <i class="fa fa-sort-desc"></i>
+                              </template>
+                              <template slot="no-sort-icon">
+                                  <i class="fa fa-sort"></i>
+                              </template>
+
+                              <template slot="option" slot-scope="props">
+                                  <v-icon @click="getDetail(props)" data-toggle="modal" data-target="#taskModalDetail" small>
+                                      remove_red_eye
+                                  </v-icon>
+                                  <v-icon @click="edit(props)" data-toggle="modal" data-target="#taskModalExecuted" small>
+                                      edit
+                                  </v-icon>
+                              </template>
+                          </vue-bootstrap4-table>
+                      </v-card-text>
+
+                  </v-card>
+              </v-flex>
+          </v-layout>
       </v-container>
-      <!-- <div class="col-md-3">
-        <v-date-picker class="elevation-6" v-model="date" type="month" color="green" header-color="#00407b" locale="es" @input="getData()"></v-date-picker>
-      </div>
-      <div class="col-md-9">
-        <v-card class="elevation-6 ">
-            <v-card-title primary-title class="card-calendar">
-                <div>
-                    <div class="headline">Tareas</div>
-                    <span class="grey--text">{{date}}</span>
-                </div>
-            </v-card-title>
-            <v-card-text>
-              <vue-bootstrap4-table :rows="rows" :columns="columns" :config="config"  >
-                <template slot="sort-asc-icon">
-                    <i class="fa fa-sort-asc"></i>
-                </template>
-                <template slot="sort-desc-icon">
-                    <i class="fa fa-sort-desc"></i>
-                </template>
-                <template slot="no-sort-icon">
-                    <i class="fa fa-sort"></i>
-                </template>
-                
-                <template slot="option" slot-scope="props">
-                    <v-icon @click="getDetail(props)" data-toggle="modal" data-target="#taskModalDetail" small>
-                    remove_red_eye
-                    </v-icon>
-                    <v-icon @click="edit(props)" data-toggle="modal" data-target="#taskModalExecuted" small>
-                    edit
-                    </v-icon>
-                </template>
-              </vue-bootstrap4-table>
-            </v-card-text>
-  
-        </v-card> 
-      </div> -->
+    
       <!-- aqui va el modal o dialog mejor dicho de vuetify -->
      <div class="modal fade" id="taskModalExecuted" tabindex="-1" role="dialog" aria-labelledby="taskModalExecutedLabel" aria-hidden="true" >
         <div class="modal-dialog" role="document">
@@ -136,16 +109,16 @@
                         <legend>Accion a Mediano Plazo {{detail.action_medium_term.code}}</legend>
                         <p> Descripcion:<strong> {{detail.action_medium_term.description}}</strong>  </p>
                         <v-chip color="green  " text-color="white">
-                          <v-avatar class="green darken-4"> <v-icon>flag</v-icon> </v-avatar>
+                          <v-avatar class="green darken-4"> <v-icon color="white">flag</v-icon> </v-avatar>
                           Meta: {{detail.action_medium_term.alcance_meta}}
                         </v-chip>
                         <br>
                         <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-4"> <v-icon small>fa-calendar-check-o</v-icon> </v-avatar>
+                          <v-avatar class="blue darken-4"> <v-icon color="white" small>fa-calendar-check-o</v-icon> </v-avatar>
                           Ejecucion: {{detail.action_medium_term.executed}}
                         </v-chip>
                         <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-4"> <v-icon small>perm_data_setting</v-icon> </v-avatar>
+                          <v-avatar class="blue darken-3"> <v-icon color="white" small>perm_data_setting</v-icon> </v-avatar>
                           Eficacia: {{getFormaNumber(detail.action_medium_term.efficacy)+' %'}}
                         </v-chip>
                       </div>
@@ -153,16 +126,16 @@
                         <legend>Gestion {{detail.year.year}}</legend>
   
                         <v-chip color="green  " text-color="white">
-                          <v-avatar class="green darken-4"> <v-icon>flag</v-icon> </v-avatar>
+                          <v-avatar class="green darken-3"> <v-icon color="white">flag</v-icon> </v-avatar>
                           Meta: {{detail.year.meta}}
                         </v-chip>
                         <br>
                         <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-4"> <v-icon small>fa-calendar-check-o</v-icon> </v-avatar>
+                          <v-avatar class="blue darken-3"> <v-icon color="white" small>fa-calendar-check-o</v-icon> </v-avatar>
                           Ejecucion: {{detail.year.excecuted}}
                         </v-chip>
                         <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-4"> <v-icon small>perm_data_setting</v-icon> </v-avatar>
+                          <v-avatar class="blue darken-4"> <v-icon color="white" small>perm_data_setting</v-icon> </v-avatar>
                           Eficacia: {{getFormaNumber(detail.year.efficacy)+' %'}}
                         </v-chip>
                       </div>
@@ -170,16 +143,16 @@
                         <legend>Accion a Corto Plazo {{detail.action_short_term.code}}</legend>
                         <p> Descripcion:<strong> {{detail.action_short_term.description}}</strong>  </p>
                         <v-chip color="green  " text-color="white">
-                          <v-avatar class="green darken-4"> <v-icon>flag</v-icon> </v-avatar>
+                          <v-avatar class="green darken-4"> <v-icon color="white">flag</v-icon> </v-avatar>
                           Meta: {{detail.action_short_term.meta}}
                         </v-chip>
                         <br>
                         <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-4"> <v-icon small>fa-calendar-check-o</v-icon> </v-avatar>
+                          <v-avatar class="blue darken-4"> <v-icon color="white" small>fa-calendar-check-o</v-icon> </v-avatar>
                           Ejecucion: {{detail.action_short_term.executed}}
                         </v-chip>
                         <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-4"> <v-icon small>perm_data_setting</v-icon> </v-avatar>
+                          <v-avatar class="blue darken-4"> <v-icon color="white" small>perm_data_setting</v-icon> </v-avatar>
                           Eficacia: {{getFormaNumber(detail.action_short_term.efficacy)+' %'}}
                         </v-chip>
                       </div>
@@ -187,16 +160,16 @@
                           <legend>Operacion {{detail.operation.code}}</legend>
                           <p> Descripcion:<strong> {{detail.operation.description}}</strong>  </p>
                           <v-chip color="green  " text-color="white">
-                            <v-avatar class="green darken-4"> <v-icon>flag</v-icon> </v-avatar>
+                            <v-avatar class="green darken-4"> <v-icon color="white">flag</v-icon> </v-avatar>
                             Meta: {{detail.operation.meta}}
                           </v-chip>
                           <br>
                           <v-chip color=" blue  " text-color="white">
-                            <v-avatar class="blue darken-4"> <v-icon small>fa-calendar-check-o</v-icon> </v-avatar>
+                            <v-avatar class="blue darken-4"> <v-icon color="white" small>fa-calendar-check-o</v-icon> </v-avatar>
                             Ejecucion: {{detail.operation.executed}}
                           </v-chip>
                           <v-chip color=" blue  " text-color="white">
-                            <v-avatar class="blue darken-4"> <v-icon small>perm_data_setting</v-icon> </v-avatar>
+                            <v-avatar class="blue darken-4"> <v-icon color="white" small>perm_data_setting</v-icon> </v-avatar>
                             Eficacia: {{getFormaNumber(detail.operation.efficacy)+' %'}}
                           </v-chip>
                       </div>
@@ -204,16 +177,16 @@
                           <legend>Tarea {{detail.task.code}}</legend>
                           <p> Descripcion:<strong> {{detail.task.description}}</strong>  </p>
                           <v-chip color="green  " text-color="white">
-                            <v-avatar class="green darken-4"> <v-icon>flag</v-icon> </v-avatar>
+                            <v-avatar class="green darken-4"> <v-icon color="white">flag</v-icon> </v-avatar>
                             Meta: {{detail.task.meta}}
                           </v-chip>
                           <br>
                           <v-chip color=" blue  " text-color="white">
-                            <v-avatar class="blue darken-4"> <v-icon small>fa-calendar-check-o</v-icon> </v-avatar>
+                            <v-avatar class="blue darken-4"> <v-icon color="white" small>fa-calendar-check-o</v-icon> </v-avatar>
                             Ejecucion: {{detail.task.executed}}
                           </v-chip>
                           <v-chip color=" blue  " text-color="white">
-                            <v-avatar class="blue darken-4"> <v-icon small>perm_data_setting</v-icon> </v-avatar>
+                            <v-avatar class="blue darken-4"> <v-icon color="white" small>perm_data_setting</v-icon> </v-avatar>
                             Eficacia: {{getFormaNumber(detail.task.efficacy)+' %'}}
                           </v-chip>
                       </div>
