@@ -15,7 +15,7 @@
                         </div>
                         <div class="modal-body">
 							<input type="text" name="action_short_term_id" v-model="action_short_term.id" hidden>
-							<legend>Accion a Mediano Plazo</legend>
+							<legend>Accion a Corto Plazo</legend>
 							<div class="row">
 								<div class="form-group col-md-9">
 									<label>Descripcion </label>

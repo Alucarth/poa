@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    Accion a Mediano Plazo
+    Accion a Corto Plazo
 @endsection
 @section('breadcrums')
     {{ Breadcrumbs::render('ast_operations',$action_short_term) }}

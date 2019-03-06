@@ -98,9 +98,9 @@
                     <div class="list-group" id="list-tab" role="tablist">
                       <a class="list-group-item list-group-item-action " id="list-amt-list" data-toggle="list" href="#list-amt" role="tab" aria-controls="amt"> <i class="fa fa-calendar"></i> {{detail.action_medium_term.code}}</a>
                       <a class="list-group-item list-group-item-action" id="list-year-list" data-toggle="list" href="#list-year" role="tab" aria-controls="year"><i class="fa fa-clock-o"></i> {{detail.year.year}}</a>
-                      <a class="list-group-item list-group-item-action" id="list-ast-list" data-toggle="list" href="#list-ast" role="tab" aria-controls="ast"><i class="fa fa-calendar-o"></i> {{detail.action_short_term.code}}</a>
-                      <a class="list-group-item list-group-item-action" id="list-operation-list" data-toggle="list" href="#list-operation" role="tab" aria-controls="operation"><i class="fa fa-calendar-o"></i> {{detail.operation.code}}</a>
-                      <a class="list-group-item list-group-item-action active" id="list-task-list" data-toggle="list" href="#list-task" role="tab" aria-controls="task"><i class="fa fa-calendar-o"></i> {{detail.task.code}}</a>
+                      <a class="list-group-item list-group-item-action" id="list-ast-list" data-toggle="list" href="#list-ast" role="tab" aria-controls="ast"><i class="fa fa-calendar-plus-o"></i> {{detail.action_short_term.code}}</a>
+                      <a class="list-group-item list-group-item-action" id="list-operation-list" data-toggle="list" href="#list-operation" role="tab" aria-controls="operation"><i class="fa fa-list-alt"></i> {{detail.operation.code}}</a>
+                      <a class="list-group-item list-group-item-action active" id="list-task-list" data-toggle="list" href="#list-task" role="tab" aria-controls="task"><i class="fa fa-tasks"></i> {{detail.task.code}}</a>
                     </div>
                   </div>
                   <div class="col-8">
