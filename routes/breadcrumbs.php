@@ -1,5 +1,7 @@
 <?php
 
+use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
+
 // Home
 Breadcrumbs::for('home', function ($trail) {
     $trail->push('Inicio', route('home'));
@@ -12,26 +14,21 @@ Breadcrumbs::for('roles', function ($trail) {
     $trail->parent('home');
     $trail->push('Roles', route('roles'));
 });
-Breadcrumbs::for('programacion_medio_plazo', function ($trail) {
+Breadcrumbs::for('action_medium_term', function ($trail) {
     $trail->parent('home');
-    $trail->push('Programacion Mediano Plazo', route('programacion_medio_plazo'));
+    $trail->push('Planificiacion', route('action_medium_term'));
 });
-Breadcrumbs::for('programacion_medio_plazo_nuevo', function ($trail) {
-   
-    $trail->parent('programacion_medio_plazo');
-    $trail->push('Nuevo', route('medio_plazo_nuevo'));
+Breadcrumbs::for('action_short_term_year', function ($trail,$year) {
+    $trail->parent('action_medium_term');
+    $trail->push($year->action_medium_term->code.'/'.$year->year, route('action_short_term_year',$year->id));
 });
 
-Breadcrumbs::for('programacion_corto_plazo', function ($trail) {
-    $trail->parent('home');
-    $trail->push('Programacion Corto Plazo', route('programacion_corto_plazo'));
+Breadcrumbs::for('ast_operations', function ($trail,$action_short_term) {
+    $trail->parent('action_short_term_year',$action_short_term->year);
+    $trail->push($action_short_term->code, route('ast_operations',$action_short_term->id));
 });
-Breadcrumbs::for('programacion_corto_plazo_nuevo', function ($trail) {
-   
-    $trail->parent('programacion_corto_plazo');
-    $trail->push('Nuevo', route('corto_plazo_nuevo'));
+Breadcrumbs::for('operation_tasks', function ($trail,$operation) {
+    $trail->parent('ast_operations',$operation->action_short_term);
+    $trail->push($operation->code, route('operation_tasks',$operation->id));
 });
-Breadcrumbs::for('operaciones', function ($trail) {
-    $trail->parent('home');
-    $trail->push('Operaciones', route('operaciones'));
-});
+

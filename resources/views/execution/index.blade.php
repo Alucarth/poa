@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('title')
-    
+    {{ $title}}
 @endsection
 @section('breadcrums')
-    {{-- {{ Breadcrumbs::render('programacion_medio_plazo') }} --}}
+    {{ Breadcrumbs::render('home') }}
 @endsection
 @section('content')
 

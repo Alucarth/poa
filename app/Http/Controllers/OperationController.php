@@ -46,7 +46,7 @@ class OperationController extends Controller
         $operation->save();
         $operation->code= 'OP-'.$operation->id;
         $operation->save();
-
+        session()->flash('message','se registro '.$operation->code);
         return back()->withInput();
 
     }

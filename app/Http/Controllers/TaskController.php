@@ -65,6 +65,7 @@ class TaskController extends Controller
         $task->code = 'T-'.$task->id;
         $task->save();
         $task->programmings()->sync($programmings);
+        session()->flash('message','se registro '.$task->code);
         return back()->withInput();
     }
 

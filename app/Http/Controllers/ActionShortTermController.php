@@ -49,7 +49,8 @@ class ActionShortTermController extends Controller
         $action_short_term->save();
         $action_short_term->code = 'ACP-'.$action_short_term->id;
         $action_short_term->save();
-        
+
+        session()->flash('message','se registro '.$action_short_term->code);
         // $indicadores = json_decode($request->indicadores);
         
         // foreach($indicadores as $indicador){

@@ -68,6 +68,8 @@ class ActionMediumTermController extends Controller
             
         }
 
+        session()->flash('message','se registro '.$action_medium_term->code);
+
         return redirect('action_medium_term');
     }
 

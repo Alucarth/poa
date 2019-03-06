@@ -11,4 +11,8 @@ class ActionShortTerm extends Model
     {
         return $this->hasMany('App\Operation','action_short_term_id');
     }
+    public function year()
+    {
+        return $this->belongsTo('App\Year');
+    }
 }

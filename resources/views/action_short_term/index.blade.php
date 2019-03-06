@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('title')
-    
+    Accion a Mediano PLazo
 @endsection
 @section('breadcrums')
-    {{-- {{ Breadcrumbs::render('programacion_medio_plazo') }} --}}
+    {{ Breadcrumbs::render('action_short_term_year',$year) }}
 @endsection
 @section('content')
 <div class="container">
@@ -52,18 +52,18 @@
         <div class="col-md-9 justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header card-calendar">
                             
                         <h3 class="card-title">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{$title??''}}
-                                </div>   
-                                {{-- <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a> --}}
-                                <div class=" col-md-7 text-right">
+
+                            <h4 class="card-title ">
+                                {{$title??''}}
+                                <small class="float-sm-right">
+                                    {{-- <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a>  --}}
                                     <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ActionShortTermModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
-                                </div>
-                            </div>
+                                </small>
+                            </h4>
+
                         </h3>
                     </div>
                     <div class="card-body">
@@ -119,9 +119,18 @@
 <script>
         window.onload = function () {
             $('#lista').DataTable();
-            // $('#calendar').fullCalendar({
-            //     weekends: false // will hide Saturdays and Sundays
-            // });
+            var message =@json(session('message'));
+            var error = @json(session('error'));
+            var info = @json(session('info'));
+            if(message){
+                toastr.success(message,'Registro Exitoso');
+            }
+            if(error){
+                toastr.error( error,'Error');
+            }
+            if(info){
+                toastr.info(info, 'Alerta' );
+            }
         };
     </script>    
 @endsection

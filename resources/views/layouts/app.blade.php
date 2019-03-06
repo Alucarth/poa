@@ -143,7 +143,7 @@
                             <a href="{{ url('action_medium_term') }}" class="nav-link">
                                 <i class="nav-icon fa fa-calendar"></i>
                                 <p>
-                                    Acciones a Mediano Plazo
+                                    Planificacion
                                 </p>
                             </a>
                         </li>

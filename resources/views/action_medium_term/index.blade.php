@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('title')
-    {{$title??'Inicio'}}
+    Planificacion
 @endsection
 @section('breadcrums')
-    {{-- {{ Breadcrumbs::render('action_medium_term') }} --}}
+    {{ Breadcrumbs::render('action_medium_term') }}
 @endsection
 @section('content')
 <div class="container">
@@ -11,12 +11,15 @@
         <div class="col-md-12">
             <div class="card">
                 
-                <div class="card-header">
-                 {{-- @include('action_medium_term.edit') --}}
-                    <h3 class="card-title text-right">
-                        <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a> 
-                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ActionMediumTermModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
-                    </h3>
+                <div class="card-header card-calendar">
+                    
+                    <h4 class="card-title ">
+                        {{$title??''}}
+                        <small class="float-sm-right">
+                            <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a> 
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ActionMediumTermModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
+                        </small>
+                    </h4>
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -75,7 +78,18 @@
 <script>
         window.onload = function () {
             $('#lista').DataTable();
-
+            var message =@json(session('message'));
+            var error = @json(session('error'));
+            var info = @json(session('info'));
+            if(message){
+                toastr.success(message,'Registro Exitoso');
+            }
+            if(error){
+                toastr.error( error,'Error');
+            }
+            if(info){
+                toastr.info(info, 'Alerta' );
+            }
         };
     </script>    
 @endsection
