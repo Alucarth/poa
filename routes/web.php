@@ -22,6 +22,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/', 'ExecutionController@index')->name('home');
     Route::resource('roles','RolController',['names'=>['index'=>'roles']]);
+    Route::resource('users','UserController',['names'=>['index'=>'users']]);
 
     Route::resource('action_medium_term','ActionMediumTermController',['names'=>['index'=>'action_medium_term']]);
 
