@@ -10,7 +10,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-primary text-white">  <h4 class="card-title" > {{$title}}</h4> </div>
+                <div class="card-header card-calendar"> 
+                    <h4 class="card-title ">
+                        {{$title??''}}
+                        <small class="float-sm-right">
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#userModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
+                        </small>
+                     </h4>
+                </div>
 
                 <div class="card-body">
                     <table id="users_table" class="table table-striped table-bordered" style="width:100%">
@@ -44,6 +51,45 @@
             </div>
         </div>
     </div>
+    {{-- aqui los modals --}}
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                {!! Form::open(['action' => 'UserController@store']) !!}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalLabel">Datos del Usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="row">
+                        <div class="form-group  col-md-12">
+                            {!! Form::label('full_name', 'Nombre Completo')!!}
+                            {!! Form::text('full_name',null,['class'=>'form-control'])!!}
+                        </div>
+                        <div class="form-group  col-md-12">
+                            {!! Form::label('username', 'Usuario')!!}
+                            {!! Form::text('username','',['class'=>'form-control'])!!}
+                        </div>
+                        <div class="form-group  col-md-12">
+                            {!! Form::label('password', 'Password')!!}
+                            <input type="password" class="form-control" placeholder="" name="password">
+                            {{-- {!! Form::password('password','',['class'=>'form-control'])!!} --}}
+                        </div>
+            
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">cerrar</button>
+                    <button type="button" class="btn btn-primary">guardar</button>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+    
 </div>
 @endsection
 @section('script')

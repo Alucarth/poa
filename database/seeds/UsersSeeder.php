@@ -23,6 +23,11 @@ class UsersSeeder extends Seeder
             'description' => 'Administrador del Sistema',
         ]);
 
+        DB::table('roles')->insert([
+            'name' =>  'planificacion',
+            'description' => 'Planificacion',
+        ]);
+
         DB::table('user_roles')->insert([
             'user_id' =>  1,
             'rol_id' =>  1,
