@@ -7,6 +7,7 @@ use App\ActionShortTerm;
 use App\Year;
 use App\Operation;
 use App\Indicator;
+use App\ProgrammaticStructure;
 class ActionShortTermController extends Controller
 {
     /**
@@ -41,6 +42,7 @@ class ActionShortTermController extends Controller
         // return $request->all();
         $action_short_term = new ActionShortTerm;
         $action_short_term->year_id = $request->year_id;
+        $action_short_term->programmatic_structure_id = $request->structure_id;
         $action_short_term->description = $request->description;
         $action_short_term->meta = $request->meta;
         $action_short_term->unidad_de_medida = $request->unidad_de_medida;
@@ -51,17 +53,7 @@ class ActionShortTermController extends Controller
         $action_short_term->save();
 
         session()->flash('message','se registro '.$action_short_term->code);
-        // $indicadores = json_decode($request->indicadores);
-        
-        // foreach($indicadores as $indicador){
-        //     $indicator = new Indicator;
-        //     $indicator->descripcion = $indicador->descripcion;
-        //     $indicator->unidad_de_medida = $indicador->unidad;
-        //     $indicator->linea_base = $indicador->linea_base;
-        //     $indicator->meta = $indicador->meta;
-           
-        //     $indicator->save();
-        // }
+     
         return back()->withInput();
     }
 
@@ -114,6 +106,13 @@ class ActionShortTermController extends Controller
         $year = Year::find($year_id);
         $lista = ActionShortTerm::where('year_id',$year_id)->get();
         $title = 'Acciones a Corto Plazo '.$year->year;
-        return view('action_short_term.index',compact('lista','title','year'));
+        $programmatic_structures = ProgrammaticStructure::all();
+        return view('action_short_term.index',compact('lista','title','year','programmatic_structures'));
+    }
+
+    public function getProgrammaticStructures()
+    {
+        $programmatic_structure = ProgrammaticStructure::all();
+        return $programmatic_structure;
     }
 }

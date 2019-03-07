@@ -41,7 +41,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('execution_year/{year_month}','ExecutionController@execution_year')->name('exection_year');
 
     Route::resource('executions','ExecutionController');
-  
+    
+    Route::get('get_programmatic_structures','ActionShortTermController@getProgrammaticStructures'); //structura programatica 
+    Route::get('get_programmatic_operations','OperationController@getProgrammaticOperations');//operaciones de la estructura XD
     // //reportes
     // Route::get('amp_report_excel','MediumTermProgramingController@report_excel');
     // Route::get('acp_report_excel','ShortTermProgramingController@report_excel');

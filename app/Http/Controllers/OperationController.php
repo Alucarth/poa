@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\ActionShortTerm;
 use App\Operation;
 use App\Month;
-
+use App\ProgrammaticOperation;
 class OperationController extends Controller
 {
     /**
@@ -41,6 +41,7 @@ class OperationController extends Controller
         // return $request->all();
         $operation = new Operation;
         $operation->action_short_term_id = $request->action_short_term_id;
+        $operation->programmatic_operation_id = $request->programmatic_operation_id;
         $operation->description = $request->description;
         $operation->meta = $request->meta;
         $operation->save();
@@ -102,4 +103,10 @@ class OperationController extends Controller
         $title = 'Operaciones '. $action_short_term->code;
         return view('operation.index',compact('action_short_term','title'));
     }
+    public function getProgrammaticOperations()
+    {
+        $programmatic_operations = ProgrammaticOperation::all();
+        return $programmatic_operations;
+    }
+
 }

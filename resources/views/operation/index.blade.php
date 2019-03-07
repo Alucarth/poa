@@ -7,6 +7,7 @@
 @endsection
 @section('content')
 <div class="container">
+    {{$action_short_term->programmatic_structure->programmatic_operations}}
     <div class="row">
         <div class="col-md-3">
             <div class="card card-widget widget-user-2">
@@ -104,7 +105,7 @@
         </div>
     </div>
     {{-- aqui los modals --}}
-    <operations-component url='{{url('operations')}}' csrf='{!! csrf_field('POST') !!}' ast="{{$action_short_term}}" ></operations-component>
+    <operations-component url='{{url('operations')}}' csrf='{!! csrf_field('POST') !!}' ast="{{$action_short_term}}" :operations='{{$action_short_term->programmatic_structure->programmatic_operations}}' ></operations-component>
     {{-- <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}"  ></indicadores-component> --}}
 </div>
 @endsection

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateActionShortTermsTable extends Migration
+class CreateProgrammaticOperationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,14 @@ class CreateActionShortTermsTable extends Migration
      */
     public function up()
     {
-        Schema::create('action_short_terms', function (Blueprint $table) {
+        Schema::create('programmatic_operations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('year_id');
-            $table->foreign('year_id')->references('id')->on('years');
             $table->unsignedBigInteger('programmatic_structure_id')->nullable();//programacion corto plazo
             $table->foreign('programmatic_structure_id')->references('id')->on('programmatic_structures');
-            $table->string('code')->nullable();
+            $table->string('code');
             $table->string('description');
-            $table->string('unidad_de_medida');
-            $table->string('producto_esperado');//viene del mediano plzo
-            $table->string('linea_base')->nullable();
-            $table->double('meta',8,2);
-            $table->double('executed',8,2)->nullable();
-            $table->double('efficacy',8,2)->nullable();//la suma de todas las 
+            $table->bigInteger('da');
+            $table->bigInteger('ue');
             $table->timestamps();
         });
     }
@@ -38,6 +32,6 @@ class CreateActionShortTermsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('action_short_terms');
+        Schema::dropIfExists('programmatic_operations');
     }
 }

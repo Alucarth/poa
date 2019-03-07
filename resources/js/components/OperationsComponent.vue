@@ -40,6 +40,19 @@
                                 </div>
                             </div>
 
+							<legend>Estructura Programatica</legend>
+							<div class="row">
+								<div class="form-group col-md-3">
+									<label for="code">Codigo</label>
+									<v-select label="code" :options="operations" id="code" name="code" v-model="form.code"  placeholder="code" v-validate="'required'"></v-select>
+									<div class="invalid-feedback">{{ errors.first("code") }}</div> 
+								</div>
+								<div class="form-group col-md-9 " v-if="form.code" >
+									<label for="">Descripcion</label>
+									<input type="text" class="form-control" v-model="form.code.description" disabled >													
+									<input type="text" class="form-control" name='programmatic_operation_id' v-model="form.code.id" hidden>													
+								</div>
+							</div>
 							<!-- <div class="row" v-if="parseInt(form.meta)>0">
 								<div class="alert alert-warning col-md-12" role="alert" v-show="subTotalIndicadores==parseFloat(form.meta)?false:true">
 									<span v-if="subTotalIndicadores < parseFloat(form.meta)" >
@@ -65,7 +78,7 @@
 
 <script>
     export default {
-		props:['url','csrf','ast'],
+		props:['url','csrf','ast','operations'],
         data:()=>({
 			form:{},
 			title:'',
@@ -74,8 +87,7 @@
         mounted() {
 			console.log('Componente Operations XD')
 			this.action_short_term = JSON.parse(this.ast);
-			console.log(this.ast);
-			// console.log(this.gestion
+			console.log(this.operations);
 
 			$('#OperationModal').on('show.bs.modal',(event)=> {
 				var button = $(event.relatedTarget) // Button that triggered the modal

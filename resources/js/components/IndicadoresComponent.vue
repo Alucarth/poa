@@ -29,8 +29,25 @@
                                     <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
                                     <div class="invalid-feedback">{{ errors.first("description") }}</div>
                                 </div>
+								<div class="form-group col-md-3">
+                                    <label for="meta">Meta</label>
+                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
+                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div> 
+                                </div>
                             </div>
-
+							<legend>Estructura Programatica</legend>
+							<div class="row">
+								<div class="form-group col-md-3">
+									<label for="code">Codigo</label>
+									<v-select label="code" :options="structures" id="code" name="code" v-model="form.code"  placeholder="code" v-validate="'required'"></v-select>
+									<div class="invalid-feedback">{{ errors.first("code") }}</div> 
+								</div>
+								<div class="form-group col-md-9 " v-if="form.code" >
+									<label for="">Descripcion</label>
+									<input type="text" class="form-control" v-model="form.code.description" disabled >													
+									<input type="text" class="form-control" name='structure_id' v-model="form.code.id" hidden>													
+								</div>
+							</div>
                             <legend>Indicador</legend>
 
 							<div class="row">
@@ -49,11 +66,7 @@
                                     <input type="text" id="linea_base" name="linea_base" v-model="form.linea_base" class="form-control" placeholder="Linea Base" v-validate="''" />
                                     <div class="invalid-feedback">{{ errors.first("linea_base") }}</div>
                                 </div>
-								<div class="form-group col-md-3">
-                                    <label for="meta">Meta</label>
-                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
-                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div> 
-                                </div>
+							
 								<!-- <div class="d-flex justify-content-center">
 									<div class="p-2 ">
 										<button type="button" class="btn btn-primary btn-sm " @click="addItem()"> Adicionar Indicador <i class="fa fa-plus-circle"></i> </button>
@@ -91,17 +104,18 @@
 
 <script>
     export default {
-		props:['url','csrf','year'],
+		props:['url','csrf','year','structures'],
         data:()=>({
 			indicadores:[],
 			form:{},
 			title:'',
 			gestion:{},
+			// programmatic_structures:[]
         }),
         mounted() {
 			console.log('Componente Indicadores XD')
 			this.gestion = JSON.parse(this.year);
-			console.log(this.gestion);
+			console.log(this.structures);
 
 			this.indicadores.push({descripcion:'',unidad:'',linea_base:'',meta:0,producto_esperado:''});
 			
@@ -118,6 +132,8 @@
 				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 			
 			})
+			
+			
 		},
 		methods:{
 			validateBeforeSubmit() {

@@ -15,4 +15,8 @@ class ActionShortTerm extends Model
     {
         return $this->belongsTo('App\Year');
     }
+    public function programmatic_structure()
+    {
+        return $this->belongsTo('App\ProgrammaticStructure');
+    }
 }

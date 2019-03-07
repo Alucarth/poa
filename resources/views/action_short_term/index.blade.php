@@ -67,11 +67,7 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                        @endif
+                        {{-- {{$programmatic_structures}} --}}
 
                         <table id="lista" class="table table-striped table-bordered" style="width:100%">
                             <thead>
@@ -112,7 +108,7 @@
         </div>
     </div>
     {{-- aqui los modals --}}
-    <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}"  ></indicadores-component>
+    <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}" :structures="{{$programmatic_structures}}"  ></indicadores-component>
 </div>
 @endsection
 @section('script')

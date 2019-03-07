@@ -9,6 +9,7 @@ require('./bootstrap');
 import 'fullcalendar';
 import VeeValidate from "vee-validate";
 import Vuetify from 'vuetify';
+import vSelect from 'vue-select/src/components/Select.vue';
 
 // import 'vuetify/dist/vuetify.min.css'     ;
 // import {MDCList} from '@material/list';
@@ -36,6 +37,7 @@ toastr.options = {
   }
 
 Vue.use(Vuetify);
+Vue.component('v-select', vSelect);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

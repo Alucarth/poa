@@ -47,6 +47,7 @@
         "toastr": "^2.1.4",
         "vee-validate": "^2.1.7",
         "vue-bootstrap4-table": "^1.0.27",
+        "vue-select": "^2.5.1",
         "vuetify": "^1.5.4"
     }
 }
