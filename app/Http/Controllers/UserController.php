@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Rol;
 class UserController extends Controller
 {
     /**
@@ -15,8 +16,9 @@ class UserController extends Controller
     {
         //
         $usuarios = User::all();
+        $roles = Rol::all()->pluck('name','id');
         $title ='Usuarios';
-        return view('users.index',compact('usuarios','title'));
+        return view('users.index',compact('usuarios','title','roles'));
     }
 
     /**
@@ -38,7 +40,22 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        return $request->all();
+        // return $request->all();
+        $user = new User();
+        $user->name = $request->full_name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        if ($request->hasFile('avatar')) {
+            //
+            $user->path_avatar = $request->file('avatar')->store('public/avatars');
+        }
+
+        $user->save();
+        $user->roles()->sync([$request->rol_id]);
+        // return $request->all();
+        session()->flash('message','Se creo al usuario'.$user->username);
+        return back()->withInput();
     }
 
     /**

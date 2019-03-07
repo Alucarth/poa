@@ -74,22 +74,3 @@
     </div>
 </div>
 @endsection
-@section('script')
-<script>
-        window.onload = function () {
-            $('#lista').DataTable();
-            var message =@json(session('message'));
-            var error = @json(session('error'));
-            var info = @json(session('info'));
-            if(message){
-                toastr.success(message,'Registro Exitoso');
-            }
-            if(error){
-                toastr.error( error,'Error');
-            }
-            if(info){
-                toastr.info(info, 'Alerta' );
-            }
-        };
-    </script>    
-@endsection

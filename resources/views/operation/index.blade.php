@@ -7,7 +7,6 @@
 @endsection
 @section('content')
 <div class="container">
-    {{$action_short_term->programmatic_structure->programmatic_operations}}
     <div class="row">
         <div class="col-md-3">
             <div class="card card-widget widget-user-2">
@@ -108,23 +107,4 @@
     <operations-component url='{{url('operations')}}' csrf='{!! csrf_field('POST') !!}' ast="{{$action_short_term}}" :operations='{{$action_short_term->programmatic_structure->programmatic_operations}}' ></operations-component>
     {{-- <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}"  ></indicadores-component> --}}
 </div>
-@endsection
-@section('script')
-<script>
-        window.onload = function () {
-            $('#lista').DataTable();
-            var message =@json(session('message'));
-            var error = @json(session('error'));
-            var info = @json(session('info'));
-            if(message){
-                toastr.success(message,'Registro Exitoso');
-            }
-            if(error){
-                toastr.error( error,'Error');
-            }
-            if(info){
-                toastr.info(info, 'Alerta' );
-            }
-        };
-    </script>    
 @endsection

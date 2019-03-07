@@ -31,13 +31,3 @@
     <executions-component></executions-component>
 
 @endsection
-@section('script')
-<script>
-        window.onload = function () {
-            // $('#lista').DataTable();
-            // $('#calendar').fullCalendar({
-            //     weekends: false // will hide Saturdays and Sundays
-            // });
-        };
-    </script>    
-@endsection

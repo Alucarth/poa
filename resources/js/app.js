@@ -76,5 +76,6 @@ const app = new Vue({
     mounted(){
         //loading config default
         $('[data-toggle="tooltip"]').tooltip();
+        
     }
 });

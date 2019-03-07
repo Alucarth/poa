@@ -76,11 +76,10 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex ">
                     <div class="image">
-                        <img src="../img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{Auth::user()->path_avatar?'../'.substr(Auth::user()->path_avatar,7):'../img/user.jpg'}}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
 
-						{{-- <a href="#" class="d-block">Alexander Pierce</a> --}}
 						<nav class="mt-2">
 								<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 									<!-- Add icons to the links using the .nav-icon class
@@ -111,12 +110,7 @@
                                                     @csrf
                                                 </form>
 										</li>
-										{{-- <li class="nav-item">
-											<a href="../../index3.html" class="nav-link">
-												<i class="fa fa-circle-o nav-icon"></i>
-												<p>Dashboard v3</p>
-											</a>
-										</li> --}}
+
 									</ul>
 								</li>
 			
@@ -158,6 +152,7 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
+            
             <section class="content-header "style=" padding-top: 60px;">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -178,29 +173,6 @@
             <!-- Main content -->
             <section class="content">
 
-                <!-- Default box -->
-                {{-- <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Title</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-widget="collapse" data-toggle="tooltip"
-                                title="Collapse">
-                                <i class="fa fa-minus"></i></button>
-                            <button type="button" class="btn btn-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-                                <i class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        Start creating your amazing application!
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer">
-                        Footer
-                    </div>
-                    <!-- /.card-footer-->
-                </div> --}}
-                <!-- /.card -->
                 <div id="app">
                     @yield('content')
                 </div>
@@ -220,7 +192,24 @@
 
     </div>
     <!-- ./wrapper -->
-    @yield('script')
+    <script>
+        window.onload = function () {
+            $('#lista').DataTable();
+            var message =@json(session('message'));
+            var error = @json(session('error'));
+            var info = @json(session('info'));
+            if(message){
+                toastr.success(message,'Registro Exitoso');
+            }
+            if(error){
+                toastr.error( error,'Error');
+            }
+            if(info){
+                toastr.info(info, 'Alerta' );
+            }
+            @yield('script')
+        };
+    </script>
 </body>
 
 </html>

@@ -36,9 +36,9 @@
                                 <td>{{$user->name}}</td>
                                 <td>{{$user->email}}</td>
                                 <td> 
-                                    <a href="{{url('users/'.$user->id)}}" class="btn btn-info"> <i class="fa fa-eye"></i> </a>
-                                    <a href="{{url('users/'.$user->id.'/edit')}}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                                    <a href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                    <a href="{{url('users/'.$user->id)}}" ><i class="material-icons text-info">remove_red_eye</i> </a>
+                                    <a href="{{url('users/'.$user->id.'/edit')}}" ><i class="material-icons text-primary">edit</i></a>
+                                    <a href="#" ><i class="material-icons text-danger">delete</i></i></a>
                                 </td>
                             </tr>  
                             @endforeach
@@ -55,8 +55,8 @@
     <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                {!! Form::open(['action' => 'UserController@store']) !!}
-                <div class="modal-header">
+                {!! Form::open(['action' => 'UserController@store','files' => true]) !!}
+                <div class="modal-header card-calendar">
                     <h5 class="modal-title" id="userModalLabel">Datos del Usuario</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -66,24 +66,39 @@
                     
                     <div class="row">
                         <div class="form-group  col-md-12">
-                            {!! Form::label('full_name', 'Nombre Completo')!!}
+                            {!! Form::label('full_name', 'Nombre')!!}
                             {!! Form::text('full_name',null,['class'=>'form-control'])!!}
                         </div>
-                        <div class="form-group  col-md-12">
+                        <div class="form-group  col-md-8">
+                            {!! Form::label('email', 'Email')!!}
+                            {!! Form::text('email',null,['class'=>'form-control'])!!}
+                        </div>
+                        <div class="form-group  col-md-8">
+                            {!! Form::label('avatar', 'Imagen: ')!!}
+                            {!! Form::file('avatar');!!}
+                        </div>
+                        <div class="form-group  col-md-6">
                             {!! Form::label('username', 'Usuario')!!}
                             {!! Form::text('username','',['class'=>'form-control'])!!}
                         </div>
-                        <div class="form-group  col-md-12">
+                        <div class="form-group  col-md-6">
                             {!! Form::label('password', 'Password')!!}
                             <input type="password" class="form-control" placeholder="" name="password">
                             {{-- {!! Form::password('password','',['class'=>'form-control'])!!} --}}
                         </div>
-            
+
+                    </div>
+              
+                    <div class="row">
+                        <div class="form-group  col-md-6">
+                            {!! Form::label('rol', 'Rol')!!}
+                            {!! Form::select('rol_id', $roles,null,['class'=>'custom-select'])!!}
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">cerrar</button>
-                    <button type="button" class="btn btn-primary">guardar</button>
+                    <button type="submit" class="btn btn-primary">guardar</button>
                 </div>
                 {!! Form::close() !!}
             </div>
@@ -92,13 +107,10 @@
     
 </div>
 @endsection
+<script>
 @section('script')
-	<script>
-        window.onload = function () {
-            $('#users_table').DataTable();
-            // $('#calendar').fullCalendar({
-            //     weekends: false // will hide Saturdays and Sundays
-            // });
-        };
-    </script>    
+	
+    $('#users_table').DataTable();
+          
 @endsection
+</script>    

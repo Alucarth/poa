@@ -10,7 +10,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">  <h4 class="card-title" > {{$title}}</h4> </div>
+                <div class="card-header card-calendar">  <h4 class="card-title" > {{$title}}</h4> </div>
 				
                 <div class="card-body">
                     
@@ -45,13 +45,10 @@
     </div>
 </div>
 @endsection
+<script>
 @section('script')
-	<script>
-        window.onload = function () {
+        
             $('#rol_table').DataTable();
-        //     $('#calendar').fullCalendar({
-        //         weekends: false // will hide Saturdays and Sundays
-        //     });
-        };
-    </script>    
+     
 @endsection
+</script>    
