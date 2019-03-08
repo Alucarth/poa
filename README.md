@@ -5,7 +5,7 @@
 
 ### Tecnologia  
 
- <a href="https://laravel.com"><img alt="Laravel" src="https://laravel.com/assets/img/components/logo-laravel.svg" width="100" /> </a>
+ <a href="https://laravel.com"><img alt="Laravel" src="https://laravel.com/assets/img/components/logo-laravel.svg" width="220" /> </a>
 <a href="https://nodejs.org/"> <img
       alt="Node.js"
       src="https://nodejs.org/static/images/logo-light.svg"
