@@ -1,10 +1,17 @@
+
 # Poa 
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
 ### Tecnologia  
-[![N|Solid](https://laravel.com/assets/img/components/logo-laravel.svg)](https://laravel.com)
-[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
+
+ <a href="https://laravel.com"><img alt="Laravel" src="https://laravel.com/assets/img/components/logo-laravel.svg" width="100" /> </a>
+<a href="https://nodejs.org/"> <img
+      alt="Node.js"
+      src="https://nodejs.org/static/images/logo-light.svg"
+      width="100"
+    />
+  </a>
 <a href="https://vuejs.org" target="_blank" rel="noopener noreferrer"><img width="80" src="https://vuejs.org/images/logo.png" alt="Vue logo"></a>
 ### Instalacion
 
