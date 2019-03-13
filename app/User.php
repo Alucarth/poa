@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -30,5 +31,10 @@ class User extends Authenticatable
 
     public function roles(){
         return $this->belongsToMany('App\Rol', 'user_roles');
+    }
+
+    public function isAdmin(){
+        $role = DB::table('user_roles')->where('user_id',$this->id)->where('rol_id',1)->first();
+        return $role?true:false;
     }
 }

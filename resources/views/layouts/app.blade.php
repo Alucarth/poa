@@ -48,7 +48,7 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Messages Dropdown Menu -->
-
+                @if(Auth::user()->isAdmin())
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('users') }}" data-toggle="tooltip" data-placement="bottom" title="Gestion de Usuarios">
                         <i class="fa fa-users"></i>
@@ -59,6 +59,7 @@
                         <i class="fa fa-building"></i>
                     </a>
                 </li>
+                @endif
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -84,7 +85,7 @@
 								<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 									<!-- Add icons to the links using the .nav-icon class
 							   with font-awesome or any other icon font library -->
-										
+
 								<li class="nav-item has-treeview">
 									<a href="#" class="nav-link d-block">
 										<p>
@@ -113,7 +114,7 @@
 
 									</ul>
 								</li>
-			
+
 								</ul>
 						</nav>
                     </div>
@@ -152,7 +153,7 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            
+
             <section class="content-header "style=" padding-top: 60px;">
                 <div class="container-fluid">
                     <div class="row mb-2">
