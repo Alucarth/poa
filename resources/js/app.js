@@ -13,19 +13,20 @@ import vSelect from 'vue-select/src/components/Select.vue';
 
 // import 'vuetify/dist/vuetify.min.css'     ;
 // import {MDCList} from '@material/list';
-import {MDCComponent, MDCFoundation} from '@material/base';
-import {MDCRipple} from '@material/ripple';
+// import {MDCComponent, MDCFoundation} from '@material/base';
+// import {MDCRipple} from '@material/ripple';
 
-const selector = '.mdc-button, .mdc-icon-button, .mdc-card__primary-action';
-const ripples = [].map.call(document.querySelectorAll(selector), function(el) {
-  return new MDCRipple(el);
-});
+// const selector = '.mdc-button, .mdc-icon-button, .mdc-card__primary-action';
+// const ripples = [].map.call(document.querySelectorAll(selector), function(el) {
+//   return new MDCRipple(el);
+// });
 
 
 
 // const list = new MDCList(document.querySelector('.mdc-list'));
 // const MDCComponent = require('mdc-base').MDCComponent;
 // const MDCFoundation = require('mdc-base').MDCFoundation;
+window.Switchery = require('switchery');
 window.Vue = require('vue');
 window.numeral = require('numeral');
 window.toastr = require('toastr');
@@ -38,6 +39,8 @@ toastr.options = {
 
 Vue.use(Vuetify);
 Vue.component('v-select', vSelect);
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -76,6 +79,7 @@ const app = new Vue({
     mounted(){
         //loading config default
         $('[data-toggle="tooltip"]').tooltip();
-        
+        // var elem =document.querySelector('.js-switch');
+        // var init = new Switchery(elem,  { color: '#41b7f1',size: 'larger' });
     }
 });

@@ -13,17 +13,17 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('description');
-            $table->string('custom_label1')->nullable();
-            $table->string('custom_label2')->nullable();
-            $table->string('custom_label3')->nullable();
-            $table->string('custom_label4')->nullable();
-            $table->string('custom_label5')->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('roles', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->string('name');
+        //     $table->string('description');
+        //     $table->string('custom_label1')->nullable();
+        //     $table->string('custom_label2')->nullable();
+        //     $table->string('custom_label3')->nullable();
+        //     $table->string('custom_label4')->nullable();
+        //     $table->string('custom_label5')->nullable();
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -33,6 +33,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        // Schema::dropIfExists('roles');
     }
 }

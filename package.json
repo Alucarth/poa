@@ -43,6 +43,7 @@
         "numeral": "^2.0.6",
         "sweetalert": "^2.1.2",
         "sweetalert2": "^8.2.6",
+        "switchery": "^0.0.2",
         "toastr": "^2.1.4",
         "vee-validate": "^2.1.7",
         "vue-bootstrap4-table": "^1.0.27",

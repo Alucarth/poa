@@ -2,6 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use App\User;
 class UsersSeeder extends Seeder
 {
     /**
@@ -17,21 +20,44 @@ class UsersSeeder extends Seeder
             // 'email' => 'admin@gmail.com',
             'password' => bcrypt('123456'),
         ]);
+        
+        $role = Role::create(['name' => 'Admin']);
+        $role = Role::create(['name' => 'Planificador']);
+        
+        $user = User::find(1);
+        $user->assignRole('Admin');
 
-        DB::table('roles')->insert([
-            'name' =>  'admin',
-            'description' => 'Administrador del Sistema',
-        ]);
+        //definiendo permisos por modulo
+        $actions=array(1,2,3,4);
+        $models =  array('Acciones a largo plazo','Acciones a Corto Plazo','Operaciones','Tareas','Tareas Especificas');
+        foreach($models as $model){
 
-        DB::table('roles')->insert([
-            'name' =>  'planificacion',
-            'description' => 'Planificacion',
-        ]);
+            foreach($actions as $action)
+            {
+                switch ($action) {
+                    case 1:
+                        # create...
+                        $permission = Permission::create(['name' => 'crear|'.$model]);
+                        break;
+                    case 2:
+                        # show...
+                        $permission = Permission::create(['name' => 'ver|'.$model]);
+                        break;
+                    case 3:
+                        # edit...
+                        $permission = Permission::create(['name' => 'editar|'.$model]);
+                        break;
+                    case 4:
+                        # delete...
+                        $permission = Permission::create(['name' => 'eliminar|'.$model]);
+                        break;
+                    
+                }
+            }
 
-        DB::table('user_roles')->insert([
-            'user_id' =>  1,
-            'rol_id' =>  1,
-        ]);
+        }
+       
+      
         
     }
 }

@@ -5,11 +5,14 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\DB;
-
+// use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
+
+    protected $guard_name = 'web';
 
     /**
      * The attributes that are mass assignable.
@@ -29,12 +32,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function roles(){
-        return $this->belongsToMany('App\Rol', 'user_roles');
-    }
+    // public function roles(){
+    //     return $this->belongsToMany('App\Rol', 'user_roles');
+    // }
 
-    public function isAdmin(){
-        $role = DB::table('user_roles')->where('user_id',$this->id)->where('rol_id',1)->first();
-        return $role?true:false;
-    }
+    // public function isAdmin(){
+    //     $role = DB::table('user_roles')->where('user_id',$this->id)->where('rol_id',1)->first();
+    //     return $role?true:false;
+    // }
 }

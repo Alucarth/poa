@@ -91,8 +91,15 @@
               
                     <div class="row">
                         <div class="form-group  col-md-6">
-                            {!! Form::label('rol', 'Rol')!!}
-                            {!! Form::select('rol_id', $roles,null,['class'=>'custom-select'])!!}
+                            {!! Form::label('rol', 'Roles')!!}
+                            <ul class="list-group">
+                                @foreach ($roles as $role)
+                                <li class="list-group-item ">{{$role->name}} <small class="float-sm-right"><input type="checkbox" class="js-switch" name='roles[]' value="{{$role->name}}" /></small>  </li>
+                                @endforeach
+                                
+                            </ul>
+                            
+                            {{-- {!! Form::select('rol_id', $roles,null,['class'=>'custom-select'])!!} --}}
                         </div>
                     </div>
                 </div>
@@ -111,6 +118,13 @@
 @section('script')
 	
     $('#users_table').DataTable();
+    var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+
+    elems.forEach(function(html) {
+        var switchery = new Switchery(html,{ size: 'small' });
+    });
+    // var elem =document.querySelector('.js-switch');
+    // var init = new Switchery(elem, { size: 'small' });
           
 @endsection
 </script>    

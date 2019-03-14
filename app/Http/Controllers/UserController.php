@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\Rol;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 class UserController extends Controller
 {
     /**
@@ -16,7 +17,7 @@ class UserController extends Controller
     {
         //
         $usuarios = User::all();
-        $roles = Rol::all()->pluck('name','id');
+        $roles = Role::all();
         $title ='Usuarios';
         return view('users.index',compact('usuarios','title','roles'));
     }
@@ -52,8 +53,8 @@ class UserController extends Controller
         }
 
         $user->save();
-        $user->roles()->sync([$request->rol_id]);
-        // return $request->all();
+        // $user->roles()->sync([$request->rol_id]);
+        $user->assignRole($request->roles);
         session()->flash('message','Se creo al usuario'.$user->username);
         return back()->withInput();
     }

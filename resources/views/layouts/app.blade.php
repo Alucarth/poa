@@ -48,7 +48,7 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Messages Dropdown Menu -->
-                @if(Auth::user()->isAdmin())
+                @hasrole('Admin')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('users') }}" data-toggle="tooltip" data-placement="bottom" title="Gestion de Usuarios">
                         <i class="fa fa-users"></i>
@@ -59,7 +59,7 @@
                         <i class="fa fa-building"></i>
                     </a>
                 </li>
-                @endif
+                @endhasrole
             </ul>
         </nav>
         <!-- /.navbar -->
