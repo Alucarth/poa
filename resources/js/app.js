@@ -68,6 +68,7 @@ Vue.component('operations-component', require('./components/OperationsComponent.
 Vue.component('tasks-component', require('./components/TasksComponent.vue').default);
 Vue.component('executions-component', require('./components/ExecutionsComponent.vue').default);
 Vue.component('specific-task-component', require('./components/SpecificTaskComponent.vue').default);
+Vue.component('execution-specific-tasks-component', require('./components/ExecutionSpecificTaskComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

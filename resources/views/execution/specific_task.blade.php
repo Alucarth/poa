@@ -3,7 +3,7 @@
     {{ $title}}
 @endsection
 @section('breadcrums')
-    {{ Breadcrumbs::render('home') }}
+    {{-- {{ Breadcrumbs::render('home') }} --}}
 @endsection
 @section('content')
 
@@ -28,6 +28,6 @@
         @endforeach --}}
 
     </div>
-    <execution-specific-tasks-component></execution-specific-tasks-component>
+    <executions-component></executions-component>
 
 @endsection

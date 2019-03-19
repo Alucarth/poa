@@ -28,6 +28,13 @@ class ExecutionController extends Controller
         
     }
 
+    public function specific_tasks()
+    {
+        $title = 'Ejecucion Tareas Especificas';
+        $years = Year::select('year',DB::raw('count(action_medium_term_id) as action_medium_terms'))->groupBy('year')->orderBy('year')->get();
+        // return $years;
+        return view('execution.specific_task',compact('title','years'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -168,6 +175,25 @@ class ExecutionController extends Controller
         // return $year_id;
         // return view('execution.index',compact('title'));
     }
+
+    public function execution_specific_task($year_month){
+        $ym = explode("-", $year_month);
+        // return $ym;
+        $year = $ym[0];
+        $month = intval($ym[1]);
+        $tasks = DB::table('years')
+                ->join('action_short_terms','years.id','=','action_short_terms.year_id')
+                ->join('operations','action_short_terms.id','=','operations.action_short_term_id')
+                ->join('tasks','operations.id','=','tasks.operation_id')
+                ->join('programmings','tasks.id','=','programmings.task_id')
+                ->where('years.year','=',$year)
+                ->where('programmings.month_id','=',$month)
+                ->select('tasks.*','programmings.id as programming_id')
+                ->get();
+        return response()->json(compact('year','month','tasks'));
+    }
+
+
     public static  function  porcentaje( $variante, $meta ){
         return ($variante * 100)/$meta;
     }

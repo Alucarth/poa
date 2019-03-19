@@ -38,7 +38,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('tasks','TaskController');
 
-    Route::get('execution_year/{year_month}','ExecutionController@execution_year')->name('exection_year');
+    Route::get('execution_year/{year_month}','ExecutionController@execution_year')->name('exection_year'); //para tareas
+    Route::get('execution_specific_task/{year_month}','ExecutionController@execution_year')->name('execution_specific_task'); //para tareas especificas
 
     Route::resource('executions','ExecutionController');
     
@@ -46,6 +47,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('get_programmatic_operations','OperationController@getProgrammaticOperations');//operaciones de la estructura XD
     Route::get('specific_task/{task_id}/{programming_id}','SpecificTaskController@specific_task')->name('specific_task');
     Route::resource('specific_tasks','SpecificTaskController');
+
+    Route::get('execution_specific_tasks','ExecutionController@specific_tasks');
 
     // //reportes
     // Route::get('amp_report_excel','MediumTermProgramingController@report_excel');
