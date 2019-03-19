@@ -11,6 +11,6 @@ class Task extends Model
     {
         // return $this->hasMany('App\Programming','task_id');
         return $this->belongsToMany('App\Month','programmings','task_id','month_id')
-                    ->withPivot('meta','executed','efficacy');
+                    ->withPivot('id','meta','executed','efficacy');
     }
 }

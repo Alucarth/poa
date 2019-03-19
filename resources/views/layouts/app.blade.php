@@ -67,8 +67,8 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar elevation-4 sidebar-dark-primary">
             <!-- Brand Logo -->
-            <a href="../../index3.html" class="brand-link ">
-                <img src="../img/logob.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <a href="#" class="brand-link ">
+                <img src="{!!url('/img/logob.png')!!}" alt="Eba Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
             </a>
 
@@ -77,7 +77,7 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex ">
                     <div class="image">
-                        <img src="{{Auth::user()->path_avatar?'../'.substr(Auth::user()->path_avatar,7):'../img/user.jpg'}}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{Auth::user()->path_avatar?url('../'.substr(Auth::user()->path_avatar,7)):url('/img/user.jpg')}}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
 
@@ -183,12 +183,12 @@
         </div>
         <!-- /.content-wrapper -->
 
-        <footer class="main-footer fixed-bottom">
+        {{-- <footer class="main-footer fixed-bottom">
             <div class="float-right d-none d-sm-block">
                 <b>Version</b> 3.0.0-alpha
             </div>
             <strong>Copyright &copy; 2019 <a href="http://adminlte.io">EBA</a>.</strong> Todos los derechos reservados.
-        </footer>
+        </footer> --}}
 
 
     </div>

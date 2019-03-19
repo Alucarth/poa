@@ -44,6 +44,9 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::get('get_programmatic_structures','ActionShortTermController@getProgrammaticStructures'); //structura programatica 
     Route::get('get_programmatic_operations','OperationController@getProgrammaticOperations');//operaciones de la estructura XD
+    Route::get('specific_task/{task_id}/{programming_id}','SpecificTaskController@specific_task')->name('specific_task');
+    Route::resource('specific_tasks','SpecificTaskController');
+
     // //reportes
     // Route::get('amp_report_excel','MediumTermProgramingController@report_excel');
     // Route::get('acp_report_excel','ShortTermProgramingController@report_excel');

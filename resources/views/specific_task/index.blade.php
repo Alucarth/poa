@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('title')
-    Operacion
+    Tarea
 @endsection
 @section('breadcrums')
-    {{ Breadcrumbs::render('operation_tasks',$operation) }}
+    {{-- {{ Breadcrumbs::render('operation_tasks',$operation) }} --}}
 @endsection
 @section('content')
 <div class="container">
@@ -11,7 +11,7 @@
         <div class="col-md-3">
             <div class="card card-widget widget-user-2">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header bg-success">
+                <div class="widget-user-header bg-primary">
                    
                     <div class="row">
                         <div class="col-md-4">
@@ -19,25 +19,29 @@
                         </div>
                         <div class="col-md-8">
                             <!-- /.widget-user-image -->
-                            <h3 >{{ $operation->code}}</h3>
-                            <h5 > <i class="material-icons">flag</i> {{ $operation->meta}}</h5>
+                            <h3 >{{ $task->code}}</h3>
+                            <h5 > <i class="material-icons">flag</i> {{ $task->meta}}</h5>
                         </div>
                     </div>
                     <div class="row">
-                        <span> {{$operation->description}}</span>
+                        <span> {{$task->description}}</span>
                     </div>                    
                 </div>
                 <div class="card-footer p-0">
                     <ul class="nav flex-column">
-
-                        <li class="nav-item" >
-                            <a href="{{url('operation_tasks/'.$operation->id)}}" class="nav-link">
-                                <i class="fa fa-folder-open text-success"></i>
-                                Tareas 
-                            </a>
-                        </li>
-                
-                        
+						@foreach ($task->programmings as $month)
+							<li class="nav-item" >
+								<a href="{{url('specific_task/'.$task->id.'/'.$month->pivot->id)}}" class="nav-link">
+                                    @if($month->pivot->id==$programming->id)
+                                        <i class="fa fa-folder-open text-primary"></i>
+                                    @else
+                                        <i class="fa fa-folder text-warning"></i>
+                                    @endif
+									{{$month->name}}  <span class="float-right badge bg-success"> <i class="fa fa-flag"></i> {{$month->pivot->meta}}</span>
+								</a>
+							</li>
+						@endforeach
+                       
                     </ul>
                 </div>
             </div>
@@ -53,7 +57,7 @@
                                 {{$title??''}}
                                 <small class="float-sm-right">
                                     {{-- <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a>  --}}
-                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#TaskModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#SpecificTaskModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
                                 </small>
                             </h4>
                         </h3>
@@ -72,7 +76,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($operation->tasks as $item)
+                                @foreach ($specific_tasks as $item)
                                 <tr>
                                     <td>{{$item->code}}</td>
                                     <td>{{$item->description}}</td>
@@ -80,7 +84,7 @@
                                     <td>{{$item->executed??'' }}</td>
                                     <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
                                     <td>
-                                        <a href="{{url('specific_task/'.$item->id.'/'.$item->programmings[0]->pivot->id)}}"><i class="material-icons text-warning">folder</i></a>
+                                        {{-- <a href="{{url('operation_tasks/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a> --}}
                                     <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#TaskModal" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
                                         <a href="#"><i class="material-icons text-danger">delete</i></a>
                                     </td>
@@ -100,7 +104,7 @@
     </div>
 	{{-- aqui los modals --}}
 	
-	<tasks-component url='{{url('tasks')}}' csrf='{!! csrf_field('POST') !!}' :optask="{{$operation}}" :meses="{{$meses}}" ></operations-component>
+<specific-task-component url='{{url('specific_tasks')}}' csrf='{!! csrf_field('POST') !!}' :task="{{$task}}" :programming='{{ json_encode($programming)}}'  ></specific-task-component>
     {{-- <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}"  ></indicadores-component> --}}
 </div>
 @endsection
