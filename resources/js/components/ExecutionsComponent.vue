@@ -3,7 +3,7 @@
       <v-container grid-list-xl>
           <v-layout row>
               <v-flex>
-                  <v-date-picker class="elevation-6" 
+                  <v-date-picker class="elevation-6"
                       v-model="date"
                       with="290"
                       type="month"
@@ -48,7 +48,7 @@
               </v-flex>
           </v-layout>
       </v-container>
-    
+
       <!-- aqui va el modal o dialog mejor dicho de vuetify -->
      <div class="modal fade" id="taskModalExecuted" tabindex="-1" role="dialog" aria-labelledby="taskModalExecutedLabel" aria-hidden="true" >
         <div class="modal-dialog" role="document">
@@ -70,7 +70,7 @@
                   <label for="executed" class="col-form-label">Ejecucion:</label>
                   <input type="text" class="form-control" id="executed"  v-model='form.programming.executed' >
                 </div>
-              
+
               <!-- </form> -->
             </div>
             <div class="modal-footer">
@@ -124,7 +124,7 @@
                       </div>
                       <div class="tab-pane fade" id="list-year" role="tabpanel" aria-labelledby="list-year-list">
                         <legend>Gestion {{detail.year.year}}</legend>
-  
+
                         <v-chip color="green  " text-color="white">
                           <v-avatar class="green darken-3"> <v-icon color="white">flag</v-icon> </v-avatar>
                           Meta: {{detail.year.meta}}
@@ -193,7 +193,7 @@
                     </div>
                   </div>
               </div>
-                            
+
               <!-- </form> -->
             </div>
             <div class="modal-footer">
@@ -258,7 +258,7 @@ export default {
               },
               sort: true,
           },
-        
+
           {
               label: "Opcion",
               name: "option",
@@ -279,8 +279,8 @@ export default {
       dialog:false,
       form:null,
       detail:null
-            
-       
+
+
     }),
     mounted(){
       this.getData();
@@ -322,7 +322,7 @@ export default {
                 });
       },
       getDetail(item){
-        
+
         // console.log(item);
         axios.get(`executions/${item.row.programming_id}`)
              .then((response)=>{

@@ -29,7 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('action_short_term_year/{year_id}','ActionShortTermController@action_short_term_year')->name('action_short_term_year');
 
     Route::resource('action_short_term','ActionShortTermController');
-    
+
     Route::get('ast_operations/{action_short_term_id}','OperationController@ast_operations')->name('ast_operations');
 
     Route::resource('operations','OperationController');
@@ -39,18 +39,21 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('tasks','TaskController');
 
     Route::get('execution_year/{year_month}','ExecutionController@execution_year')->name('exection_year'); //para tareas
-    Route::get('execution_specific_task/{year_month}','ExecutionController@execution_year')->name('execution_specific_task'); //para tareas especificas
+    Route::get('execution_specific_task/{year_month}','ExecutionController@execution_specific_task')->name('execution_specific_task'); //para tareas especificas
 
     Route::resource('executions','ExecutionController');
-    
-    Route::get('get_programmatic_structures','ActionShortTermController@getProgrammaticStructures'); //structura programatica 
+
+    Route::get('execution_specific_task/{specific_task_id}/edit','ExecutionController@specific_task_edit')->name('specific_task_edit');
+    Route::post('specific_task_store','ExecutionController@specific_task_store')->name('specific_task_store');
+    Route::get('specific_task_show/{specific_task_id}','ExecutionController@specific_task_show')->name('specific_task_show');
+    Route::get('get_programmatic_structures','ActionShortTermController@getProgrammaticStructures'); //structura programatica
     Route::get('get_programmatic_operations','OperationController@getProgrammaticOperations');//operaciones de la estructura XD
     Route::get('specific_task/{task_id}/{programming_id}','SpecificTaskController@specific_task')->name('specific_task');
     Route::resource('specific_tasks','SpecificTaskController');
 
-    Route::get('execution_specific_tasks','ExecutionController@specific_tasks');
+    Route::get('execution_specific_tasks','ExecutionController@specific_tasks');//vista
 
     // //reportes
     // Route::get('amp_report_excel','MediumTermProgramingController@report_excel');
     // Route::get('acp_report_excel','ShortTermProgramingController@report_excel');
-}); 
+});

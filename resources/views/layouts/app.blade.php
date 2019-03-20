@@ -135,6 +135,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ url('execution_specific_tasks') }}" class="nav-link">
+                                <i class="nav-icon fa fa-calendar-check-o"></i>
+                                <p>
+                                    Tareas Especificas
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url('action_medium_term') }}" class="nav-link">
                                 <i class="nav-icon fa fa-calendar"></i>
                                 <p>

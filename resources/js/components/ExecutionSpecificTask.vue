@@ -3,7 +3,7 @@
       <v-container grid-list-xl>
           <v-layout row>
               <v-flex>
-                  <v-date-picker class="elevation-6" 
+                  <v-date-picker class="elevation-6"
                       v-model="date"
                       with="290"
                       type="month"
@@ -17,7 +17,7 @@
                   <v-card class="elevation-6 ">
                       <v-card-title primary-title class="card-calendar">
                           <div>
-                              <div class="headline">Tareas</div>
+                              <div class="headline">Tareas Especificas </div>
                               <span class="grey--text">{{date}}</span>
                           </div>
                       </v-card-title>
@@ -48,29 +48,29 @@
               </v-flex>
           </v-layout>
       </v-container>
-    
+
       <!-- aqui va el modal o dialog mejor dicho de vuetify -->
      <div class="modal fade" id="taskModalExecuted" tabindex="-1" role="dialog" aria-labelledby="taskModalExecutedLabel" aria-hidden="true" >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header card-calendar">
-              <h5 class="modal-title " id="taskModalExecutedLabel" v-if="form">Ejecucion de Tarea Programada {{form.task.code}} </h5>
+              <h5 class="modal-title " id="taskModalExecutedLabel" v-if="form">Ejecucion de Tarea del Mes  </h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body" v-if="form">
               <!-- <form> -->
-                <legend>Programacion</legend>
+                <legend>Tarea Especifica</legend>
                 <div class="form-group">
                   <label for="meta" class="col-form-label">Meta:</label>
-                  <input type="text" class="form-control" id="meta" v-model='form.programming.meta'>
+                  <input type="text" class="form-control" id="meta" v-model='form.specific_task.meta'>
                 </div>
                 <div class="form-group">
                   <label for="executed" class="col-form-label">Ejecucion:</label>
-                  <input type="text" class="form-control" id="executed"  v-model='form.programming.executed' >
+                  <input type="text" class="form-control" id="executed"  v-model='form.specific_task.executed' >
                 </div>
-              
+
               <!-- </form> -->
             </div>
             <div class="modal-footer">
@@ -100,7 +100,8 @@
                       <a class="list-group-item list-group-item-action" id="list-year-list" data-toggle="list" href="#list-year" role="tab" aria-controls="year"><i class="fa fa-clock-o"></i> {{detail.year.year}}</a>
                       <a class="list-group-item list-group-item-action" id="list-ast-list" data-toggle="list" href="#list-ast" role="tab" aria-controls="ast"><i class="fa fa-calendar-plus-o"></i> {{detail.action_short_term.code}}</a>
                       <a class="list-group-item list-group-item-action" id="list-operation-list" data-toggle="list" href="#list-operation" role="tab" aria-controls="operation"><i class="fa fa-list-alt"></i> {{detail.operation.code}}</a>
-                      <a class="list-group-item list-group-item-action active" id="list-task-list" data-toggle="list" href="#list-task" role="tab" aria-controls="task"><i class="fa fa-tasks"></i> {{detail.task.code}}</a>
+                      <a class="list-group-item list-group-item-action" id="list-task-list" data-toggle="list" href="#list-task" role="tab" aria-controls="task"><i class="fa fa-tasks"></i> {{detail.task.code}}</a>
+                      <a class="list-group-item list-group-item-action active" id="list-specific-list" data-toggle="list" href="#list-specific" role="tab" aria-controls="specific"><i class="fa fa-tasks"></i> {{detail.specific_task.code}}</a>
                     </div>
                   </div>
                   <div class="col-8">
@@ -124,7 +125,7 @@
                       </div>
                       <div class="tab-pane fade" id="list-year" role="tabpanel" aria-labelledby="list-year-list">
                         <legend>Gestion {{detail.year.year}}</legend>
-  
+
                         <v-chip color="green  " text-color="white">
                           <v-avatar class="green darken-3"> <v-icon color="white">flag</v-icon> </v-avatar>
                           Meta: {{detail.year.meta}}
@@ -190,10 +191,27 @@
                             Eficacia: {{getFormaNumber(detail.task.efficacy)+' %'}}
                           </v-chip>
                       </div>
+                      <div class="tab-pane fade" id="list-specific" role="tabpanel" aria-labelledby="list-specific-list">
+                          <legend>Tarea Especifica {{detail.specific_task.code}}</legend>
+                          <p> Descripcion:<strong> {{detail.specific_task.description}}</strong>  </p>
+                          <v-chip color="green  " text-color="white">
+                            <v-avatar class="green darken-4"> <v-icon color="white">flag</v-icon> </v-avatar>
+                            Meta: {{detail.specific_task.meta}}
+                          </v-chip>
+                          <br>
+                          <v-chip color=" blue  " text-color="white">
+                            <v-avatar class="blue darken-4"> <v-icon color="white" small>fa-calendar-check-o</v-icon> </v-avatar>
+                            Ejecucion: {{detail.specific_task.executed}}
+                          </v-chip>
+                          <v-chip color=" blue  " text-color="white">
+                            <v-avatar class="blue darken-4"> <v-icon color="white" small>perm_data_setting</v-icon> </v-avatar>
+                            Eficacia: {{getFormaNumber(detail.specific_task.efficacy)+' %'}}
+                          </v-chip>
+                      </div>
                     </div>
                   </div>
               </div>
-                            
+
               <!-- </form> -->
             </div>
             <div class="modal-footer">
@@ -258,7 +276,7 @@ export default {
 				},
 				sort: true,
 			},
-			
+
 			{
 				label: "Opcion",
 				name: "option",
@@ -279,8 +297,8 @@ export default {
 		dialog:false,
 		form:null,
 		detail:null
-            
-       
+
+
     }),
     mounted(){
       this.getData();
@@ -288,10 +306,10 @@ export default {
     methods:{
       getData(){
         console.log('evento disparado');
-        axios.get(`execution_year/${this.date}`)
+        axios.get(`execution_specific_task/${this.date}`)
              .then((response)=>{
-              this.rows = response.data.tasks;
-              // console.log(response.data.tasks);
+              this.rows = response.data.specific_tasks;
+              console.log(response.data);
              });
       },
       getFormaNumber(number){
@@ -300,7 +318,7 @@ export default {
       edit(item)
       {
         console.log(item);
-          axios.get(`execution_specific_tasks/${item.row.programming_id}/edit`)
+          axios.get(`execution_specific_task/${item.row.id}/edit`)
                .then((response)=>{
                   // this.rows = response.data.tasks;
                 console.log(response.data);
@@ -310,21 +328,21 @@ export default {
         // this.dialog=true;
       },
       storeItem(){
-           axios.post('executions',{programming_id:this.form.programming.id,executed:this.form.programming.executed})
+           axios.post('specific_task_store',this.form)
                 .then((response)=>{
                       // this.rows = response.data.tasks;
                     console.log(response.data);
                     this.dialog = false;
                     this.getData();
-                    toastr.success(response.data.task.code,'Se Actualizo');
+                    toastr.success('Calculo de eficacia exitoso','Se Actualizo');
 
                     // this.form = response.data;
                 });
       },
       getDetail(item){
-        
+
         // console.log(item);
-        axios.get(`executions/${item.row.programming_id}`)
+        axios.get(`specific_task_show/${item.row.id}`)
              .then((response)=>{
                this.detail = response.data;
                console.log(response.data);
