@@ -1,53 +1,50 @@
 <template>
-    <div >
-      <v-container grid-list-xl>
-          <v-layout row>
-              <v-flex>
-                  <v-date-picker class="elevation-6"
-                      v-model="date"
-                      with="290"
-                      type="month"
-                      color="green"
-                      header-color="#00407b"
-                      locale="es"
-                      @input="getData()">
-                  </v-date-picker>
-              </v-flex>
-              <v-flex>
-                  <v-card class="elevation-6 ">
-                      <v-card-title primary-title class="card-calendar">
-                          <div>
-                              <div class="headline">Tareas</div>
-                              <span class="grey--text">{{date}}</span>
-                          </div>
-                      </v-card-title>
-                      <v-card-text>
-                          <vue-bootstrap4-table :rows="rows" :columns="columns" :config="config">
-                              <template slot="sort-asc-icon">
-                                  <i class="fa fa-sort-asc"></i>
-                              </template>
-                              <template slot="sort-desc-icon">
-                                  <i class="fa fa-sort-desc"></i>
-                              </template>
-                              <template slot="no-sort-icon">
-                                  <i class="fa fa-sort"></i>
-                              </template>
+    <div class="row" >
+     
+        <div class="col-md-auto">
+            <v-date-picker class="elevation-6"
+                v-model="date"
+                with="290"
+                type="month"
+                color="green"
+                header-color="#00407b"
+                locale="es"
+                @input="getData()">
+            </v-date-picker>
+        </div>
+        <div class="col">
+            <v-card class="elevation-6 ">
+                <v-card-title primary-title class="card-calendar">
+                    <div>
+                        <div class="headline">Tareas</div>
+                        <span class="white--text">{{date}}</span>
+                    </div>
+                </v-card-title>
+                <v-card-text>
+                    <vue-bootstrap4-table :rows="rows" :columns="columns" :config="config">
+                        <template slot="sort-asc-icon">
+                            <i class="fa fa-sort-asc"></i>
+                        </template>
+                        <template slot="sort-desc-icon">
+                            <i class="fa fa-sort-desc"></i>
+                        </template>
+                        <template slot="no-sort-icon">
+                            <i class="fa fa-sort"></i>
+                        </template>
 
-                              <template slot="option" slot-scope="props">
-                                  <v-icon @click="getDetail(props)" data-toggle="modal" data-target="#taskModalDetail" small>
-                                      remove_red_eye
-                                  </v-icon>
-                                  <v-icon @click="edit(props)" data-toggle="modal" data-target="#taskModalExecuted" small>
-                                      edit
-                                  </v-icon>
-                              </template>
-                          </vue-bootstrap4-table>
-                      </v-card-text>
+                        <template slot="option" slot-scope="props">
+                            <v-icon @click="getDetail(props)" data-toggle="modal" data-target="#taskModalDetail" small>
+                                remove_red_eye
+                            </v-icon>
+                            <v-icon @click="edit(props)" data-toggle="modal" data-target="#taskModalExecuted" small>
+                                edit
+                            </v-icon>
+                        </template>
+                    </vue-bootstrap4-table>
+                </v-card-text>
 
-                  </v-card>
-              </v-flex>
-          </v-layout>
-      </v-container>
+            </v-card>
+        </div>
 
       <!-- aqui va el modal o dialog mejor dicho de vuetify -->
      <div class="modal fade" id="taskModalExecuted" tabindex="-1" role="dialog" aria-labelledby="taskModalExecutedLabel" aria-hidden="true" >

@@ -16,7 +16,7 @@
     <!-- Fonts -->
     {{--
     <link rel="dns-prefetch" href="//fonts.gstatic.com"> --}}
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     {{--
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css"> --}}
 
@@ -77,7 +77,7 @@
                             </li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item" id="logout" data-toggle="modal" data-target="#logoutModal">
-                                <i class="fa fa-sign-out mr-4"></i> Salir
+                                <i class="fa fa-sign-out-alt mr-4"></i> Salir
                                 <span class="float-right"></span>
                             </li>
                         </ul>
@@ -167,7 +167,8 @@
 
                         <li class="nav-item">
                             <a href="{{ url('/') }}" class="nav-link">
-                                <i class="nav-icon fa fa-calendar-check-o"></i>
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                {{-- <i class=" nav-icon material-icons" height="42px" width="42px"> event_note </i> --}}
                                 <p>
                                     Tareas
                                 </p>
@@ -175,7 +176,8 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('execution_specific_tasks') }}" class="nav-link">
-                                <i class="nav-icon fa fa-calendar-check-o"></i>
+                                <i class="nav-icon far fa-calendar-check"></i>
+                                {{-- <i class=" nav-icon material-icons"> event_available </i> --}}
                                 <p>
                                     Tareas Especificas
                                 </p>
@@ -183,7 +185,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('action_medium_term') }}" class="nav-link">
-                                <i class="nav-icon fa fa-calendar"></i>
+                                <i class="nav-icon fas fa-calendar"></i>
                                 <p>
                                     Planificacion
                                 </p>
@@ -219,8 +221,8 @@
             </section>
 
             <!-- Main content -->
-            <section class="content">
-
+            <section class="container-fluid">
+             
                 <div id="app">
                     @yield('content')
                 </div>
@@ -257,7 +259,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                     <form action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-success"><i class="nav-icon fa fa-sign-out"></i>Si </button>
+                            <button type="submit" class="btn btn-success"><i class="nav-icon fa fa-sign-out-alt"></i>Si </button>
                     </form>
                 </div>
             </div>
