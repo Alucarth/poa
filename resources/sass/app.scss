@@ -12,7 +12,8 @@
 
 // Bootstrap
 // @import '~bootstrap/dist/css/bootstrap';
-@import '~admin-lte/dist/css/adminlte.css';
+@import 'adminlte';
+// @import '~admin-lte/dist/css/adminlte.css';
 @import '~admin-lte/plugins/font-awesome/css/font-awesome.min.css';
 // @import '~admin-lte/plugins/jvectormap/jquery-jvectormap-1.2.2.css';
 @import '~datatables.net-bs4/css/dataTables.bootstrap4';
@@ -22,18 +23,7 @@
 @import '~sweetalert2/dist/sweetalert2';
 // @import url('https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css');
 @import "~switchery/standalone/switchery.css";
-// @import "~@material/card/mdc-card";
-// @import "~@material/button/mdc-button";
-// @import "~@material/fab/mdc-fab";
-// @import "~@material/typography/mdc-typography";
-// @import "~@material/icon-button/mdc-icon-button";
-// @import "~@material/layout-grid/mdc-layout-grid";
-// @import "~@material/elevation/mdc-elevation";
 
-
-// @import '~vuetify/dist/vuetify.css';
-// @import "~@material/ripple/mdc-ripple"; falta corregir algunas variables para su implementacionde acuero a documentaicon segun google se tiene que definir un template  o algo asi
-// $primary-card: #00407b;
 $blanco: #ffffff;
 $blanco2: #c4c8e4;
 // @import "~@material/button/mdc-button";

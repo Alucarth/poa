@@ -1,6 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
     "/css/table.css": "/css/table.css",
-    "/css/vuetify.css": "/css/vuetify.css"
+    "/css/vuetify.css": "/css/vuetify.css",
+    "/css/app.css": "/css/app.css"
 }

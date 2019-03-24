@@ -8,7 +8,6 @@
                       with="290"
                       type="month"
                       color="green"
-                      header-color="#00407b"
                       locale="es"
                       @input="getData()">
                   </v-date-picker>

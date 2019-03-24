@@ -29,7 +29,7 @@
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-laravel navbar-dark border-bottom fixed-top">
+        <nav class="main-header navbar navbar-expand navbar-dark navbar-laravel border-bottom fixed-top">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -60,6 +60,43 @@
                     </a>
                 </li>
                 @endhasrole
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                            {{Auth::user()->name}}  <img src="{{Auth::user()->path_avatar?url('../'.substr(Auth::user()->path_avatar,7)):url('/img/user.jpg')}}" class="navbar-img img-circle elevation-2"  alt="User Image">
+                    </a>
+                    {{-- <div > --}}
+                        {{-- <span class="dropdown-item dropdown-header">15 Notifications</span> --}}
+                        <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                            <li class="dropdown-item" id="perfil">
+                                <i class="fa fa-user mr-4"></i> Perfil
+                                <span class="float-right"></span>
+                            </li>
+                            <li class="dropdown-item" id="config">
+                                <i class="fa fa-cogs mr-4"></i> Configuracion
+                                <span class="float-right"></span>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <li class="dropdown-item" id="logout" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fa fa-sign-out mr-4"></i> Salir
+                                <span class="float-right"></span>
+                            </li>
+                        </ul>
+                        {{-- <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                                <i class="fa fa-user mr-4"></i> Perfil
+                            <span class="float-right"></span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fa fa-cogs mr-4"></i> 
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fa fa-sign-out mr-4"></i> Salir
+                        </a> --}}
+                        {{-- <div class="dropdown-divider"></div> --}}
+                        {{-- <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a> --}}
+                    {{-- </div> --}}
+                </li>
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -80,8 +117,10 @@
                         <img src="{{Auth::user()->path_avatar?url('../'.substr(Auth::user()->path_avatar,7)):url('/img/user.jpg')}}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-
-						<nav class="mt-2">
+                            <a href="#" class="d-block"> {{Auth::user()->name}}</a>
+                           
+						{{-- <nav class="mt-2">
+                                
 								<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 									<!-- Add icons to the links using the .nav-icon class
 							   with font-awesome or any other icon font library -->
@@ -116,7 +155,7 @@
 								</li>
 
 								</ul>
-						</nav>
+						</nav> --}}
                     </div>
                 </div>
 
@@ -200,6 +239,30 @@
 
 
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header laravel-modal-bg">
+                    <h5 class="modal-title" id="logoutModalLabel">Cerrar Sesion</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Esta seguro de cerrar session ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-success"><i class="nav-icon fa fa-sign-out"></i>Si </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- ./wrapper -->
     <script>
         window.onload = function () {
@@ -216,6 +279,15 @@
             if(info){
                 toastr.info(info, 'Alerta' );
             }
+            $('#perfil').click(function(){
+                console.log('perfil click');
+            });
+            $('#config').click(function(){
+                console.log('config click');
+            });
+            $('#logout').click(function(){
+                console.log('logout click');
+            });
             @yield('script')
         };
     </script>
