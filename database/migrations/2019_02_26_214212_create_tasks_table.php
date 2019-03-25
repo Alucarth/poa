@@ -19,9 +19,10 @@ class CreateTasksTable extends Migration
             $table->foreign('operation_id')->references('id')->on('operations');
             $table->string('code')->nullable();
             $table->string('description');
-            $table->double('meta',8,2);
-            $table->double('executed',8,2)->nullable(); //todo lo ejecutado se debe comparar con el 100%
-            $table->double('efficacy',8,2)->nullable();// 
+            $table->decimal('meta',8,2);
+            $table->decimal('executed',8,2)->nullable(); //todo lo ejecutado se debe comparar con el 100%
+            $table->decimal('efficacy',8,2)->nullable();// 
+            $table->decimal('weighing',8,2)->nullable();
             $table->timestamps();
         });
     }

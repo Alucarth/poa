@@ -21,9 +21,10 @@ class CreateOperationsTable extends Migration
             $table->foreign('programmatic_operation_id')->references('id')->on('programmatic_operations');
             $table->string('description');
             $table->string('code')->nullable();
-            $table->double('meta',8,2);
-            $table->double('executed',8,2)->nullable(); //todo lo ejecutado se debe comparar con el 100%
-            $table->double('efficacy',8,2)->nullable();// 
+            $table->decimal('meta',8,2);
+            $table->decimal('executed',8,2)->nullable(); //todo lo ejecutado se debe comparar con el 100%
+            $table->decimal('efficacy',8,2)->nullable();// 
+            $table->decimal('weighing',8,2)->nullable();
             $table->timestamps();
         });
     }

@@ -19,35 +19,40 @@
                             <div class="row">
                                 <div class="form-group col-md-3">
                                     <label for="pilar">Pilar</label>
-                                    <input type="text" id="pilar" name="pilar" v-model="pilar" class="form-control" placeholder="Pilar" v-validate="'required|decimal:2'" />
+                                    <input type="text" id="pilar" name="pilar" v-model="form.pilar" class="form-control" placeholder="Pilar" v-validate="'required|decimal:2'" />
                                     <div class="invalid-feedback">{{ errors.first("pilar") }}</div> 
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="meta">Meta</label>
-                                    <input type="text" id="meta" name="meta" v-model="meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
+                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
                                     <div class="invalid-feedback">{{ errors.first("meta") }}</div> 
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="resultado">Resultado</label>
-                                    <input type="text" id="resultado" name="resultado" v-model="resultado" class="form-control" placeholder="Resultado" v-validate="'required|decimal:2'" />
+                                    <input type="text" id="resultado" name="resultado" v-model="form.resultado" class="form-control" placeholder="Resultado" v-validate="'required|decimal:2'" />
                                     <div class="invalid-feedback">{{ errors.first("resultado") }}</div> 
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="accion">Accion</label>
-                                    <input type="text" id="accion" name="accion" v-model="accion" class="form-control" placeholder="Accion" v-validate="'required|decimal:2'" />
+                                    <input type="text" id="accion" name="accion" v-model="form.accion" class="form-control" placeholder="Accion" v-validate="'required|decimal:2'" />
                                     <div class="invalid-feedback">{{ errors.first("accion") }}</div> 
                                 </div>
                             </div>
                             <legend>Accion de Mediano Plazo del PEE</legend>
                             <div class="row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-8">
                                     <label for="description">Descripcion</label>
-                                    <input type="text" id="description" name="description" v-model="description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
+                                    <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
                                     <div class="invalid-feedback">{{ errors.first("description") }}</div>
                                 </div>
                                 <div class="form-group col-md-4">
+                                    <label for="alcance_meta">Alcance Meta</label>
+                                    <input type="text" id="alcance_meta" name="alcance_meta" v-model="form.alcance_meta" class="form-control" placeholder="Alcance Meta" v-validate="'required|decimal:2|min_value:1'" />
+                                    <div class="invalid-feedback">{{ errors.first("alcance_meta") }}</div> 
+                                </div>
+                                <div class="form-group col-md-4">
                                     <label for="description">Tipo</label>
-                                    <select name="tipo" v-model="tipo" class="custom-select" placeholder="Seleccionar" v-validate="'required'" >
+                                    <select name="tipo" v-model="form.tipo" class="custom-select" placeholder="Seleccionar" v-validate="'required'" >
                                     <option value="Proceso">Proceso</option>
                                     <option value="Apoyo">Apoyo</option>
                                     </select>
@@ -55,33 +60,34 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="resultado_intermedio">Resultado Intermedio</label>
-                                    <input type="text" id="resultado_intermedio" name="resultado_intermedio" v-model="resultado_intermedio" class="form-control" placeholder="Resultado Intermedio" v-validate="'required'" />
+                                    <input type="text" id="resultado_intermedio" name="resultado_intermedio" v-model="form.resultado_intermedio" class="form-control" placeholder="Resultado Intermedio" v-validate="'required'" />
                                     <div class="invalid-feedback">{{ errors.first("resultado_intermedio") }}</div>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="linea_base">Linea Base</label>
-                                    <input type="text" id="linea_base" name="linea_base" v-model="linea_base" class="form-control" placeholder="Linea Base" v-validate="''" />
+                                    <input type="text" id="linea_base" name="linea_base" v-model="form.linea_base" class="form-control" placeholder="Linea Base" v-validate="''" />
                                     <div class="invalid-feedback">{{ errors.first("linea_base") }}</div>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="indicador_resultado_intermedio"> Indicador Resultado Intermedio</label>
-                                    <input type="text" id="indicador_resultado_intermedio" name="indicador_resultado_intermedio" v-model="indicador_resultado_intermedio" class="form-control" placeholder="Resultado Intermedio" v-validate="'required'" />
+                                    <input type="text" id="indicador_resultado_intermedio" name="indicador_resultado_intermedio" v-model="form.indicador_resultado_intermedio" class="form-control" placeholder="Resultado Intermedio" v-validate="'required'" />
                                     <div class="invalid-feedback">{{ errors.first("indicador_resultado_intermedio") }}</div>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="alcance_meta">Alcance Meta</label>
-                                    <input type="text" id="alcance_meta" name="alcance_meta" v-model="alcance_meta" class="form-control" placeholder="Alcance Meta" v-validate="'required|decimal:2|min_value:1'" />
-                                    <div class="invalid-feedback">{{ errors.first("alcance_meta") }}</div> 
+                                    <label for="ponderacion"> Ponderacion (%)</label>
+                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="Ponderacion" v-validate="'numeric'" />
+                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
                                 </div>
+                                
                                 <div class="form-group col-md-4">
                                     <label for="initial_year">Año inicial</label>
-                                    <input type="text" id="initial_year" name="initial_year" v-model="initial_year" class="form-control" placeholder="Año inicial" v-validate="'required|numeric'" />
+                                    <input type="text" id="initial_year" name="initial_year" v-model="form.initial_year" class="form-control" placeholder="Año inicial" v-validate="'required|numeric'" />
                                     <div class="invalid-feedback">{{ errors.first("initial_year") }}</div> 
                                 </div>
                                 
                             </div>
 
-                            <div class="row" v-if="parseInt(initial_year)>0">
+                            <div class="row" v-if="parseInt(form.initial_year)>0">
                                 <legend>Gestiones</legend>
                                 <input type="text" name="gestiones" :value="JSON.stringify(years)" hidden>
                                 <div class="form-group col-md-2" v-for="(year,index) in getList" :key="index" >
@@ -89,12 +95,12 @@
                                     <input type="text" :id="year.meta" :name="year.meta" v-model="year.meta" class="form-control" :placeholder="year.year" v-validate="'required|decimal:2'" />
                                     <!-- <div class="invalid-feedback">{{ errors.first(""+year.meta) }}</div>  -->
                                 </div>   
-                                <div class="alert alert-warning col-md-12" role="alert" v-show="subTotalYears==parseFloat(alcance_meta)?false:true">
-                                    <p v-if="subTotalYears<parseFloat(alcance_meta)" >
-                                      Falta <strong> {{parseFloat(alcance_meta)-subTotalYears}}</strong> para llegar a <strong>Alcance Meta : {{alcance_meta}}</strong>
+                                <div class="alert alert-warning col-md-12" role="alert" v-show="subTotalYears==parseFloat(form.alcance_meta)?false:true">
+                                    <p v-if="subTotalYears<parseFloat(form.alcance_meta)" >
+                                      Falta <strong> {{parseFloat(form.alcance_meta)-subTotalYears}}</strong> para llegar a <strong>Alcance Meta : {{form.alcance_meta}}</strong>
                                     </p>
                                     <p v-else>
-                                      Se sobrepaso <strong>{{subTotalYears-parseFloat(alcance_meta)}}</strong> de<strong>Alcance Meta : {{alcance_meta}}</strong>
+                                      Se sobrepaso <strong>{{subTotalYears-parseFloat(form.alcance_meta)}}</strong> de<strong>Alcance Meta : {{form.alcance_meta}}</strong>
                                     </p>
                                 </div> 
                             </div>
@@ -118,17 +124,7 @@ export default {
     props:['url','csrf'],
     data:()=>({
         years:[],
-        initial_year:2019,
-        pilar:0,
-        meta:0,
-        resultado:0,
-        accion:0,
-        description:'',
-        tipo:'',
-        indicador_resultado_intermedio:'',
-        alcance_meta:0,
-        resultado_intermedio:0,
-        linea_base:'',
+        form:{},
         title:'',
         
         // form:null,
@@ -159,15 +155,15 @@ export default {
                 if (result) {
 
                 let form = document.getElementById("formActionMediumTerm");
-                    if(this.subTotalYears==parseFloat(this.alcance_meta)){
+                    if(this.subTotalYears==parseFloat(this.form.alcance_meta)){
                         form.submit();
                     }else{
-                        toastr.info(' La Meta de la Accion: '+this.alcance_meta+' es distinta a la sumatoria de las Total metas por gestion: '+this.subTotalYears+'');
+                        toastr.info(' La Meta de la Accion: '+this.form.alcance_meta+' es distinta a la sumatoria de las Total metas por gestion: '+this.subTotalYears+'');
                     }
                     // console.log(result);
                     return;
                 }
-                toastr.error('Debe completar la informacion correctamente')
+                toastr.error('Debe completar los campos requeridos')
             });
         },
       
@@ -185,7 +181,7 @@ export default {
         getList(){
             this.years=[];
             for (let i = 0; i < 5; i++) {
-                this.years.push({year: parseInt(this.initial_year)+i,meta:0});      
+                this.years.push({year: parseInt(this.form.initial_year)+i,meta:0});      
             }
             return this.years;
         },

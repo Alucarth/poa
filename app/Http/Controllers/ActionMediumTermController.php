@@ -53,6 +53,7 @@ class ActionMediumTermController extends Controller
         $action_medium_term->linea_base = $request->linea_base;
         $action_medium_term->indicador_resultado_intermedio = $request->indicador_resultado_intermedio;
         $action_medium_term->alcance_meta = $request->alcance_meta;
+        $action_medium_term->weighing = $request->weighing;
         $action_medium_term->save();
         $action_medium_term->code='AMP-'.$action_medium_term->id;
         $action_medium_term->save();

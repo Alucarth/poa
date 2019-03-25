@@ -16,7 +16,7 @@
                     <h4 class="card-title ">
                         {{$title??''}}
                         <small class="float-sm-right">
-                            <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a> 
+                            {{-- <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a>  --}}
                             <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ActionMediumTermModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
                         </small>
                     </h4>
@@ -35,6 +35,7 @@
                                 <th>Accion Mediano Plazo</th>
                                 <th>Resultado</th>
                                 <th>Meta</th>
+                                <th>Ponderacion</th>
                                 <th>Ejecutado</th>
                                 <th>Eficacia</th>
                                 <th>Opciones</th>
@@ -47,6 +48,7 @@
                                 <td>{{$item->description}}</td>
                                 <td>{{$item->resultado_intermedio}}</td>
                                 <td>{{$item->alcance_meta }}</td>
+                                <td>{{$item->weighing }}</td>
                                 <td>{{$item->executed??'' }}</td>
                                 <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
                                 <td>

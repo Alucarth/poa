@@ -19,9 +19,10 @@ class CreateProgrammingsTable extends Migration
             $table->foreign('task_id')->references('id')->on('tasks');
             $table->unsignedInteger('month_id');
             $table->foreign('month_id')->references('id')->on('months');
-            $table->double('meta',8,2);
-            $table->double('executed',8,2)->nullable();
-            $table->double('efficacy',8,2)->nullable();//la suma de todas las 
+            $table->decimal('meta',8,2);
+            $table->decimal('executed',8,2)->nullable();
+            $table->decimal('efficacy',8,2)->nullable();//la suma de todas las 
+            $table->decimal('weighing',8,2)->nullable();
             $table->timestamps();
         });
     }
