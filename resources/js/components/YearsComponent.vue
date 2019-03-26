@@ -16,6 +16,7 @@
                         </div>
                         <div class="modal-body">
                         <legend>Estructura del POES</legend>
+                            <input type="text" name='id' :value="form.id" v-if="form.id" hidden>
                             <div class="row">
                                 <div class="form-group col-md-3">
                                     <label for="pilar">Pilar</label>
@@ -89,7 +90,7 @@
 
                             <div class="row" v-if="parseInt(form.initial_year)>0">
                                 <legend>Gestiones</legend>
-                                <input type="text" name="gestiones" :value="JSON.stringify(years)" hidden>
+                                <input type="text" name="gestiones" :value="JSON.stringify(getList)" hidden>
                                 <div class="form-group col-md-2" v-for="(year,index) in getList" :key="index" >
                                     <label :for="year.meta">{{year.year}}</label>
                                     <input type="text" :id="year.meta" :name="year.meta" v-model="year.meta" class="form-control" :placeholder="year.year" v-validate="'required|decimal:2'" />
@@ -123,8 +124,7 @@
 export default {
     props:['url','csrf'],
     data:()=>({
-        years:[],
-        form:{},
+        form:{years:[]},
         title:'',
         
         // form:null,
@@ -141,9 +141,15 @@ export default {
             this.title ='Nueva Accion a Mediano Plazo';
             if(amt)
             {
+                this.form = amt;
+                this.$set(this.form, 'initial_year', amt.years[0].year);
+                // this.form.initial_year = amt.years[0].year;//termina quitando la reactividad averiguar el por que 
+                //   console.log();
                 this.title='Editar '+amt.code;
+            }else{
+                this.form = {years:[]};
             }
-            console.log(amt);
+          
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
         
@@ -179,19 +185,28 @@ export default {
     },
     computed:{
         getList(){
-            this.years=[];
-            for (let i = 0; i < 5; i++) {
-                this.years.push({year: parseInt(this.form.initial_year)+i,meta:0});      
+            if(this.form.years.length==0){
+                console.log('creando nuevos elementos');
+               for (let i = 0; i < 5; i++) {
+                    this.form.years.push({year: parseInt(this.form.initial_year)+i,meta:0});      
+                } 
             }
-            return this.years;
+            let i=0;
+            this.form.years.forEach(element => {
+                element.year =  parseInt(this.form.initial_year)+i;
+                i++;
+                 return element;
+            });
+        
+            return this.form.years;
         },
         subTotalYears(){
             let amount=0;
-            this.years.forEach(element => {
+            this.form.years.forEach(element => {
                  amount+=parseFloat(element.meta);   
             });
             return amount;
         },
-    }
+    },
 }
 </script>

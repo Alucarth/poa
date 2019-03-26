@@ -270,10 +270,14 @@
         window.onload = function () {
             $('#lista').DataTable();
             var message =@json(session('message'));
+            var deleteMessage = @json(session('delete'));
             var error = @json(session('error'));
             var info = @json(session('info'));
             if(message){
                 toastr.success(message,'Registro Exitoso');
+            }
+            if(deleteMessage){
+                toastr.warning(deleteMessage,'Registro Eliminado');
             }
             if(error){
                 toastr.error( error,'Error');

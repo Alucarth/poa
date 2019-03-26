@@ -53,8 +53,8 @@
                                 <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
                                 <td>
                                     <a href="{{url('action_short_term_year/'.$item->years[0]->id)}}"><i class="material-icons text-warning">folder</i></a>
-                                    <a href="#"><i class="material-icons text-primary">edit</i></a>
-                                    <a href="#"><i class="material-icons text-danger">delete</i></a>
+                                    <a href="#" data-toggle="modal" data-target="#ActionMediumTermModal" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
+                                    <a href="#"> <i class="material-icons text-danger deleted" data-json='{{$item}}'>delete</i></a> 
                                 </td>
                                 
                             </tr>
@@ -76,3 +76,49 @@
     </div>
 
 @endsection
+<script>
+    
+    @section('script')
+        var classname = document.getElementsByClassName("deleted");
+        // console.log(classname);
+        function deleteItem(){
+            
+            var data = JSON.parse(this.getAttribute("data-json"));
+          
+            Swal.fire({
+            title: 'Esta Seguro de Eliminar '+data.code+'?',
+            text: "una vez eliminado no se podra revertir la accion!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, borrar!',
+            cancelButtonText: 'No'
+            }).then((result) => {
+            if (result.value) {
+                
+                axios.delete(`action_medium_term/${data.id}`)
+                    .then(response=>{
+                        console.log(response);
+                        location.reload();
+                    })
+                    .catch(error=>{
+                        // handle error
+                        Swal.fire(
+                        'Error! contactese con soporte tecnico',
+                        ''+error,
+                        'error'
+                        )
+                        // console.log(error);
+                    });
+
+                
+            }
+            })
+
+        }    
+        for (var i = 0; i < classname.length; i++) {
+            classname[i].addEventListener('click', deleteItem, false);
+        }
+    @endsection
+</script>

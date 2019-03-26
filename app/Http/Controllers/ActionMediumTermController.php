@@ -42,7 +42,11 @@ class ActionMediumTermController extends Controller
     {
         //
         // return $request->all();
-        $action_medium_term = new ActionMediumTerm(); //programacion a mediano plazo
+        if($request->has('id')){
+           $action_medium_term = ActionMediumTerm::find($request->id); 
+        }else{
+            $action_medium_term = new ActionMediumTerm(); //programacion a mediano plazo
+        }
         $action_medium_term->pilar = $request->pilar;
         $action_medium_term->meta = $request->meta;
         $action_medium_term->resultado = $request->resultado;
@@ -61,7 +65,11 @@ class ActionMediumTermController extends Controller
         $gestiones = json_decode($request->gestiones);
         // 
         foreach($gestiones as $gestion){
-            $year = new Year;
+            if(isset($gestion->id)){
+                $year = Year::find($gestion->id);
+            }else{
+                $year = new Year;
+            }
             $year->action_medium_term_id = $action_medium_term->id;
             $year->year = $gestion->year;
             $year->meta = $gestion->meta;
@@ -83,6 +91,9 @@ class ActionMediumTermController extends Controller
     public function show($id)
     {
         //
+        $action_medium_term = ActionMediumTerm::find($id);
+
+        return response()->json(compact('action_medium_term'));
     }
 
     /**
@@ -94,6 +105,7 @@ class ActionMediumTermController extends Controller
     public function edit($id)
     {
         //
+        
     }
 
     /**
@@ -116,7 +128,16 @@ class ActionMediumTermController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $action_medium_term = ActionMediumTerm::find($id);
+        $code =$action_medium_term->code;
+        foreach($action_medium_term->years as $year){
+            $year->delete();
+        }
+        
+        // $action_medium_term->years->delete();
+        $action_medium_term->delete();
+        session()->flash('delete','se elimino el registro '.$code);
+        return $id;
     }
     public function report_excel(){
         
