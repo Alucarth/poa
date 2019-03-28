@@ -37,10 +37,15 @@ class SpecificTaskController extends Controller
     public function store(Request $request)
     {
         //
-        $specific_task = new  SpecificTask;
+        if($request->has('id')){
+            $specific_task = SpecificTask::find($request->id);
+        }else{
+            $specific_task = new  SpecificTask;
+        }
         $specific_task->programming_id = $request->programming_id;
         $specific_task->description = $request->description;
         $specific_task->meta = $request->meta;
+        $specific_task->weighing = $request->weighing;
         $specific_task->save();
         $specific_task->code= 'TE-'.$specific_task->id;
         $specific_task->save();

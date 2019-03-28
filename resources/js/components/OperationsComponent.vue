@@ -6,7 +6,7 @@
                     
                     <div class="modal-content">
                         <div v-html='csrf'></div>
-
+						<input type="text" name="id" :value="form.id" v-if="form.id" hidden>
                         <div class="modal-header laravel-modal-bg">
                             <h5 class="modal-title" >{{title}}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -42,15 +42,31 @@
 
 							<legend>Estructura Programatica</legend>
 							<div class="row">
-								<div class="form-group col-md-3">
+								<!-- <div class="form-group col-md-3">
 									<label for="code">Codigo</label>
 									<v-select label="code" :options="operations" id="code" name="code" v-model="form.code"  placeholder="code" v-validate="'required'"></v-select>
 									<div class="invalid-feedback">{{ errors.first("code") }}</div> 
+								</div> -->
+								<div class="form-group  col-md-4">
+									<label for="programmatic_operation">Codigo</label>
+									<multiselect 
+										v-model="form.programmatic_operation"
+										:options="operations"
+										id="programmatic_operation"
+										placeholder="Seleccionar Codigo" 
+										select-label="Seleccionar"
+										deselect-label="Remover"
+										selected-label="Seleccionado"
+										label="code"
+										track-by="code" >
+
+									</multiselect>
+									<div class="invalid-feedback">{{ errors.first("code") }}</div> 
 								</div>
-								<div class="form-group col-md-9 " v-if="form.code" >
+								<div class="form-group col-md-8 " v-if="form.programmatic_operation" >
 									<label for="">Descripcion</label>
-									<input type="text" class="form-control" v-model="form.code.description" disabled >													
-									<input type="text" class="form-control" name='programmatic_operation_id' v-model="form.code.id" hidden>													
+									<input type="text" class="form-control" v-model="form.programmatic_operation.description" disabled >													
+									<input type="text" class="form-control" name='programmatic_operation_id' v-model="form.programmatic_operation.id" hidden>													
 								</div>
 							</div>
 							<!-- <div class="row" v-if="parseInt(form.meta)>0">
@@ -91,13 +107,17 @@
 
 			$('#OperationModal').on('show.bs.modal',(event)=> {
 				var button = $(event.relatedTarget) // Button that triggered the modal
-				var amt = button.data('json') // Extract info from data-* attributes
+				var operation = button.data('json') // Extract info from data-* attributes
 				this.title ='Nueva Operacion ';
-				if(amt)
+				if(operation)
 				{
-					this.title='Editar '+amt.code;
+					this.title='Editar '+operation.code;
+					this.form = operation;
+				}else
+				{
+					this.form={};
 				}
-				console.log(amt);
+				console.log(operation);
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 			

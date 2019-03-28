@@ -176,7 +176,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('execution_specific_tasks') }}" class="nav-link">
-                                <i class="nav-icon far fa-calendar-check"></i>
+                                <i class="nav-icon fas fa-calendar-day"></i>
                                 {{-- <i class=" nav-icon material-icons"> event_available </i> --}}
                                 <p>
                                     Tareas Especificas
@@ -209,13 +209,14 @@
                         <div class="col-sm-6">
                             <h1> @yield('title')</h1>
                         </div>
-                        <div class="col-sm-6">
+                        <nav class="col-sm-6" aria-label="breadcrumb">
                             <ol class="breadcrumb float-sm-right">
 								@yield('breadcrums')
                                 {{-- <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item active">Blank Page</li> --}}
                             </ol>
-                        </div>
+                        </nav>
+            
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
@@ -268,7 +269,37 @@
     <!-- ./wrapper -->
     <script>
         window.onload = function () {
-            $('#lista').DataTable();
+            // $.extend( $.fn.dataTable.defaults, {
+            //     responsive: true
+            // } );
+            $('#lista').DataTable({
+                // responsive: {
+                //     details: {
+                //         renderer: function ( api, rowIdx, columns ) {
+                //             var data = $.map( columns, function ( col, i ) {
+                //                 return col.hidden ?
+                //                     '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                //                         '<td> <strong>'+col.title+':'+'</strong> </td> '+
+                //                         '<td>'+col.data+'</td>'+
+                //                     '</tr>' :
+                //                     '';
+                //             } ).join('');
+        
+                //             return data ?
+                //                 $('<table/>').append( data ) :
+                //                 false;
+                //         }
+                //     }
+                // },
+                responsive: true,
+                columnDefs: [
+                    { responsivePriority: 1, targets: 0 },
+                    { responsivePriority: 10002, targets: 2 },
+                    { responsivePriority: 10001, targets: 4 },
+                    { responsivePriority: 2, targets: -1 }
+                ],
+               
+            });
             var message =@json(session('message'));
             var deleteMessage = @json(session('delete'));
             var error = @json(session('error'));

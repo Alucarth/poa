@@ -1,5 +1,5 @@
 <template>
-    <div >
+  
 		<div class="modal fade" id="TaskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <form id='formTask' method="post" :action="url" @submit.prevent="validateBeforeSubmit">
@@ -40,13 +40,18 @@
                                     <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
                                     <div class="invalid-feedback">{{ errors.first("meta") }}</div> 
                                 </div>
+								<div class="form-group col-md-4">
+                                    <label for="weighing">Ponderacion (%) </label>
+                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'decimal:2'" />
+                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div> 
+                                </div>
                             </div>
 							<legend>Programacion</legend>
 							<input type="text" name="programacion" :value="JSON.stringify(getPrograming)" class="form-control" hidden>
 							<div class="row">
 								<div class="col-md-3"  v-for="(item,index) in months" :key="index">
 									<div :class="item.meta.length>0?'small-box bg-primary':'small-box bg-success'" >
-										<div class="inner">
+										<div class="inner" @click="item.edit=!item.edit">
 										<h4>{{item.name}}<sup style="font-size: 15px"></sup></h4>
 
 										<span>{{item.meta}}</span>
@@ -57,7 +62,7 @@
 										<i :class="item.edit==true?'fa fa-arrow-circle-up':'fa fa-arrow-circle-down'"></i>
 										</a>
 										<transition  name="fade">
-											<input v-if="item.edit" v-model="item.meta" v-on:keyup.enter="item.edit=false" type="number" step="any" class="form-control" >
+											<input v-if="item.edit" v-model="item.meta" v-on:keyup.enter="item.edit=false" :id='index' :name="index" v-validate="'decimal:2'" class="form-control" >
 										</transition>
 									</div>
 								</div>
@@ -82,7 +87,6 @@
             </div>
         </div>	
 
-    </div>
 </template>
 
 <script>
@@ -135,9 +139,7 @@
 					});
 				}else{
 					this.months=this.meses
-					this.form.description = '';
-					this.form.meta = '';
-					this.form.id = '';
+					this.form = {};
 					this.months.forEach((month) => {
 							month.meta='';
 					});

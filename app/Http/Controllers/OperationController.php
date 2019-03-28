@@ -39,11 +39,17 @@ class OperationController extends Controller
     {
         //
         // return $request->all();
-        $operation = new Operation;
+        if($request->has('id'))
+        {
+            $operation = Operation::find($request->id);
+        }else{
+            $operation = new Operation;
+        }
         $operation->action_short_term_id = $request->action_short_term_id;
         $operation->programmatic_operation_id = $request->programmatic_operation_id;
         $operation->description = $request->description;
         $operation->meta = $request->meta;
+        $operation->weighing = $request->weighing;
         $operation->save();
         $operation->code= 'OP-'.$operation->id;
         $operation->save();

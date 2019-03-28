@@ -6,7 +6,7 @@
                     
                     <div class="modal-content">
                         <div v-html='csrf'></div>
-                
+						<input type="text" name="id" :value="form.id" v-if="form.id" hidden>
                         <div class="modal-header laravel-modal-bg">
                             <h5 class="modal-title" >{{title}}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -14,7 +14,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-							<input type="text" name="year_id" v-model="gestion.id" hidden>
+							<input type="text" name="year_id" v-model="gestion.id" >
 							<legend>Gestion {{gestion.year}}</legend>
 							<div class="row">
 								<div class="form-group col-md-4">
@@ -34,18 +34,34 @@
                                     <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
                                     <div class="invalid-feedback">{{ errors.first("meta") }}</div> 
                                 </div>
+								<div class="form-group col-md-3">
+                                    <label for="weighing">Ponderacion (%) </label>
+                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'decimal:2'" />
+                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div> 
+                                </div>
                             </div>
 							<legend>Estructura Programatica</legend>
 							<div class="row">
-								<div class="form-group col-md-3">
-									<label for="code">Codigo</label>
-									<v-select label="code" :options="structures" id="code" name="code" v-model="form.code"  placeholder="code" v-validate="'required'"></v-select>
+								<div class="form-group  col-md-4">
+									<label for="programatic_structure">Codigo</label>
+									<multiselect 
+										v-model="form.programmatic_structure"
+										:options="structures"
+										id="programatic_structure"
+										placeholder="Seleccionar Codigo" 
+										select-label="Seleccionar"
+										deselect-label="Remover"
+										selected-label="Seleccionado"
+										label="code"
+										track-by="code" >
+
+									</multiselect>
 									<div class="invalid-feedback">{{ errors.first("code") }}</div> 
 								</div>
-								<div class="form-group col-md-9 " v-if="form.code" >
+								<div class="form-group col-md-8 " v-if="form.programmatic_structure" >
 									<label for="">Descripcion</label>
-									<input type="text" class="form-control" v-model="form.code.description" disabled >													
-									<input type="text" class="form-control" name='structure_id' v-model="form.code.id" hidden>													
+									<input type="text" class="form-control" v-model="form.programmatic_structure.description" disabled >													
+									<input type="text" class="form-control" name='structure_id' v-model="form.programmatic_structure.id" hidden>													
 								</div>
 							</div>
                             <legend>Indicador</legend>
@@ -103,6 +119,7 @@
 </template>
 
 <script>
+
     export default {
 		props:['url','csrf','year','structures'],
         data:()=>({
@@ -121,13 +138,16 @@
 			
 			$('#ActionShortTermModal').on('show.bs.modal',(event)=> {
 				var button = $(event.relatedTarget) // Button that triggered the modal
-				var amt = button.data('json') // Extract info from data-* attributes
+				var ast = button.data('json') // Extract info from data-* attributes
 				this.title ='Nueva Accion a Corto Plazo ';
-				if(amt)
+				if(ast)
 				{
-					this.title='Editar '+amt.code;
+					this.title='Editar '+ast.code;
+					this.form = ast;
+				}else{
+					this.form={};
 				}
-				console.log(amt);
+				console.log(ast);
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 			

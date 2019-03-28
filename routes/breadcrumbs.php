@@ -27,8 +27,14 @@ Breadcrumbs::for('ast_operations', function ($trail,$action_short_term) {
     $trail->parent('action_short_term_year',$action_short_term->year);
     $trail->push($action_short_term->code, route('ast_operations',$action_short_term->id));
 });
+
 Breadcrumbs::for('operation_tasks', function ($trail,$operation) {
     $trail->parent('ast_operations',$operation->action_short_term);
     $trail->push($operation->code, route('operation_tasks',$operation->id));
+});
+
+Breadcrumbs::for('specific_tasks', function ($trail,$task,$programming) {
+    $trail->parent('operation_tasks',$task->operation);
+    $trail->push($task->code.' / '.$programming->name, route('specific_task',[$task->id,$programming->id]));
 });
 

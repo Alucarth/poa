@@ -2165,7 +2165,7 @@ cyclist@~0.2.2:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
   integrity sha1-GzN5LhHpFKL9bW7WRHRkRE5fpkA=
 
-datatables.net-bs4@^1.10.16, datatables.net-bs4@^1.10.19:
+datatables.net-bs4@^1.10.15, datatables.net-bs4@^1.10.16, datatables.net-bs4@^1.10.19:
   version "1.10.19"
   resolved "https://registry.yarnpkg.com/datatables.net-bs4/-/datatables.net-bs4-1.10.19.tgz#0608dff22008cf3c7b8a68b1bc702ed255b404fb"
   integrity sha512-pgeP17w4aPR7HIxIwuJghfqXULjdg1K6xMUUKDyCERJRSNNK4MRToFfELtIsluLNN555YBK4Kx8nihX5/ZT1Fw==
@@ -2181,7 +2181,24 @@ datatables.net-dt@^1.10.19:
     datatables.net "1.10.19"
     jquery ">=1.7"
 
-datatables.net@1.10.19, datatables.net@^1.10.16:
+datatables.net-responsive-bs4@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/datatables.net-responsive-bs4/-/datatables.net-responsive-bs4-2.2.3.tgz#639de17c1d31210ebf2b3c25f1c774c13f729e94"
+  integrity sha512-SQaWI0uLuPcaiBBin9zX+MuQfTSIkK1bYxbXqUV6NLkHCVa6PMQK7Rvftj0ywG4R7uOtjbzY8nSVqxEKvQI0Vg==
+  dependencies:
+    datatables.net-bs4 "^1.10.15"
+    datatables.net-responsive "2.2.3"
+    jquery ">=1.7"
+
+datatables.net-responsive@2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/datatables.net-responsive/-/datatables.net-responsive-2.2.3.tgz#50a2b1b4955b16b32f573a3f00f473b0bfbee913"
+  integrity sha512-8D6VtZcyuH3FG0Hn5A4LPZQEOX3+HrRFM7HjpmsQc/nQDBbdeBLkJX4Sh/o1nzFTSneuT1Wh/lYZHVPpjcN+Sw==
+  dependencies:
+    datatables.net "^1.10.15"
+    jquery ">=1.7"
+
+datatables.net@1.10.19, datatables.net@^1.10.15, datatables.net@^1.10.16:
   version "1.10.19"
   resolved "https://registry.yarnpkg.com/datatables.net/-/datatables.net-1.10.19.tgz#97a1ed41c85e62d61040603481b59790a172dd1f"
   integrity sha512-+ljXcI6Pj3PTGy5pesp3E5Dr3x3AV45EZe0o1r0gKENN2gafBKXodVnk2ypKwl2tTmivjxbkiqoWnipTefyBTA==
@@ -6677,10 +6694,10 @@ vue-loader@^15.4.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-select@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-2.5.1.tgz#9886e7123150a52dc8dbfe3202d0387268835aaa"
-  integrity sha512-Hs+arh7+0gLJoYiM3r9V/5CRn5XsAT8tVkouTkpDAWb923KFgraWrKDLSqz3ROedZUkuVIwkFuYq8+baHUf+bg==
+vue-multiselect@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-2.1.4.tgz#2a7b4958b75881ed34db45532974c36f9abfbc67"
+  integrity sha512-ryd2Ybl56LE81IxlwbZUo4gAWnUSG45iUGX4KgVwsteitK2R+cOLwJaJescobpIDJnVlVorRUnX5u7my1vBu2w==
 
 vue-style-loader@^4.1.0:
   version "4.1.2"

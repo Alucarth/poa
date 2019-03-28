@@ -6,7 +6,7 @@
     {{ Breadcrumbs::render('ast_operations',$action_short_term) }}
 @endsection
 @section('content')
-<div class="container">
+
     <div class="row">
         <div class="col-md-3">
             <div class="card card-widget widget-user-2">
@@ -14,7 +14,7 @@
                 <div class="widget-user-header bg-warning">
                     <div class="row">
                         <div class="col-md-4">
-                                <i class="material-icons" style="font-size:40px;">date_range</i>
+                                <i class="material-icons" style="font-size:50px;">date_range</i>
                         </div>
                         <div class="col-md-8">
                             <!-- /.widget-user-image -->
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <span> {{$action_short_term->description}}</span>
+                        <span> <strong>Descripcion:</strong> {{$action_short_term->description}}</span>
                     </div>                    
                 </div>
                 <div class="card-footer p-0">
@@ -65,12 +65,14 @@
                     </div>
                     <div class="card-body">
                         
-                        <table id="lista" class="table table-striped table-bordered" style="width:100%">
+                        <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Cod.</th>
                                     <th>Operacion</th>
+                                    <th>Estructura Programatica</th>
                                     <th>Meta</th>
+                                    <th>Ponderacion</th>
                                     <th>Ejecutado</th>
                                     <th>Eficacia</th>
                                     <th>Opciones</th>
@@ -81,12 +83,14 @@
                                 <tr>
                                     <td>{{$item->code}}</td>
                                     <td>{{$item->description}}</td>
+                                    <td>{{$item->programmatic_operation->description??''}}</td>
                                     <td>{{$item->meta }}</td>
+                                    <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
                                     <td>{{$item->executed??'' }}</td>
-                                    <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
+                                    <td>{{$item->efficacy?$item->efficacy.' %':'' }}</td>
                                     <td>
                                         <a href="{{url('operation_tasks/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a>
-                                        <a href="#"><i class="material-icons text-primary">edit</i></a>
+                                        <a href="#" data-toggle="modal" data-target="#OperationModal" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
                                         <a href="#"><i class="material-icons text-danger">delete</i></a>
                                     </td>
 
@@ -106,5 +110,5 @@
     {{-- aqui los modals --}}
     <operations-component url='{{url('operations')}}' csrf='{!! csrf_field('POST') !!}' ast="{{$action_short_term}}" :operations='{{$action_short_term->programmatic_structure->programmatic_operations}}' ></operations-component>
     {{-- <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}"  ></indicadores-component> --}}
-</div>
+
 @endsection

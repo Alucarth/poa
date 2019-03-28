@@ -6,7 +6,6 @@
     {{ Breadcrumbs::render('operation_tasks',$operation) }}
 @endsection
 @section('content')
-<div class="container">
     <div class="row">
         <div class="col-md-3">
             <div class="card card-widget widget-user-2">
@@ -15,7 +14,7 @@
                    
                     <div class="row">
                         <div class="col-md-4">
-                                <i class="material-icons" style="font-size:40px;">assignment</i>
+                                <i class="material-icons" style="font-size:50px;">assignment</i>
                         </div>
                         <div class="col-md-8">
                             <!-- /.widget-user-image -->
@@ -24,7 +23,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <span> {{$operation->description}}</span>
+                        <span> <strong>Descripcion:</strong> {{$operation->description}}</span>
                     </div>                    
                 </div>
                 <div class="card-footer p-0">
@@ -60,12 +59,13 @@
                     </div>
                     <div class="card-body">
                         
-                        <table id="lista" class="table table-striped table-bordered" style="width:100%">
+                        <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Cod.</th>
                                     <th>Tareas</th>
                                     <th>Meta</th>
+                                    <th>Ponderacion</th>
                                     <th>Ejecutado</th>
                                     <th>Eficacia</th>
                                     <th>Opciones</th>
@@ -77,6 +77,7 @@
                                     <td>{{$item->code}}</td>
                                     <td>{{$item->description}}</td>
                                     <td>{{$item->meta }}</td>
+                                    <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
                                     <td>{{$item->executed??'' }}</td>
                                     <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
                                     <td>
@@ -97,10 +98,9 @@
                 </div>
             </div>
         </div>
+        <tasks-component url='{{url('tasks')}}' csrf='{!! csrf_field('POST') !!}' :optask="{{$operation}}" :meses="{{$meses}}" ></operations-component>
     </div>
 	{{-- aqui los modals --}}
 	
-	<tasks-component url='{{url('tasks')}}' csrf='{!! csrf_field('POST') !!}' :optask="{{$operation}}" :meses="{{$meses}}" ></operations-component>
-    {{-- <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}"  ></indicadores-component> --}}
-</div>
+
 @endsection

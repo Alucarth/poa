@@ -6,7 +6,7 @@
                     
                     <div class="modal-content">
                         <div v-html='csrf'></div>
-
+						<input type="text" name="id" :value="form.id" v-if="form.id" hidden>
                         <div class="modal-header laravel-modal-bg">
                             <h5 class="modal-title" >{{title}}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -37,6 +37,11 @@
                                     <label for="meta">Meta</label>
                                     <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
                                     <div class="invalid-feedback">{{ errors.first("meta") }}</div> 
+                                </div>
+								<div class="form-group col-md-3">
+                                    <label for="weighing">Ponderacion (%)</label>
+                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'required|decimal:2'" />
+                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div> 
                                 </div>
                             </div>
 
@@ -82,6 +87,9 @@
 				if(specific_task)
 				{
 					this.title='Editar '+specific_task.code;
+					this.form = specific_task;
+				}else{
+					this.form ={};
 				}
 				console.log(specific_task);
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).

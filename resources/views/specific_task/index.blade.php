@@ -3,10 +3,10 @@
     Tarea
 @endsection
 @section('breadcrums')
-    {{-- {{ Breadcrumbs::render('operation_tasks',$operation) }} --}}
+    {{ Breadcrumbs::render('specific_tasks',$task,$programming) }}
 @endsection
 @section('content')
-<div class="container">
+
     <div class="row">
         <div class="col-md-3">
             <div class="card card-widget widget-user-2">
@@ -15,16 +15,16 @@
                    
                     <div class="row">
                         <div class="col-md-4">
-                                <i class="material-icons" style="font-size:40px;">assignment</i>
+                                <i class="fas fa-calendar-week" style="font-size:40px;"></i>
                         </div>
                         <div class="col-md-8">
                             <!-- /.widget-user-image -->
                             <h3 >{{ $task->code}}</h3>
-                            <h5 > <i class="material-icons">flag</i> {{ $task->meta}}</h5>
+                            <h5 >  <i class="material-icons">flag</i> {{ $task->meta}}</h5>
                         </div>
                     </div>
                     <div class="row">
-                        <span> {{$task->description}}</span>
+                        <span> <strong>Descripcion: </strong>{{$task->description}}</span>
                     </div>                    
                 </div>
                 <div class="card-footer p-0">
@@ -64,12 +64,13 @@
                     </div>
                     <div class="card-body">
                         
-                        <table id="lista" class="table table-striped table-bordered" style="width:100%">
+                        <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Cod.</th>
                                     <th>Tareas</th>
                                     <th>Meta</th>
+                                    <th>Ponderacion</th>
                                     <th>Ejecutado</th>
                                     <th>Eficacia</th>
                                     <th>Opciones</th>
@@ -81,11 +82,12 @@
                                     <td>{{$item->code}}</td>
                                     <td>{{$item->description}}</td>
                                     <td>{{$item->meta }}</td>
+                                    <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
                                     <td>{{$item->executed??'' }}</td>
                                     <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
                                     <td>
                                         {{-- <a href="{{url('operation_tasks/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a> --}}
-                                    <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#TaskModal" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
+                                    <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#SpecificTaskModal" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
                                         <a href="#"><i class="material-icons text-danger">delete</i></a>
                                     </td>
 
@@ -106,5 +108,5 @@
 	
 <specific-task-component url='{{url('specific_tasks')}}' csrf='{!! csrf_field('POST') !!}' :task="{{$task}}" :programming='{{ json_encode($programming)}}'  ></specific-task-component>
     {{-- <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}"  ></indicadores-component> --}}
-</div>
+
 @endsection
