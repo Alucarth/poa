@@ -13,6 +13,7 @@ import Multiselect from 'vue-multiselect';
 
 window.Switchery = require('switchery');
 window.Vue = require('vue');
+window.moment = require('moment');
 window.numeral = require('numeral');
 window.toastr = require('toastr');
 window.swal = require('sweetalert');
@@ -25,7 +26,7 @@ toastr.options = {
 Vue.use(Vuetify);
 Vue.component('multiselect', Multiselect)
 
-
+window.moment.locale('es');
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -54,6 +55,7 @@ Vue.component('tasks-component', require('./components/TasksComponent.vue').defa
 Vue.component('executions-component', require('./components/ExecutionsComponent.vue').default);
 Vue.component('specific-task-component', require('./components/SpecificTaskComponent.vue').default);
 Vue.component('execution-specific-tasks-component', require('./components/ExecutionSpecificTask.vue').default);
+Vue.component('report-component', require('./components/ReportComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

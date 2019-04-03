@@ -87,7 +87,7 @@
                             <span class="float-right"></span>
                         </a>
                         <a href="#" class="dropdown-item">
-                            <i class="fa fa-cogs mr-4"></i> 
+                            <i class="fa fa-cogs mr-4"></i>
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
@@ -118,9 +118,9 @@
                     </div>
                     <div class="info">
                             <a href="#" class="d-block"> {{Auth::user()->name}}</a>
-                           
+
 						{{-- <nav class="mt-2">
-                                
+
 								<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 									<!-- Add icons to the links using the .nav-icon class
 							   with font-awesome or any other icon font library -->
@@ -191,6 +191,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ url('report') }}" class="nav-link">
+                                <i class="nav-icon fas fa-chart-area"></i>
+                                <p>
+                                    Reporte
+                                </p>
+                            </a>
+                        </li>
 
                     </ul>
                 </nav>
@@ -216,14 +224,14 @@
                                 <li class="breadcrumb-item active">Blank Page</li> --}}
                             </ol>
                         </nav>
-            
+
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
 
             <!-- Main content -->
             <section class="container-fluid">
-             
+
                 <div id="app">
                     @yield('content')
                 </div>
@@ -284,7 +292,6 @@
                 //                     '</tr>' :
                 //                     '';
                 //             } ).join('');
-        
                 //             return data ?
                 //                 $('<table/>').append( data ) :
                 //                 false;
@@ -298,7 +305,7 @@
                     { responsivePriority: 10001, targets: 4 },
                     { responsivePriority: 2, targets: -1 }
                 ],
-               
+
             });
             var message =@json(session('message'));
             var deleteMessage = @json(session('delete'));
