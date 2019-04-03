@@ -13,4 +13,8 @@ class Task extends Model
         return $this->belongsToMany('App\Month','programmings','task_id','month_id')
                     ->withPivot('id','meta','executed','efficacy');
     }
+    public function operation()
+    {
+        return $this->belongsTo("App\Operation");
+    }
 }

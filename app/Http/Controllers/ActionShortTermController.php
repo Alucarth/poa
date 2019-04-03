@@ -8,6 +8,7 @@ use App\Year;
 use App\Operation;
 use App\Indicator;
 use App\ProgrammaticStructure;
+use App\ActionMediumTerm;
 class ActionShortTermController extends Controller
 {
     /**
@@ -40,11 +41,18 @@ class ActionShortTermController extends Controller
     {
         //
         // return $request->all();
-        $action_short_term = new ActionShortTerm;
+        if($request->has('id'))
+        {
+            $action_short_term = ActionShortTerm::find($request->id);
+        }else
+        {
+            $action_short_term = new ActionShortTerm;
+        }
         $action_short_term->year_id = $request->year_id;
         $action_short_term->programmatic_structure_id = $request->structure_id;
         $action_short_term->description = $request->description;
         $action_short_term->meta = $request->meta;
+        $action_short_term->weighing = $request->weighing;
         $action_short_term->unidad_de_medida = $request->unidad_de_medida;
         $action_short_term->linea_base = $request->linea_base;
         $action_short_term->producto_esperado = $request->producto_esperado;
@@ -52,7 +60,7 @@ class ActionShortTermController extends Controller
         $action_short_term->code = 'ACP-'.$action_short_term->id;
         $action_short_term->save();
 
-        session()->flash('message','se registro '.$action_short_term->code);
+        session()->flash('message',' se registro '.$action_short_term->code);
      
         return back()->withInput();
     }

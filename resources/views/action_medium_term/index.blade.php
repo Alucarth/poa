@@ -28,7 +28,7 @@
                         </div>
                     @endif
 
-                    <table id="lista" class="table table-striped table-bordered" style="width:100%">
+                    <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Cod.</th>

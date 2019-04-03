@@ -6,7 +6,6 @@
     {{ Breadcrumbs::render('action_short_term_year',$year) }}
 @endsection
 @section('content')
-<div class="container">
     <div class="row">
         <div class="col-md-3">
             <div class="card card-widget widget-user-2">
@@ -15,16 +14,16 @@
                    
                     <div class="row">
                         <div class="col-md-4">
-                                <i class="fa fa-calendar-o" style="font-size:40px;"></i>
+                                <i class="far fa-calendar" style="font-size:50px;"></i>
                         </div>
                         <div class="col-md-8">
                             <!-- /.widget-user-image -->
                             <h3 >{{ $year->action_medium_term->code}}</h3>
-                            <h5 > <i class="material-icons">flag</i> {{ $year->action_medium_term->alcance_meta}}</h5>
+                            <h5 ><i class="material-icons">flag</i>  {{ $year->action_medium_term->alcance_meta}}</h5>
                         </div>
                     </div>
                     <div class="row">
-                        <span> {{$year->action_medium_term->description}}</span>
+                        <span>  <strong>Descripcion:</strong> {{$year->action_medium_term->description}}</span>
                     </div>                    
                 </div>
                 <div class="card-footer p-0">
@@ -69,12 +68,14 @@
                     <div class="card-body">
                         {{-- {{$programmatic_structures}} --}}
 
-                        <table id="lista" class="table table-striped table-bordered" style="width:100%">
+                        <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Cod.</th>
                                     <th>Accion Corto Plazo</th>
+                                    <th>Estructura Programatica</th>
                                     <th>Meta</th>
+                                    <th>Ponderacion</th>
                                     <th>Ejecutado</th>
                                     <th>Eficacia</th>
                                     <th>Opciones</th>
@@ -85,12 +86,14 @@
                                 <tr>
                                     <td>{{$item->code}}</td>
                                     <td>{{$item->description}}</td>
+                                    <td>{{$item->programmatic_structure->description}}</td>
                                     <td>{{$item->meta }}</td>
+                                    <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
                                     <td>{{$item->executed??'' }}</td>
-                                    <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
+                                    <td>{{$item->efficacy?$item->efficacy.' %':'' }}</td>
                                     <td>
                                         <a href="{{url('ast_operations/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a>
-                                        <a href="#"><i class="material-icons text-primary">edit</i></a>
+                                        <a href="#" data-toggle="modal" data-target="#ActionShortTermModal" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
                                         <a href="#"><i class="material-icons text-danger">delete</i></a>
                                     </td>
 
@@ -109,5 +112,5 @@
     </div>
     {{-- aqui los modals --}}
     <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}" :structures="{{$programmatic_structures}}"  ></indicadores-component>
-</div>
+
 @endsection

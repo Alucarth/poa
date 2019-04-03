@@ -9,23 +9,8 @@ require('./bootstrap');
 import 'fullcalendar';
 import VeeValidate from "vee-validate";
 import Vuetify from 'vuetify';
-import vSelect from 'vue-select/src/components/Select.vue';
+import Multiselect from 'vue-multiselect';
 
-// import 'vuetify/dist/vuetify.min.css'     ;
-// import {MDCList} from '@material/list';
-// import {MDCComponent, MDCFoundation} from '@material/base';
-// import {MDCRipple} from '@material/ripple';
-
-// const selector = '.mdc-button, .mdc-icon-button, .mdc-card__primary-action';
-// const ripples = [].map.call(document.querySelectorAll(selector), function(el) {
-//   return new MDCRipple(el);
-// });
-
-
-
-// const list = new MDCList(document.querySelector('.mdc-list'));
-// const MDCComponent = require('mdc-base').MDCComponent;
-// const MDCFoundation = require('mdc-base').MDCFoundation;
 window.Switchery = require('switchery');
 window.Vue = require('vue');
 window.numeral = require('numeral');
@@ -38,7 +23,7 @@ toastr.options = {
   }
 
 Vue.use(Vuetify);
-Vue.component('v-select', vSelect);
+Vue.component('multiselect', Multiselect)
 
 
 /**

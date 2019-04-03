@@ -16,4 +16,9 @@ class Operation extends Model
     {
         return $this->belongsTo('App\ActionShortTerm');
     }
+    
+    public function programmatic_operation()
+    {
+        return $this->belongsTo('App\ProgrammaticOperation');
+    }
 }
