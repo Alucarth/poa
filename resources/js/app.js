@@ -10,6 +10,7 @@ import 'fullcalendar';
 import VeeValidate from "vee-validate";
 import Vuetify from 'vuetify';
 import Multiselect from 'vue-multiselect';
+import 'jspdf-autotable';
 
 window.Switchery = require('switchery');
 window.Vue = require('vue');
@@ -17,7 +18,8 @@ window.moment = require('moment');
 window.numeral = require('numeral');
 window.toastr = require('toastr');
 window.swal = require('sweetalert');
-window.Swal = require('sweetalert2')
+window.Swal = require('sweetalert2');
+window.jsPDF = require('jspdf');
 toastr.options = {
     "closeButton": false,
     "progressBar": true,

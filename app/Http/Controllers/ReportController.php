@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Programming;
+use App\Task;
 class ReportController extends Controller
 {
     /**
@@ -56,6 +58,80 @@ class ReportController extends Controller
         return response()->json($query);
     }
 
+    public function report_task(Request $request){
+        // $programmings = Programming::whereIn('month_id',$request->months)->get();
+        $tasks = Task::whereHas('programmings', function ($query) use($request) {
+                                                $query->whereIn('month_id', $request->months);
+                                            })->get();
+        $rows=array();
+
+
+        $total_executed =0;
+        $total_meta =0;
+        foreach($tasks as $task){
+
+
+            $pa = 0; //programacion acumuladaq
+            $ea = 0; //ejecucion acumulada
+
+            $ppa=0;
+            $pea=0;
+            $eea=0;
+
+            $programmings =Programming::where('task_id',$task->id)->whereIn('month_id',$request->months)->orderBy('month_id')->get();
+            $periodo_meta = 0;
+            $periodo_executed = 0;
+            foreach($programmings as $programming){
+                $periodo_meta += $programming->meta;
+                $periodo_executed += $programming->executed;
+            }
+            $total_executed +=$periodo_executed;
+            $total_meta +=$periodo_meta;
+            foreach($programmings as $programming){
+
+                $pa += $programming->meta;
+                $ea += $programming->executed;
+                // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+                // $eea = ($ea/$pa)*100; //eficacia de ejecucion acumulada
+                $row = array(
+                                'name'=> $task->code.' '.$programming->month->name,
+                                'meta'=> $programming->meta,
+                                'executed'=>$programming->executed,
+                                'efficacy'=>$programming->efficacy,
+                                'programacion_acumulada'=> $pa,
+                                'ejecucion_acumulada'=> $ea,
+                                'porcentaje_pa'=> $ppa,
+                                'porcentaje_ea'=> $ppe,
+                                'eficacia_ejecucion_acumulada'=>$eea
+
+                            );
+                array_push($rows,$row);
+            }
+
+
+        }
+
+        // $row = array(
+        //                 'name'=> 'Periodo',
+        //                 'meta'=> $total_meta,
+        //                 'executed'=>$total_executed,
+        //                 'efficacy'=> self::porcentaje($total_executed,$total_meta),
+        //                 'programacion_acumulada'=> 0,
+        //                 'ejecucion_acumulada'=> 0,
+        //                 'porcentaje_pa'=> 0,
+        //                 'porcentaje_ea'=> 0,
+        //                 'eficacia_ejecucion_acumulada'=>0
+
+        //             );
+        // array_push($rows,$row);
+
+
+        return response()->json($rows);
+    }
     /**
      * Display the specified resource.
      *
@@ -147,4 +223,12 @@ class ReportController extends Controller
         // return request()->all();
     }
 
+    public static  function  porcentaje( $variante, $meta ){
+        try {
+            return ($variante * 100)/$meta;
+            //code...
+        } catch (\Throwable $th) {
+            return 0;
+        }
+    }
 }
