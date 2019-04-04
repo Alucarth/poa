@@ -54,6 +54,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('execution_specific_tasks','ExecutionController@specific_tasks');//vista
 
     Route::resource('report', 'ReportController');
+    Route::get('report_excel','ReportController@report_excel');
+    Route::get('report_pdf','ReportController@report_pdf');
     // //reportes
     // Route::get('amp_report_excel','MediumTermProgramingController@report_excel');
     // Route::get('acp_report_excel','ShortTermProgramingController@report_excel');

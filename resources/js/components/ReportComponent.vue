@@ -14,6 +14,8 @@
                 <div>
                     <div class="headline">Reporte </div>
                     <span class="white--text"></span>
+                    <button class="btn btn-success" @click="download">excel</button>
+                    <button class="btn btn-info" @click="download_pdf">pdf</button>
                 </div>
             </v-card-title>
             <v-card-text>
@@ -119,15 +121,79 @@
                 console.log(year);
                 let day = moment();
                 let columns=[];
+                let total_executed =0;
+                let total_meta =0;
                 rows.forEach(item => {
                     day.month(item.month_id-1);
                     columns.push({month:day.format('MMMM')+'-'+year,meta:item.month_meta,executed:item.month_executed,efficacy:this.porcentaje(item.month_executed,item.month_meta)});
+                    total_executed += Number(item.month_executed);
+                    total_meta += Number(item.month_meta);
                 });
+                columns.push({month:'Periodo',meta:numeral(total_meta).format('0.00'),executed:numeral(total_executed).format('0.00'),efficacy:this.porcentaje(total_executed,total_meta)});
                 return columns;
             },
             porcentaje(ejecutado,meta){
                 return numeral((Number(ejecutado) * 100)/Number(meta)).format('0.00')+' %';
-            }
+            },
+
+            downloadExcel(){
+                let params = {columns:this.columns,rows:this.rows}
+                axios.post('report_excel',params)
+                    .then((response)=>{
+                        console.log(response.data);
+                    });
+            },
+            download: function (event) {
+            // `this` inside methods point to the Vue instance
+            // self = this;
+            //
+                let parameters={};
+                parameters['columns'] =JSON.stringify(this.columns);
+                parameters["rows"] =JSON.stringify(this.rows);
+
+                // parameters.excel =true;
+                // console.log(parameters);
+                axios({
+                    url: 'report_excel',
+                    method: 'GET',
+                    params: parameters,
+                    responseType: 'blob', // important
+                }).then((response) => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'Reporte '+moment().format()+'.xls');
+                    document.body.appendChild(link);
+                    link.click();
+                    // self.dialog = false;
+                });
+            },
+            download_pdf: function (event) {
+            // `this` inside methods point to the Vue instance
+            // self = this;
+            //
+                let parameters={};
+                parameters['columns'] =JSON.stringify(this.columns);
+                parameters["rows"] =JSON.stringify(this.rows);
+
+                // parameters.excel =true;
+                // console.log(parameters);
+                axios({
+                    url: 'report_pdf',
+                    method: 'GET',
+                    params: parameters,
+                    responseType: 'blob', // important
+                }).then((response) => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'Reporte '+moment().format()+'.pdf');
+                    document.body.appendChild(link);
+                    link.click();
+                    // self.dialog = false;
+                });
+            },
+
 
         }
     }

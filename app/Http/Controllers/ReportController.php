@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 class ReportController extends Controller
 {
     /**
@@ -98,6 +99,52 @@ class ReportController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function report_excel(){
+
+
+        $columns =json_decode(request('columns'));
+        $rows =json_decode(request('rows'));
+        // // Log::info(request('columns'));
+        // return $columns;
+        $data = compact('columns','rows');
+        // $data = array("columns"=>$columns,"rows"=>$rows);
+        Log::info($data);
+       Excel::create('Reporte Mensual', function($excel) use($data)  {
+
+            $excel->sheet('New sheet', function($sheet) use($data) {
+
+                // $amps = ActionMediumTerm::all();
+                $sheet->loadView('report.excel',$data);
+
+            });
+
+        })->download('xls');
+        // return request()->all();
+    }
+
+    public function report_pdf(){
+
+
+        $columns =json_decode(request('columns'));
+        $rows =json_decode(request('rows'));
+        // // Log::info(request('columns'));
+        // return $columns;
+        $data = compact('columns','rows');
+        // $data = array("columns"=>$columns,"rows"=>$rows);
+        Log::info($data);
+       Excel::create('Reporte Mensual', function($excel) use($data)  {
+
+            $excel->sheet('New sheet', function($sheet) use($data) {
+
+                // $amps = ActionMediumTerm::all();
+                $sheet->loadView('report.excel',$data);
+
+            });
+
+        })->export('pdf');
+        // return request()->all();
     }
 
 }
