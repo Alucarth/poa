@@ -57,6 +57,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('report_excel','ReportController@report_excel');
     Route::get('report_pdf','ReportController@report_pdf');
     Route::post('report_task','ReportController@report_task');
+    Route::post('report_operation','ReportController@report_operation');
+    Route::post('report_ast','ReportController@report_ast');
+    Route::post('report_year','ReportController@report_year');
+    Route::post('report_amt','ReportController@report_amt');
     // //reportes
     // Route::get('amp_report_excel','MediumTermProgramingController@report_excel');
     // Route::get('acp_report_excel','ShortTermProgramingController@report_excel');

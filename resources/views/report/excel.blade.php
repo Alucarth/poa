@@ -23,10 +23,15 @@
 	<tbody>
             @foreach ($rows as $row)
             <tr class="content">
-                <td>{{ $row->month }}</td>
+                <td>{{ $row->name }}</td>
                 <td>{{ $row->meta }}</td>
                 <td>{{ $row->executed }}</td>
                 <td>{{ $row->efficacy }}</td>
+                <td>{{ $row->programacion_acumulada }}</td>
+                <td>{{ $row->ejecucion_acumulada }}</td>
+                <td>{{ $row->porcentaje_pa }}</td>
+                <td>{{ $row->porcentaje_ea }}</td>
+                <td>{{ $row->eficacia_ejecucion_acumulada }}</td>
             </tr>
             @endforeach
 	</tbody>

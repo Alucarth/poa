@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Programming;
 use App\Task;
+use App\Operation;
+use App\ActionShortTerm;
+use App\Year;
+use App\ActionMediumTerm;
 class ReportController extends Controller
 {
     /**
@@ -63,7 +67,7 @@ class ReportController extends Controller
         $tasks = Task::whereHas('programmings', function ($query) use($request) {
                                                 $query->whereIn('month_id', $request->months);
                                             })->get();
-        $rows=array();
+        $task_rows=array();
 
 
         $total_executed =0;
@@ -75,7 +79,7 @@ class ReportController extends Controller
             $ea = 0; //ejecucion acumulada
 
             $ppa=0;
-            $pea=0;
+            $ppe=0;
             $eea=0;
 
             $programmings =Programming::where('task_id',$task->id)->whereIn('month_id',$request->months)->orderBy('month_id')->get();
@@ -109,28 +113,807 @@ class ReportController extends Controller
                                 'eficacia_ejecucion_acumulada'=>$eea
 
                             );
-                array_push($rows,$row);
+                array_push($task_rows,$row);
             }
 
 
         }
 
-        // $row = array(
-        //                 'name'=> 'Periodo',
-        //                 'meta'=> $total_meta,
-        //                 'executed'=>$total_executed,
-        //                 'efficacy'=> self::porcentaje($total_executed,$total_meta),
-        //                 'programacion_acumulada'=> 0,
-        //                 'ejecucion_acumulada'=> 0,
-        //                 'porcentaje_pa'=> 0,
-        //                 'porcentaje_ea'=> 0,
-        //                 'eficacia_ejecucion_acumulada'=>0
-
-        //             );
-        // array_push($rows,$row);
 
 
-        return response()->json($rows);
+        return response()->json($task_rows);
+    }
+    public function report_operation(Request $request){
+
+        $operations = Operation::all();
+
+        $operation_rows =array();
+
+        foreach($operations as $operation){
+
+            $tasks = Task::whereHas('programmings', function ($query) use($request) {
+                                $query->whereIn('month_id', $request->months);
+                            })
+                            ->where('operation_id',$operation->id)
+                            ->get();
+            $task_rows=array();
+
+
+            $total_executed =0;
+            $total_meta =0;
+
+            foreach($tasks as $task){
+
+
+                $pa = 0; //programacion acumuladaq
+                $ea = 0; //ejecucion acumulada
+
+                $ppa=0;
+                $ppe=0;
+                $eea=0;
+
+                $programmings =Programming::where('task_id',$task->id)->whereIn('month_id',$request->months)->orderBy('month_id')->get();
+                $periodo_meta = 0;
+                $periodo_executed = 0;
+
+                foreach($programmings as $programming){
+                    $periodo_meta += $programming->meta;
+                    $periodo_executed += $programming->executed;
+                }
+
+                $total_executed +=$periodo_executed;
+                $total_meta +=$periodo_meta;
+
+                foreach($programmings as $programming){
+
+                    $pa += $programming->meta;
+                    $ea += $programming->executed;
+                    // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                    // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                    $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                    $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                    $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+                    // $eea = ($ea/$pa)*100; //eficacia de ejecucion acumulada
+                    $row = array(
+                    'name'=> $task->code.' '.$programming->month->name,
+                    'meta'=> $programming->meta,
+                    'executed'=>$programming->executed,
+                    'efficacy'=>$programming->efficacy,
+                    'programacion_acumulada'=> $pa,
+                    'ejecucion_acumulada'=> $ea,
+                    'porcentaje_pa'=> $ppa,
+                    'porcentaje_ea'=> $ppe,
+                    'eficacia_ejecucion_acumulada'=>$eea
+
+                    );
+                    array_push($task_rows,$row);
+                }
+
+            } //end task
+
+            $pa = 0; //programacion acumuladaq
+            $ea = 0; //ejecucion acumulada
+
+            $ppa=0;
+            $ppe=0;
+            $eea=0;
+
+            $periodo_meta = 0;
+            $periodo_executed = 0;
+            // Log::info($task_rows);
+
+            foreach($task_rows as $task_array){
+                $task = (object) $task_array;
+                $periodo_meta += $task->meta;
+                $periodo_executed += $task->executed;
+            }
+
+            foreach($task_rows as $task_array){
+
+                $task = (object) $task_array;
+
+                $pa += $task->meta;
+                $ea += $task->executed;
+                // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+
+                $row = array(
+                    'name'=> $operation->code.' '.$task->name,
+                    'meta'=> $task->meta,
+                    'executed'=>$task->executed,
+                    'efficacy'=>$task->efficacy,
+                    'programacion_acumulada'=> $pa,
+                    'ejecucion_acumulada'=> $ea,
+                    'porcentaje_pa'=> $ppa,
+                    'porcentaje_ea'=> $ppe,
+                    'eficacia_ejecucion_acumulada'=>$eea
+
+                );
+
+                array_push($operation_rows,$row);
+            }
+
+
+
+
+        }//end opertaion
+
+
+
+
+        //hasta aqui tareas
+        return response()->json($operation_rows);
+    }
+
+    public function report_ast(Request $request){
+
+        $action_short_terms = ActionShortTerm::all();
+        $action_short_term_rows =array();
+
+        foreach($action_short_terms as $action_short_term)
+        {
+
+            $operation_rows =array();
+
+            foreach($action_short_term->operations as $operation){
+
+                $tasks = Task::whereHas('programmings', function ($query) use($request) {
+                                    $query->whereIn('month_id', $request->months);
+                                })
+                                ->where('operation_id',$operation->id)
+                                ->get();
+                $task_rows=array();
+
+
+                $total_executed =0;
+                $total_meta =0;
+
+                foreach($tasks as $task){
+
+
+                    $pa = 0; //programacion acumuladaq
+                    $ea = 0; //ejecucion acumulada
+
+                    $ppa=0;
+                    $ppe=0;
+                    $eea=0;
+
+                    $programmings =Programming::where('task_id',$task->id)->whereIn('month_id',$request->months)->orderBy('month_id')->get();
+                    $periodo_meta = 0;
+                    $periodo_executed = 0;
+
+                    foreach($programmings as $programming){
+                        $periodo_meta += $programming->meta;
+                        $periodo_executed += $programming->executed;
+                    }
+
+                    $total_executed +=$periodo_executed;
+                    $total_meta +=$periodo_meta;
+
+                    foreach($programmings as $programming){
+
+                        $pa += $programming->meta;
+                        $ea += $programming->executed;
+                        // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                        // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                        $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                        $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                        $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+                        // $eea = ($ea/$pa)*100; //eficacia de ejecucion acumulada
+                        $row = array(
+                        'name'=> $task->code.' '.$programming->month->name,
+                        'meta'=> $programming->meta,
+                        'executed'=>$programming->executed,
+                        'efficacy'=>$programming->efficacy,
+                        'programacion_acumulada'=> $pa,
+                        'ejecucion_acumulada'=> $ea,
+                        'porcentaje_pa'=> $ppa,
+                        'porcentaje_ea'=> $ppe,
+                        'eficacia_ejecucion_acumulada'=>$eea
+
+                        );
+                        array_push($task_rows,$row);
+                    }
+
+                } //end task
+
+                $pa = 0; //programacion acumuladaq
+                $ea = 0; //ejecucion acumulada
+
+                $ppa=0;
+                $ppe=0;
+                $eea=0;
+
+                $periodo_meta = 0;
+                $periodo_executed = 0;
+                // Log::info($task_rows);
+
+                foreach($task_rows as $task_array){
+                    $task = (object) $task_array;
+                    $periodo_meta += $task->meta;
+                    $periodo_executed += $task->executed;
+                }
+
+                foreach($task_rows as $task_array){
+
+                    $task = (object) $task_array;
+
+                    $pa += $task->meta;
+                    $ea += $task->executed;
+                    // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                    // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                    $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                    $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                    $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+
+                    $row = array(
+                        'name'=> $operation->code.' '.$task->name,
+                        'meta'=> $task->meta,
+                        'executed'=>$task->executed,
+                        'efficacy'=>$task->efficacy,
+                        'programacion_acumulada'=> $pa,
+                        'ejecucion_acumulada'=> $ea,
+                        'porcentaje_pa'=> $ppa,
+                        'porcentaje_ea'=> $ppe,
+                        'eficacia_ejecucion_acumulada'=>$eea
+
+                    );
+
+                    array_push($operation_rows,$row);
+                }
+
+
+            }//end opertaion
+
+            $pa = 0; //programacion acumuladaq
+            $ea = 0; //ejecucion acumulada
+
+            $ppa=0;
+            $ppe=0;
+            $eea=0;
+
+            $periodo_meta = 0;
+            $periodo_executed = 0;
+            // Log::info($task_rows);
+
+            foreach($operation_rows as $operation_array){
+                $operation = (object) $operation_array;
+                $periodo_meta += $operation->meta;
+                $periodo_executed += $operation->executed;
+            }
+
+            foreach($operation_rows as $operation_array){
+
+                $operation = (object) $operation_array;
+
+                $pa += $operation->meta;
+                $ea += $operation->executed;
+                // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+
+                $row = array(
+                    'name'=> $action_short_term->code.' '.$operation->name,
+                    'meta'=> $operation->meta,
+                    'executed'=>$operation->executed,
+                    'efficacy'=>$operation->efficacy,
+                    'programacion_acumulada'=> $pa,
+                    'ejecucion_acumulada'=> $ea,
+                    'porcentaje_pa'=> $ppa,
+                    'porcentaje_ea'=> $ppe,
+                    'eficacia_ejecucion_acumulada'=>$eea
+
+                );
+
+                array_push($action_short_term_rows,$row);
+            }
+
+
+        }//end action for each
+
+        return response()->json($action_short_term_rows);
+    }
+
+    public function report_year(Request $request)
+    {
+        $years = Year::all();
+        $year_rows=array();
+
+        foreach($years  as $year){
+
+            $action_short_term_rows =array();
+
+            foreach($year->action_short_terms as $action_short_term)
+            {
+
+                $operation_rows =array();
+
+                foreach($action_short_term->operations as $operation){
+
+                    $tasks = Task::whereHas('programmings', function ($query) use($request) {
+                                        $query->whereIn('month_id', $request->months);
+                                    })
+                                    ->where('operation_id',$operation->id)
+                                    ->get();
+                    $task_rows=array();
+
+
+                    $total_executed =0;
+                    $total_meta =0;
+
+                    foreach($tasks as $task){
+
+
+                        $pa = 0; //programacion acumuladaq
+                        $ea = 0; //ejecucion acumulada
+
+                        $ppa=0;
+                        $ppe=0;
+                        $eea=0;
+
+                        $programmings =Programming::where('task_id',$task->id)->whereIn('month_id',$request->months)->orderBy('month_id')->get();
+                        $periodo_meta = 0;
+                        $periodo_executed = 0;
+
+                        foreach($programmings as $programming){
+                            $periodo_meta += $programming->meta;
+                            $periodo_executed += $programming->executed;
+                        }
+
+                        $total_executed +=$periodo_executed;
+                        $total_meta +=$periodo_meta;
+
+                        foreach($programmings as $programming){
+
+                            $pa += $programming->meta;
+                            $ea += $programming->executed;
+                            // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                            // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                            $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                            $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                            $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+                            // $eea = ($ea/$pa)*100; //eficacia de ejecucion acumulada
+                            $row = array(
+                            'name'=> $task->code.' '.$programming->month->name,
+                            'meta'=> $programming->meta,
+                            'executed'=>$programming->executed,
+                            'efficacy'=>$programming->efficacy,
+                            'programacion_acumulada'=> $pa,
+                            'ejecucion_acumulada'=> $ea,
+                            'porcentaje_pa'=> $ppa,
+                            'porcentaje_ea'=> $ppe,
+                            'eficacia_ejecucion_acumulada'=>$eea
+
+                            );
+                            array_push($task_rows,$row);
+                        }
+
+                    } //end task
+
+                    $pa = 0; //programacion acumuladaq
+                    $ea = 0; //ejecucion acumulada
+
+                    $ppa=0;
+                    $ppe=0;
+                    $eea=0;
+
+                    $periodo_meta = 0;
+                    $periodo_executed = 0;
+                    // Log::info($task_rows);
+
+                    foreach($task_rows as $task_array){
+                        $task = (object) $task_array;
+                        $periodo_meta += $task->meta;
+                        $periodo_executed += $task->executed;
+                    }
+
+                    foreach($task_rows as $task_array){
+
+                        $task = (object) $task_array;
+
+                        $pa += $task->meta;
+                        $ea += $task->executed;
+                        // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                        // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                        $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                        $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                        $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+
+                        $row = array(
+                            'name'=> $operation->code.' '.$task->name,
+                            'meta'=> $task->meta,
+                            'executed'=>$task->executed,
+                            'efficacy'=>$task->efficacy,
+                            'programacion_acumulada'=> $pa,
+                            'ejecucion_acumulada'=> $ea,
+                            'porcentaje_pa'=> $ppa,
+                            'porcentaje_ea'=> $ppe,
+                            'eficacia_ejecucion_acumulada'=>$eea
+
+                        );
+
+                        array_push($operation_rows,$row);
+                    }
+
+
+                }//end opertaion
+
+                $pa = 0; //programacion acumuladaq
+                $ea = 0; //ejecucion acumulada
+
+                $ppa=0;
+                $ppe=0;
+                $eea=0;
+
+                $periodo_meta = 0;
+                $periodo_executed = 0;
+                // Log::info($task_rows);
+
+                foreach($operation_rows as $operation_array){
+                    $operation = (object) $operation_array;
+                    $periodo_meta += $operation->meta;
+                    $periodo_executed += $operation->executed;
+                }
+
+                foreach($operation_rows as $operation_array){
+
+                    $operation = (object) $operation_array;
+
+                    $pa += $operation->meta;
+                    $ea += $operation->executed;
+                    // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                    // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                    $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                    $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                    $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+
+                    $row = array(
+                        'name'=> $action_short_term->code.' '.$operation->name,
+                        'meta'=> $operation->meta,
+                        'executed'=>$operation->executed,
+                        'efficacy'=>$operation->efficacy,
+                        'programacion_acumulada'=> $pa,
+                        'ejecucion_acumulada'=> $ea,
+                        'porcentaje_pa'=> $ppa,
+                        'porcentaje_ea'=> $ppe,
+                        'eficacia_ejecucion_acumulada'=>$eea
+
+                    );
+
+                    array_push($action_short_term_rows,$row);
+                }
+
+
+            }//end action for each
+
+
+            $pa = 0; //programacion acumuladaq
+            $ea = 0; //ejecucion acumulada
+
+            $ppa=0;
+            $ppe=0;
+            $eea=0;
+
+            $periodo_meta = 0;
+            $periodo_executed = 0;
+            // Log::info($task_rows);
+
+            foreach($action_short_term_rows as $action_short_term_array){
+                $action_short_term = (object) $action_short_term_array;
+                $periodo_meta += $action_short_term->meta;
+                $periodo_executed += $action_short_term->executed;
+            }
+
+            foreach($action_short_term_rows as $action_short_term_array){
+
+                $action_short_term = (object) $action_short_term_array;
+
+                $pa += $action_short_term->meta;
+                $ea += $action_short_term->executed;
+                // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+
+                $row = array(
+                    'name'=> $year->year.' '.$action_short_term->name,
+                    'meta'=> $action_short_term->meta,
+                    'executed'=>$action_short_term->executed,
+                    'efficacy'=>$action_short_term->efficacy,
+                    'programacion_acumulada'=> $pa,
+                    'ejecucion_acumulada'=> $ea,
+                    'porcentaje_pa'=> $ppa,
+                    'porcentaje_ea'=> $ppe,
+                    'eficacia_ejecucion_acumulada'=>$eea
+
+                );
+
+                array_push($year_rows,$row);
+            }
+
+        }// end year
+
+        return response()->json($year_rows);
+
+    }
+
+    public function report_amt(Request $request){
+
+        $action_medium_terms = ActionMediumTerm::all();
+        $action_medium_term_rows=array();
+
+        foreach($action_medium_terms as $action_medium_term){
+
+            $year_rows=array();
+
+            foreach($action_medium_term->years  as $year){
+
+                $action_short_term_rows =array();
+
+                foreach($year->action_short_terms as $action_short_term)
+                {
+
+                    $operation_rows =array();
+
+                    foreach($action_short_term->operations as $operation){
+
+                        $tasks = Task::whereHas('programmings', function ($query) use($request) {
+                                            $query->whereIn('month_id', $request->months);
+                                        })
+                                        ->where('operation_id',$operation->id)
+                                        ->get();
+                        $task_rows=array();
+
+
+                        $total_executed =0;
+                        $total_meta =0;
+
+                        foreach($tasks as $task){
+
+
+                            $pa = 0; //programacion acumuladaq
+                            $ea = 0; //ejecucion acumulada
+
+                            $ppa=0;
+                            $ppe=0;
+                            $eea=0;
+
+                            $programmings =Programming::where('task_id',$task->id)->whereIn('month_id',$request->months)->orderBy('month_id')->get();
+                            $periodo_meta = 0;
+                            $periodo_executed = 0;
+
+                            foreach($programmings as $programming){
+                                $periodo_meta += $programming->meta;
+                                $periodo_executed += $programming->executed;
+                            }
+
+                            $total_executed +=$periodo_executed;
+                            $total_meta +=$periodo_meta;
+
+                            foreach($programmings as $programming){
+
+                                $pa += $programming->meta;
+                                $ea += $programming->executed;
+                                // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                                // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                                $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                                $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                                $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+                                // $eea = ($ea/$pa)*100; //eficacia de ejecucion acumulada
+                                $row = array(
+                                'name'=> $task->code.' '.$programming->month->name,
+                                'meta'=> $programming->meta,
+                                'executed'=>$programming->executed,
+                                'efficacy'=>$programming->efficacy,
+                                'programacion_acumulada'=> $pa,
+                                'ejecucion_acumulada'=> $ea,
+                                'porcentaje_pa'=> $ppa,
+                                'porcentaje_ea'=> $ppe,
+                                'eficacia_ejecucion_acumulada'=>$eea
+
+                                );
+                                array_push($task_rows,$row);
+                            }
+
+                        } //end task
+
+                        $pa = 0; //programacion acumuladaq
+                        $ea = 0; //ejecucion acumulada
+
+                        $ppa=0;
+                        $ppe=0;
+                        $eea=0;
+
+                        $periodo_meta = 0;
+                        $periodo_executed = 0;
+                        // Log::info($task_rows);
+
+                        foreach($task_rows as $task_array){
+                            $task = (object) $task_array;
+                            $periodo_meta += $task->meta;
+                            $periodo_executed += $task->executed;
+                        }
+
+                        foreach($task_rows as $task_array){
+
+                            $task = (object) $task_array;
+
+                            $pa += $task->meta;
+                            $ea += $task->executed;
+                            // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                            // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                            $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                            $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                            $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+
+                            $row = array(
+                                'name'=> $operation->code.' '.$task->name,
+                                'meta'=> $task->meta,
+                                'executed'=>$task->executed,
+                                'efficacy'=>$task->efficacy,
+                                'programacion_acumulada'=> $pa,
+                                'ejecucion_acumulada'=> $ea,
+                                'porcentaje_pa'=> $ppa,
+                                'porcentaje_ea'=> $ppe,
+                                'eficacia_ejecucion_acumulada'=>$eea
+
+                            );
+
+                            array_push($operation_rows,$row);
+                        }
+
+
+                    }//end opertaion
+
+                    $pa = 0; //programacion acumuladaq
+                    $ea = 0; //ejecucion acumulada
+
+                    $ppa=0;
+                    $ppe=0;
+                    $eea=0;
+
+                    $periodo_meta = 0;
+                    $periodo_executed = 0;
+                    // Log::info($task_rows);
+
+                    foreach($operation_rows as $operation_array){
+                        $operation = (object) $operation_array;
+                        $periodo_meta += $operation->meta;
+                        $periodo_executed += $operation->executed;
+                    }
+
+                    foreach($operation_rows as $operation_array){
+
+                        $operation = (object) $operation_array;
+
+                        $pa += $operation->meta;
+                        $ea += $operation->executed;
+                        // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                        // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                        $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                        $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                        $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+
+                        $row = array(
+                            'name'=> $action_short_term->code.' '.$operation->name,
+                            'meta'=> $operation->meta,
+                            'executed'=>$operation->executed,
+                            'efficacy'=>$operation->efficacy,
+                            'programacion_acumulada'=> $pa,
+                            'ejecucion_acumulada'=> $ea,
+                            'porcentaje_pa'=> $ppa,
+                            'porcentaje_ea'=> $ppe,
+                            'eficacia_ejecucion_acumulada'=>$eea
+
+                        );
+
+                        array_push($action_short_term_rows,$row);
+                    }
+
+
+                }//end action for each
+
+
+                $pa = 0; //programacion acumuladaq
+                $ea = 0; //ejecucion acumulada
+
+                $ppa=0;
+                $ppe=0;
+                $eea=0;
+
+                $periodo_meta = 0;
+                $periodo_executed = 0;
+                // Log::info($task_rows);
+
+                foreach($action_short_term_rows as $action_short_term_array){
+                    $action_short_term = (object) $action_short_term_array;
+                    $periodo_meta += $action_short_term->meta;
+                    $periodo_executed += $action_short_term->executed;
+                }
+
+                foreach($action_short_term_rows as $action_short_term_array){
+
+                    $action_short_term = (object) $action_short_term_array;
+
+                    $pa += $action_short_term->meta;
+                    $ea += $action_short_term->executed;
+                    // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                    // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                    $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                    $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                    $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+
+                    $row = array(
+                        'name'=> $year->year.' '.$action_short_term->name,
+                        'meta'=> $action_short_term->meta,
+                        'executed'=>$action_short_term->executed,
+                        'efficacy'=>$action_short_term->efficacy,
+                        'programacion_acumulada'=> $pa,
+                        'ejecucion_acumulada'=> $ea,
+                        'porcentaje_pa'=> $ppa,
+                        'porcentaje_ea'=> $ppe,
+                        'eficacia_ejecucion_acumulada'=>$eea
+
+                    );
+
+                    array_push($year_rows,$row);
+                }
+
+            }// end year
+
+            $pa = 0; //programacion acumuladaq
+            $ea = 0; //ejecucion acumulada
+
+            $ppa=0;
+            $ppe=0;
+            $eea=0;
+
+            $periodo_meta = 0;
+            $periodo_executed = 0;
+            // Log::info($task_rows);
+
+            foreach($year_rows as $year_array){
+                $year = (object) $year_array;
+                $periodo_meta += $year->meta;
+                $periodo_executed += $year->executed;
+            }
+
+            foreach($year_rows as $year_array){
+
+                $year = (object) $year_array;
+
+                $pa += $year->meta;
+                $ea += $year->executed;
+                // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+                // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+                $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+                $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+                $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+
+                $row = array(
+                    'name'=> $action_medium_term->code.' '.$year->name,
+                    'meta'=> $year->meta,
+                    'executed'=>$year->executed,
+                    'efficacy'=>$year->efficacy,
+                    'programacion_acumulada'=> $pa,
+                    'ejecucion_acumulada'=> $ea,
+                    'porcentaje_pa'=> $ppa,
+                    'porcentaje_ea'=> $ppe,
+                    'eficacia_ejecucion_acumulada'=>$eea
+
+                );
+
+                array_push($action_medium_term_rows,$row);
+            }
+        }//end short tearm each
+
+        return response()->json($action_medium_term_rows);
     }
     /**
      * Display the specified resource.

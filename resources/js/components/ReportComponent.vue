@@ -16,7 +16,7 @@
                         </v-flex>
                         <v-flex grow pa-1>
                             <multiselect v-model="tipo" :options="lista" placeholder="Selecionar Tipo" label="name"
-                                track-by="name"></multiselect>
+                                track-by="name" @select="getData"></multiselect>
                         </v-flex>
                         <v-flex shrink pa-1>
                             <small>
@@ -167,22 +167,25 @@
                 },
                 {
                     id: 2,
-                    name: "Accion a a Corto Plazo"
+                    name: "Años"
                 },
-                // { id: 1,name:"Año"},
                 {
                     id: 3,
-                    name: "Operaciones"
+                    name: "Accion a a Corto Plazo"
                 },
                 {
                     id: 4,
+                    name: "Operaciones"
+                },
+                {
+                    id: 5,
                     name: "Tareas"
                 },
                 // { id: 5,name:"Tareas Especificas"},
             ],
             tipo: {
-                id: 4,
-                name: "Tareas"
+                id: 2,
+                name: "Años"
             },
             items_selececcionados: [],
             periodo: null
@@ -195,12 +198,12 @@
             getData() {
                 // console.log(this.months);
                 if (this.months.length > 0) {
-
+                       let months = [];
                     if (this.tipo) {
 
                         switch (this.tipo.id) {
-                            case 4:
-                                let months = [];
+                            case 5:
+                                months = [];
                                 this.months.forEach(item => {
                                     months.push(Number(item.split("-")[1]));
                                 });
@@ -215,7 +218,71 @@
                                         this.rows = response.data;
                                     });
 
-                                break;
+                            break;
+                            case 4:
+                                months = [];
+                                this.months.forEach(item => {
+                                    months.push(Number(item.split("-")[1]));
+                                });
+
+                                axios.post('report_operation', {
+                                        months: months
+                                    })
+                                    .then((response) => {
+                                        // this.rows = response.data.specific_tasks;
+                                        // this.rows = this.getRows(response.data,year[0]);
+                                        console.log(response.data);
+                                        this.rows = response.data;
+                                    });
+                            break;
+                            case 3:
+                                months = [];
+                                this.months.forEach(item => {
+                                    months.push(Number(item.split("-")[1]));
+                                });
+
+                                axios.post('report_ast', {
+                                        months: months
+                                    })
+                                    .then((response) => {
+                                        // this.rows = response.data.specific_tasks;
+                                        // this.rows = this.getRows(response.data,year[0]);
+                                        console.log(response.data);
+                                        this.rows = response.data;
+                                    });
+                            break;
+                            case 2:
+                                months = [];
+                                this.months.forEach(item => {
+                                    months.push(Number(item.split("-")[1]));
+                                });
+
+                                axios.post('report_year', {
+                                        months: months
+                                    })
+                                    .then((response) => {
+                                        // this.rows = response.data.specific_tasks;
+                                        // this.rows = this.getRows(response.data,year[0]);
+                                        console.log(response.data);
+                                        this.rows = response.data;
+                                    });
+                            break;
+                            case 1:
+                                months = [];
+                                this.months.forEach(item => {
+                                    months.push(Number(item.split("-")[1]));
+                                });
+
+                                axios.post('report_amt', {
+                                        months: months
+                                    })
+                                    .then((response) => {
+                                        // this.rows = response.data.specific_tasks;
+                                        // this.rows = this.getRows(response.data,year[0]);
+                                        console.log(response.data);
+                                        this.rows = response.data;
+                                    });
+                            break;
                         }
                         // let year =  this.months[0].split("-");
                         // let months =[];
@@ -330,22 +397,26 @@
                 // parameters["rows"] =JSON.stringify(this.rows);
                 let head = [];
                 let body = [];
+                let logo = "data:image/png;base64,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";
+
+
                 this.columns.forEach(item => {
                     head.push(item.label)
                 });
 
-                this.columns.forEach(item => {
-                    body.push(item);
+                this.rows.forEach(item => {
+                    body.push([item.name,item.meta,item.executed,item.efficacy,item.programacion_acumulada,item.ejecucion_acumulada,item.porcentaje_pa,item.porcentaje_ea,item.eficacia_ejecucion_acumulada]);
                 });
                 console.log(head);
                 var doc = new jsPDF();
                 doc.autoTable({
                     html: '#my-table'
                 });
-                doc.text(80, 20, 'Reporte');
+                doc.text(20, 15, 'Reporte: '+this.tipo.name);
+                doc.addImage(logo, 'PNG', 170 , 5, 25, 16)
                 doc.autoTable({
                     head: [head],
-                    body: []
+                    body: body
                 });
                 doc.save('reporte.pdf');
 
