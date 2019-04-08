@@ -29,7 +29,7 @@
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-dark navbar-laravel border-bottom fixed-top">
+        <nav class="main-header navbar navbar-expand navbar-ligth navbar-laravel border-bottom fixed-top">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -105,7 +105,7 @@
         <aside class="main-sidebar elevation-4 sidebar-dark-primary">
             <!-- Brand Logo -->
             <a href="#" class="brand-link ">
-                <img src="{!!url('/img/logob.png')!!}" alt="Eba Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="{!!url('/img/logo_eba_blanck.png')!!}" alt="Eba Logo" class="brand-image " style="opacity: .8; margin-left: 0.2rem">
                 <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
             </a>
 

@@ -1,6 +1,6 @@
 <template>
     <div class="row" >
-     
+
         <div class="col-md-auto">
             <v-date-picker class="elevation-6"
                 v-model="date"
