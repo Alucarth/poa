@@ -16,9 +16,10 @@ try {
     require('admin-lte/plugins/jvectormap/jquery-jvectormap-world-mill-en.js');
     require('admin-lte/plugins/slimScroll/jquery.slimscroll.min.js');
     // require('admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js');
-      
+
     window.dt =  require( 'datatables.net-responsive-bs4' )( window.$ );
     window.moment = require('moment');
+
     // require('fullcalendar');
 } catch (e) {}
 

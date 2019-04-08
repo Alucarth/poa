@@ -29,6 +29,8 @@ Vue.use(Vuetify);
 Vue.component('multiselect', Multiselect)
 
 window.moment.locale('es');
+
+window.spanish_lang = require('./datatable_spanish');
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

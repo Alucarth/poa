@@ -280,6 +280,7 @@
             // $.extend( $.fn.dataTable.defaults, {
             //     responsive: true
             // } );
+            console.log(spanish_lang);
             $('#lista').DataTable({
                 // responsive: {
                 //     details: {
@@ -305,6 +306,7 @@
                     { responsivePriority: 10001, targets: 4 },
                     { responsivePriority: 2, targets: -1 }
                 ],
+                language: spanish_lang
 
             });
             var message =@json(session('message'));
