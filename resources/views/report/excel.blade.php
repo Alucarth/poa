@@ -3,12 +3,20 @@
 		<link href="{{ asset('css/table.css') }}" rel="stylesheet">
 	</head>
 	<tr class="logo">
-		<td colspan="8"></td>
-		<td height="50"  colspan="2"> <img src="{{public_path('img/logosedem.png')}}" width="50" height="50" alt="logo eba"> </td>
+        <td height="70"> <img src="{{public_path('img/logo_eba.png')}}" width="70" height="70" alt="logo eba"> </td>
+		<td colspan="8" align="center" > EMPRESA BOLIVIANA DE ALIMENTOS Y DERIVADOS </td>
 	</tr>
 	<tr class="logo">
-		<td colspan="8"></td>
-		<td colspan="2"> MDP y EP </td>
+		<td colspan="1"></td>
+		<td colspan="8" align="center" > GERENCIA DE PLANIFICIACION Y DESARROLLO </td>
+	</tr>
+	<tr class="logo">
+		<td colspan="1"></td>
+        <td colspan="8" align="center" > REPORTE {{$title}}</td>
+	</tr>
+	<tr class="logo">
+		<td colspan="1"></td>
+        <td colspan="8" align="center" > {{$date}}</td>
 	</tr>
 	<thead>
 		<tr>

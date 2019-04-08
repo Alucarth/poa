@@ -341,16 +341,18 @@
                 return numeral((Number(ejecutado) * 100) / Number(meta)).format('0.00') + ' %';
             },
 
-            downloadExcel() {
-                let params = {
-                    columns: this.columns,
-                    rows: this.rows
-                }
-                axios.post('report_excel', params)
-                    .then((response) => {
-                        console.log(response.data);
-                    });
-            },
+            // downloadExcel() {
+            //     let params = {
+            //         columns: this.columns,
+            //         rows: this.rows,
+            //         title: this.tipo.name
+            //     }
+            //     console.log(params);
+            //     axios.post('report_excel', params)
+            //         .then((response) => {
+            //             console.log(response.data);
+            //         });
+            // },
             download: function (event) {
                 // `this` inside methods point to the Vue instance
                 // self = this;
@@ -358,6 +360,8 @@
                 let parameters = {};
                 parameters['columns'] = JSON.stringify(this.columns);
                 parameters["rows"] = JSON.stringify(this.rows);
+                parameters["title"] = this.tipo.name.toUpperCase();
+                parameters["date"] = moment().format('LLL');
 
                 // parameters.excel =true;
                 // console.log(parameters);

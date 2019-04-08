@@ -965,9 +965,12 @@ class ReportController extends Controller
 
         $columns =json_decode(request('columns'));
         $rows =json_decode(request('rows'));
+        $title = request('title');
+        $date = request('date');
+
         // // Log::info(request('columns'));
         // return $columns;
-        $data = compact('columns','rows');
+        $data = compact('columns','rows', 'title','date');
         // $data = array("columns"=>$columns,"rows"=>$rows);
         Log::info($data);
        Excel::create('Reporte Mensual', function($excel) use($data)  {
