@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Programming;
 use App\Task;
@@ -982,7 +983,7 @@ class ReportController extends Controller
 
             });
 
-        })->download('xls');
+        })->download('pdf');
         // return request()->all();
     }
 
@@ -1017,4 +1018,9 @@ class ReportController extends Controller
             return 0;
         }
     }
+
+    public function test(){
+        return Excel::download(new UsersExport, 'users.xls');
+    }
+
 }
