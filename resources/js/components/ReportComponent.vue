@@ -264,9 +264,8 @@
                                         months: months
                                     })
                                     .then((response) => {
-                                        // this.rows = this.getRows(response.data).specific_tasks;
-                                        // this.rows = this.getRows(response.data,year[0]);
-                                        console.log(response.data);
+
+                                        // console.log(response.data);
                                         this.rows = this.getRows(response.data);
                                     });
                             break;
@@ -280,9 +279,8 @@
                                         months: months
                                     })
                                     .then((response) => {
-                                        // this.rows = this.getRows(response.data).specific_tasks;
-                                        // this.rows = this.getRows(response.data,year[0]);
-                                        console.log(response.data);
+
+                                        // console.log(response.data);
                                         this.rows = this.getRows(response.data);
                                     });
                             break;
@@ -296,9 +294,8 @@
                                         months: months
                                     })
                                     .then((response) => {
-                                        // this.rows = this.getRows(response.data).specific_tasks;
-                                        // this.rows = this.getRows(response.data,year[0]);
-                                        console.log(response.data);
+
+                                        // console.log(response.data);
                                         this.rows = this.getRows(response.data);
                                     });
                             break;
@@ -338,7 +335,7 @@
                 return columns;
             },
             porcentaje(ejecutado, meta) {
-                return numeral((Number(ejecutado) * 100) / Number(meta)).format('0.00') + ' %';
+                return numeral((Number(ejecutado) * 100) / Number(meta)).format('0.00') ;
             },
 
             // downloadExcel() {
@@ -356,10 +353,14 @@
             download: function (event) {
                 // `this` inside methods point to the Vue instance
                 // self = this;
+                let rows = this.items_selececcionados;
+
+                this.generarPeriodo();
+                rows.push(this.periodo);
                 //
                 let parameters = {};
                 parameters['columns'] = JSON.stringify(this.columns);
-                parameters["rows"] = JSON.stringify(this.rows);
+                parameters["rows"] = JSON.stringify(rows);
                 parameters["title"] = this.tipo.name.toUpperCase();
                 parameters["date"] = moment().format('LLL');
 
@@ -394,9 +395,13 @@
                     head.push(item.label)
                 });
 
-                this.rows.forEach(item => {
+                this.items_selececcionados.forEach(item => {
                     body.push([item.name,item.meta,item.executed,item.efficacy,item.programacion_acumulada,item.ejecucion_acumulada,item.porcentaje_pa,item.porcentaje_ea,item.eficacia_ejecucion_acumulada]);
                 });
+                console.log("generando pdf");
+                this.generarPeriodo();
+                body.push([this.periodo.name,this.periodo.meta,this.periodo.executed,this.periodo.efficacy,this.periodo.programacion_acumulada,this.periodo.ejecucion_acumulada,this.periodo.porcentaje_pa,this.periodo.porcentaje_ea,this.periodo.eficacia_ejecucion_acumulada]);
+
                 console.log(head);
                 var doc = new jsPDF();
                 doc.autoTable({
@@ -435,7 +440,17 @@
                     executed+= Number(item.executed);
                 });
 
-                this.periodo = {meta:meta,executed:executed,efficacy: this.porcentaje(executed,meta)};
+                this.periodo = {
+                                name:'Periodo',
+                                executed:executed,
+                                efficacy: this.porcentaje(executed,meta),
+                                meta:meta,
+                                programacion_acumulada: "",
+                                ejecucion_acumulada: "",
+                                porcentaje_pa: "",
+                                porcentaje_ea: "",
+                                eficacia_ejecucion_acumulada: "",
+                                };
                 // this.rows.forEach(element => {
 
                 // });
