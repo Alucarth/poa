@@ -1,48 +1,53 @@
 <html>
 	<head>
 		<link href="{{ asset('css/table.css') }}" rel="stylesheet">
-	</head>
-	<tr class="logo">
-        <td height="70"> <img src="{{public_path('img/logo_eba.png')}}" width="70" height="70" alt="logo eba"> </td>
-		<td colspan="8" align="center" > EMPRESA BOLIVIANA DE ALIMENTOS Y DERIVADOS </td>
-	</tr>
-	<tr class="logo">
-		<td colspan="1"></td>
-		<td colspan="8" align="center" > GERENCIA DE PLANIFICIACION Y DESARROLLO </td>
-	</tr>
-	<tr class="logo">
-		<td colspan="1"></td>
-        <td colspan="8" align="center" > REPORTE {{$title}}</td>
-	</tr>
-	<tr class="logo">
-		<td colspan="1"></td>
-        <td colspan="8" align="center" > {{$date}}</td>
-	</tr>
-	<thead>
-		<tr>
-            @foreach ($columns as $col)
-                <th  style="color:#FFFFFF" >{{$col->label}}</th>
-            @endforeach
+    </head>
+    <body>
+        <table>
 
-			{{-- <th><img src="{{public_path('img/logosedem.png')}}" alt="logo eba"></th> --}}
-		</tr>
+            <thead>
+                <tr>
+                    <td height="70"> <img src="{{public_path('img/logo_eba.png')}}" width="70" height="70" alt="logo eba"> </td>
+                    <td colspan="8" bgcolor="#FF0000" align="center" > EMPRESA BOLIVIANA DE ALIMENTOS Y DERIVADOS </td>
+                </tr>
+                <tr>
+                    <td colspan="1"></td>
+                    <td colspan="8" bgcolor="#FF0000" align="center" > GERENCIA DE PLANIFICIACION Y DESARROLLO </td>
+                </tr>
+                <tr>
+                    <td colspan="1"></td>
+                    <td colspan="8" bgcolor="#FF0000" align="center" > REPORTE {{$title}}</td>
+                </tr>
+                <tr>
+                    <td colspan="1"></td>
+                    <td colspan="8" bgcolor="#FF0000" align="center" > {{$date}}</td>
+                </tr>
+                <tr>
+                    @foreach ($columns as $col)
+                        <th  bgcolor="#FF0000" style="color:#ffffff" >{{$col->label}}</th>
+                    @endforeach
 
-	</thead>
-	<tbody>
-            @foreach ($rows as $row)
-            <tr class="content">
-                <td>{{ $row->name }}</td>
-                <td>{{ $row->meta }}</td>
-                <td>{{ $row->executed }}</td>
-                <td>{{ $row->efficacy }}</td>
-                <td>{{ $row->programacion_acumulada }}</td>
-                <td>{{ $row->ejecucion_acumulada }}</td>
-                <td>{{ $row->porcentaje_pa }}</td>
-                <td>{{ $row->porcentaje_ea }}</td>
-                <td>{{ $row->eficacia_ejecucion_acumulada }}</td>
-            </tr>
-            @endforeach
-	</tbody>
+                    {{-- <th><img src="{{public_path('img/logosedem.png')}}" alt="logo eba"></th> --}}
+                </tr>
+
+            </thead>
+            <tbody>
+                    @foreach ($rows as $row)
+                    <tr class="content">
+                        <td>{{ $row->name }}</td>
+                        <td>{{ $row->meta }}</td>
+                        <td>{{ $row->executed }}</td>
+                        <td>{{ $row->efficacy }}</td>
+                        <td>{{ $row->programacion_acumulada }}</td>
+                        <td>{{ $row->ejecucion_acumulada }}</td>
+                        <td>{{ $row->porcentaje_pa }}</td>
+                        <td>{{ $row->porcentaje_ea }}</td>
+                        <td>{{ $row->eficacia_ejecucion_acumulada }}</td>
+                    </tr>
+                    @endforeach
+            </tbody>
+        </table>
+    </body>
     <!-- Horizontal alignment -->
     {{-- <td align="right">Big title</td>
 

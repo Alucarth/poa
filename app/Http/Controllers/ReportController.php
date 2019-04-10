@@ -13,6 +13,12 @@ use App\Operation;
 use App\ActionShortTerm;
 use App\Year;
 use App\ActionMediumTerm;
+use App\Exports\ReportExport;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
+use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing as drawing;
+
 class ReportController extends Controller
 {
     /**
@@ -968,23 +974,115 @@ class ReportController extends Controller
         $rows =json_decode(request('rows'));
         $title = request('title');
         $date = request('date');
+        $format = request('format');
 
-        // // Log::info(request('columns'));
-        // return $columns;
-        $data = compact('columns','rows', 'title','date');
-        // $data = array("columns"=>$columns,"rows"=>$rows);
-        Log::info($data);
-       Excel::create('Reporte Mensual', function($excel) use($data)  {
+        // 'programacion_acumulada'=> $pa,
+        //             'ejecucion_acumulada'=> $ea,
+        //             'porcentaje_pa'=> $ppa,
+        //             'porcentaje_ea'=> $ppe,
+        //             'eficacia_ejecucion_acumulada'=>$eea
+        $header =[];
+        foreach($columns as $column){
+            array_push($header,$column->label);
+        }
+        $content = [];
 
-            $excel->sheet('New sheet', function($sheet) use($data) {
 
-                // $amps = ActionMediumTerm::all();
-                $sheet->loadView('report.excel',$data);
+        foreach($rows as $row){
+            array_push($content,array(
+                                    $row->name,
+                                    $row->meta,
+                                    $row->executed,
+                                    $row->efficacy,
+                                    $row->programacion_acumulada,
+                                    $row->ejecucion_acumulada,
+                                    $row->porcentaje_pa,
+                                    $row->porcentaje_ea,
+                                    $row->eficacia_ejecucion_acumulada,
+                                    ));
+        }
 
-            });
 
-        })->download('pdf');
-        // return request()->all();
+        $spreadsheet = new Spreadsheet();
+
+
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            // 'borders' => [
+            //     'top' => [
+            //         'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+            //     ],
+            // ],
+            // 'fill' => [
+            //     'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+            //     'rotation' => 90,
+            //     'startColor' => [
+            //         'argb' => 'FF0000',
+            //     ],
+            //     'endColor' => [
+            //         'argb' => 'FFFFFFFF',
+            //     ],
+            // ],
+        ];
+        // $sheet = $spreadsheet->getActiveSheet();
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('A1:B6');
+        $sheet->setCellValue('C3', 'EMPRESA BOLIVIANA DE ALIMENTOS Y DERIVADOS');
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('C3:I3');
+        $sheet->setCellValue('C4', 'GERENCIA DE PLANIFICIACION Y DESARROLLO');
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('C4:I4');
+        $sheet->setCellValue('C5', 'REPORTE '.$title);
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('C5:I5');
+
+        $spreadsheet->getActiveSheet()->getStyle('C3')->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('C4')->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('C5')->applyFromArray($styleArray);
+
+        $spreadsheet->getActiveSheet()
+        ->fromArray(
+            $header,  // The data to set
+            NULL,        // Array values with this value will not be set
+            'A7'         // Top left coordinate of the worksheet range where
+                        //    we want to set these values (default is A1)
+        );
+        $spreadsheet->getActiveSheet()
+        ->fromArray(
+            $content,  // The data to set
+            NULL,        // Array values with this value will not be set
+            'A8'         // Top left coordinate of the worksheet range where
+                        //    we want to set these values (default is A1)
+        );
+
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        $drawing->setName('Logo');
+        $drawing->setDescription('Logo');
+        $drawing->setPath(public_path('img/logo_eba.png'));
+        $drawing->setHeight(80);
+        $drawing->setWorksheet($spreadsheet->getActiveSheet());
+
+        if($format =="excel"){
+
+            $writer = new Xlsx($spreadsheet);
+            $file_name ='archivoXD';
+            header('Content-Type: applicaction/vnd.ms-xlsx');
+            header('Content-Disposition: attachment;filename="'.$file_name.'.xlsx"');
+            header('Cache-Control: max-age=0');
+            $writer->save('php://output');
+        }else{
+
+            $writer = new Dompdf($spreadsheet);
+            $file_name ='archivoXD';
+            header('Content-Type: applicaction/vnd.ms-pdf');
+            header('Content-Disposition: attachment;filename="'.$file_name.'.pdf"');
+            header('Cache-Control: max-age=0');
+            $writer->save('php://output');
+        }
+
+
     }
 
     public function report_pdf(){
@@ -1019,8 +1117,108 @@ class ReportController extends Controller
         }
     }
 
+    function createImageFromFile($filename, $use_include_path = false, $context = null, &$info = null)
+    {
+      // try to detect image informations -> info is false if image was not readable or is no php supported image format (a  check for "is_readable" or fileextension is no longer needed)
+      $info = array("image"=>getimagesize($filename));
+      $info["image"] = getimagesize($filename);
+      if($info["image"] === false) throw new InvalidArgumentException("\"".$filename."\" is not readable or no php supported format");
+      else
+      {
+        // fetches fileconten from url and creates an image ressource by string data
+        // if file is not readable or not supportet by imagecreate FALSE will be returnes as $imageRes
+        $imageRes = imagecreatefromstring(file_get_contents($filename, $use_include_path, $context));
+        // export $http_response_header to have this info outside of this function
+        if(isset($http_response_header)) $info["http"] = $http_response_header;
+        return $imageRes;
+      }
+    }
+
+
     public function test(){
-        return Excel::download(new UsersExport, 'users.xls');
+        // return Excel::download(new UsersExport, 'users.xls');
+        // $gdImage = createImageFromFile('http://127.0.0.1:1234/dynexep/BarGen/generator.php?text=760000322300000939115260');
+        $gdImage = self::createImageFromFile(public_path('img/logo_eba.png'));//call image suck re suucks
+
+        $spreadsheet = new Spreadsheet();
+
+        // $sheet = $spreadsheet->getActiveSheet();
+        // $objDrawing = new drawing();
+        // $objDrawing->setName('Sample image');
+        // $objDrawing->setDescription('Sample image');
+        // $objDrawing->setImageResource($gdImage);
+        // $objDrawing->setRenderingFunction(drawing::RENDERING_JPEG);
+        // $objDrawing->setMimeType(drawing::MIMETYPE_DEFAULT);
+        // $objDrawing->setHeight(150);
+        // $objDrawing->setCoordinates('A1');
+        // $objDrawing->setWorksheet($sheet);
+
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        $drawing->setName('Logo');
+        $drawing->setDescription('Logo');
+        $drawing->setPath(public_path('img/logo_eba.png'));
+        $drawing->setHeight(100);
+        $drawing->setWorksheet($spreadsheet->getActiveSheet());
+        // $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooterDrawing();
+        // $drawing->setName('PhpSpreadsheet logo');
+        // $drawing->setPath(public_path('img/logo_eba.png'));
+
+        // $drawing->addImage($gdImage);
+        // $drawing->setHeight(100);
+        // $spreadsheet->getActiveSheet()->getHeaderFooter()->addImage($drawing, \PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooter::IMAGE_HEADER_LEFT);
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            // 'borders' => [
+            //     'top' => [
+            //         'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+            //     ],
+            // ],
+            // 'fill' => [
+            //     'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+            //     'rotation' => 90,
+            //     'startColor' => [
+            //         'argb' => 'FF0000',
+            //     ],
+            //     'endColor' => [
+            //         'argb' => 'FFFFFFFF',
+            //     ],
+            // ],
+        ];
+        // $sheet = $spreadsheet->getActiveSheet();
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('A1:B6');
+        $sheet->setCellValue('C3', 'EMPRESA BOLIVIANA DE ALIMENTOS Y DERIVADOS');
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('C3:I3');
+        $sheet->setCellValue('C4', 'GERENCIA DE PLANIFICIACION Y DESARROLLO');
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('C4:I4');
+        $sheet->setCellValue('C5', 'REPORTE');
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('C5:I5');
+
+        $spreadsheet->getActiveSheet()->getStyle('C3')->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('C4')->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('C5')->applyFromArray($styleArray);
+
+
+
+
+        $writer = new Xlsx($spreadsheet);
+        // $writer = new Dompdf($spreadsheet);
+
+
+        $file_name ='archivoXD';
+        header('Content-Type: applicaction/vnd.ms-xlsx');
+        header('Content-Disposition: attachment;filename="'.$file_name.'.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        // $file_name ='archivoXD';
+        // header('Content-Type: applicaction/vnd.ms-pdf');
+        // header('Content-Disposition: attachment;filename="'.$file_name.'.pdf"');
+        // header('Cache-Control: max-age=0');
+        // $writer->save('php://output');
     }
 
 }

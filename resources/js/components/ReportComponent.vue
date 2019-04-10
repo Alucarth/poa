@@ -22,7 +22,7 @@
                             <small>
                                 <button class="btn btn-success"  data-toggle="modal" data-target="#periodoModal" @click="generarPeriodo()">Periodo</button>
                                 <button class="btn btn-success" @click="download">excel</button>
-                                <button class="btn btn-info" data-toggle="modal" data-target="#pdfModal" @click="download_pdf">pdf</button>
+                                <button class="btn btn-info"  @click="downloadPdf()">pdf</button>
                             </small>
                         </v-flex>
                     </v-layout>
@@ -353,16 +353,24 @@
             download: function (event) {
                 // `this` inside methods point to the Vue instance
                 // self = this;
-                let rows = this.items_selececcionados;
+                let rows = [];
+                rows =[];
+
+                this.items_selececcionados.forEach(item => {
+                    rows.push(item);
+                });
+                // rows = this.items_selececcionados;
 
                 this.generarPeriodo();
                 rows.push(this.periodo);
                 //
                 let parameters = {};
                 parameters['columns'] = JSON.stringify(this.columns);
+                console.log(this.columns);
                 parameters["rows"] = JSON.stringify(rows);
                 parameters["title"] = this.tipo.name.toUpperCase();
                 parameters["date"] = moment().format('LLL');
+                parameters["format"] = "excel";
 
                 // parameters.excel =true;
                 // console.log(parameters);
@@ -381,6 +389,40 @@
                     // self.dialog = false;
                 });
             },
+            downloadPdf: function (event) {
+                // `this` inside methods point to the Vue instance
+                // self = this;
+                let rows = this.items_selececcionados;
+
+                this.generarPeriodo();
+                rows.push(this.periodo);
+                //
+                let parameters = {};
+                parameters['columns'] = JSON.stringify(this.columns);
+                console.log(this.columns);
+                parameters["rows"] = JSON.stringify(rows);
+                parameters["title"] = this.tipo.name.toUpperCase();
+                parameters["date"] = moment().format('LLL');
+                parameters["format"] = "pdf";
+
+                // parameters.excel =true;
+                // console.log(parameters);
+                axios({
+                    url: 'report_excel',
+                    method: 'GET',
+                    params: parameters,
+                    responseType: 'blob', // important
+                }).then((response) => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'Reporte ' + moment().format() + '.pdf');
+                    document.body.appendChild(link);
+                    link.click();
+                    // self.dialog = false;
+                });
+            },
+
             download_pdf() {
                 console.log('print pdf');
                 // let parameters={};
