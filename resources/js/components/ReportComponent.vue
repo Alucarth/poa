@@ -42,16 +42,16 @@
                             <i class="fa fa-sort"></i>
                         </template>
 
-                        <!-- <template slot="option" slot-scope="props">
-                        <v-icon @click="getDetail(props)" data-toggle="modal" data-target="#taskModalDetail"
-                            small>
-                            remove_red_eye
-                        </v-icon>
-                        <v-icon @click="edit(props)" data-toggle="modal" data-target="#taskModalExecuted"
-                            small>
-                            edit
-                        </v-icon>
-                    </template> -->
+                        <template slot="task_code" slot-scope="props">
+
+                            {{props.row.task_code}}
+                            <!-- <v-btn icon> -->
+                                <v-icon data-toggle="tooltip" data-placement="bottom" :title="props.row.task_description" small>
+                                    fa-question-circle
+                                </v-icon>
+                            <!-- </v-btn> -->
+
+                    </template>
                     </vue-bootstrap4-table>
                 </v-card-text>
 
@@ -120,8 +120,8 @@
     export default {
         data: () => ({
             months: [],
-            columns: [{
-                    label: "Nombre",
+            columns_base: [{
+                    label: "Mes",
                     name: "name",
                     sort: false,
                 },
@@ -167,6 +167,8 @@
                 },
 
             ],
+            columns:[],
+            report_list:[],
             rows: [],
             config: {
                 card_mode: false,
@@ -203,8 +205,8 @@
                 // { id: 5,name:"Tareas Especificas"},
             ],
             tipo: {
-                id: 2,
-                name: "Años"
+                id: 5,
+                name: "Tareas"
             },
             items_selececcionados: [],
             periodo: null
@@ -212,7 +214,9 @@
         components: {
             VueBootstrap4Table
         },
-
+        mounted(){
+            this.columns =this.columns_base;
+        },
         methods: {
             getData() {
                 // console.log(this.months);
@@ -234,7 +238,7 @@
                                         // this.rows = response.data.specific_tasks;
                                         // this.rows = this.getRows(response.data,year[0]);
                                         console.log(response.data);
-                                        this.rows = response.data;
+                                        this.getRowsTask(response.data);
                                     });
 
                             break;
@@ -296,7 +300,7 @@
                                     .then((response) => {
 
                                         // console.log(response.data);
-                                        this.rows = this.getRows(response.data);
+                                        this.rows = this.getRowsTask(response.data);
                                     });
                             break;
                         }
@@ -319,20 +323,32 @@
                     this.rows = [];
                 }
             },
-            getRows(rows) {
+            getRowsTask(rows) {
 
-                let columns = [];
-                rows.forEach(item => {
-                    item.executed = numeral(item.executed).format('0.00')
-                    item.efficacy = numeral(item.efficacy).format('0.00')
-                    item.programacion_acumulada = numeral(item.programacion_acumulada).format('0.00')
-                    item.ejecucion_acumulada = numeral(item.ejecucion_acumulada).format('0.00')
-                    item.porcentaje_pa = numeral(item.porcentaje_pa).format('0.00')
-                    item.porcentaje_ea = numeral(item.porcentaje_ea).format('0.00')
-                    item.eficacia_ejecucion_acumulada = numeral(item.eficacia_ejecucion_acumulada).format('0.00');
-                    columns.push(item);
+                this.report_list = rows;
+                this.columns =[];
+                this.columns.push({ label: "Tarea",
+                    name: "task_code",
+                    sort: false,});
+                this.columns_base.forEach(row => {
+                    this.columns.push(row);
                 });
-                return columns;
+                console.log(this.columns);
+                let tasks = [];
+                rows.forEach(task => {
+
+                    task.programmings.forEach(programming => {
+
+                        programming.task_code = task.code;
+                        programming.task_description = task.description;
+                        programming.task_id = task.id;
+                        tasks.push(programming);
+                    });
+                });
+                this.rows = tasks;
+
+                // $('[data-toggle="tooltip"]').tooltip();
+                // return tasks;
             },
             porcentaje(ejecutado, meta) {
                 return numeral((Number(ejecutado) * 100) / Number(meta)).format('0.00') ;
@@ -359,15 +375,17 @@
                 this.items_selececcionados.forEach(item => {
                     rows.push(item);
                 });
+                console.log(rows);
                 // rows = this.items_selececcionados;
-
+                let orders_rows = _.sortBy(rows, ['task_id']);
+                console.log(orders_rows);
                 this.generarPeriodo();
                 rows.push(this.periodo);
                 //
                 let parameters = {};
                 parameters['columns'] = JSON.stringify(this.columns);
                 console.log(this.columns);
-                parameters["rows"] = JSON.stringify(rows);
+                parameters["rows"] = JSON.stringify(orders_rows);
                 parameters["title"] = this.tipo.name.toUpperCase();
                 parameters["date"] = moment().format('LLL');
                 parameters["format"] = "excel";
@@ -392,15 +410,23 @@
             downloadPdf: function (event) {
                 // `this` inside methods point to the Vue instance
                 // self = this;
-                let rows = this.items_selececcionados;
+               let rows = [];
+                rows =[];
 
+                this.items_selececcionados.forEach(item => {
+                    rows.push(item);
+                });
+                console.log(rows);
+                // rows = this.items_selececcionados;
+                let orders_rows = _.sortBy(rows, ['task_id']);
+                console.log(orders_rows);
                 this.generarPeriodo();
                 rows.push(this.periodo);
                 //
                 let parameters = {};
                 parameters['columns'] = JSON.stringify(this.columns);
                 console.log(this.columns);
-                parameters["rows"] = JSON.stringify(rows);
+                parameters["rows"] = JSON.stringify(orders_rows);
                 parameters["title"] = this.tipo.name.toUpperCase();
                 parameters["date"] = moment().format('LLL');
                 parameters["format"] = "pdf";

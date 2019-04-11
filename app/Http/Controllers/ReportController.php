@@ -18,6 +18,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
 use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing as drawing;
+use function GuzzleHttp\Promise\task;
 
 class ReportController extends Controller
 {
@@ -75,8 +76,8 @@ class ReportController extends Controller
                                                 $query->whereIn('month_id', $request->months);
                                             })->get();
         $task_rows=array();
-
-
+        $programmings_rows=array ();
+        $list =array();
         $total_executed =0;
         $total_meta =0;
         foreach($tasks as $task){
@@ -88,7 +89,7 @@ class ReportController extends Controller
             $ppa=0;
             $ppe=0;
             $eea=0;
-
+            $programmings_rows =[];
             $programmings =Programming::where('task_id',$task->id)->whereIn('month_id',$request->months)->orderBy('month_id')->get();
             $periodo_meta = 0;
             $periodo_executed = 0;
@@ -109,7 +110,7 @@ class ReportController extends Controller
                 $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
                 // $eea = ($ea/$pa)*100; //eficacia de ejecucion acumulada
                 $row = array(
-                                'name'=> $task->code.' '.$programming->month->name,
+                                'name'=> $programming->month->name,
                                 'meta'=> $programming->meta,
                                 'executed'=>$programming->executed,
                                 'efficacy'=>$programming->efficacy,
@@ -120,10 +121,13 @@ class ReportController extends Controller
                                 'eficacia_ejecucion_acumulada'=>$eea
 
                             );
-                array_push($task_rows,$row);
+                array_push($programmings_rows,$row);//para el pinche reporte
+                // array_push($lista,$row);
             }
-
-
+            $task->programmings = $programmings_rows;
+            $task->size = sizeof($programmings_rows);
+            array_push($task_rows,$task);//adicionando las tareas con los calculos de los programaciones
+            // array_push($task_rows,array('task_name'=>$task->description,'tasks'=>$programmings,'size'=> sizeof($programmings)));
         }
 
 
@@ -986,21 +990,41 @@ class ReportController extends Controller
             array_push($header,$column->label);
         }
         $content = [];
-
+        $tasks = [];
+        $task_id =0;
+        $count = 0;
+        $before_task=null;
 
         foreach($rows as $row){
+
+            if($task_id==$row->task_id){
+                $count ++;
+            }else
+            {
+                $task_id= $row->task_id;
+                if($count>0){
+
+                    array_push($tasks,(object) array('description'=>$before_task->task_description,'cell_merge'=>$count));
+                }
+                $count = 0;
+            }
+            $before_task =$row;
             array_push($content,array(
-                                    $row->name,
-                                    $row->meta,
-                                    $row->executed,
-                                    $row->efficacy,
-                                    $row->programacion_acumulada,
-                                    $row->ejecucion_acumulada,
-                                    $row->porcentaje_pa,
-                                    $row->porcentaje_ea,
-                                    $row->eficacia_ejecucion_acumulada,
-                                    ));
+                $row->name,
+                $row->meta,
+                $row->executed,
+                $row->efficacy,
+                $row->programacion_acumulada,
+                $row->ejecucion_acumulada,
+                $row->porcentaje_pa,
+                $row->porcentaje_ea,
+                $row->eficacia_ejecucion_acumulada,
+            ));
+
         }
+
+            array_push($tasks,(object) array('description'=>$before_task->task_description,'cell_merge'=>$count));
+
 
 
         $spreadsheet = new Spreadsheet();
@@ -1029,6 +1053,12 @@ class ReportController extends Controller
             //     ],
             // ],
         ];
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        $drawing->setName('Logo');
+        $drawing->setDescription('Logo');
+        $drawing->setPath(public_path('img/logo_eba.png'));
+        $drawing->setHeight(80);
+        $drawing->setWorksheet($spreadsheet->getActiveSheet());
         // $sheet = $spreadsheet->getActiveSheet();
         $sheet = $spreadsheet->getActiveSheet()->mergeCells('A1:B6');
         $sheet->setCellValue('C3', 'EMPRESA BOLIVIANA DE ALIMENTOS Y DERIVADOS');
@@ -1049,20 +1079,25 @@ class ReportController extends Controller
             'A7'         // Top left coordinate of the worksheet range where
                         //    we want to set these values (default is A1)
         );
+
+
         $spreadsheet->getActiveSheet()
         ->fromArray(
             $content,  // The data to set
             NULL,        // Array values with this value will not be set
-            'A8'         // Top left coordinate of the worksheet range where
+            'B8'         // Top left coordinate of the worksheet range where
                         //    we want to set these values (default is A1)
         );
+        $y=8;
+        foreach($tasks as $task){
+            Log::info(json_encode($task));
+            $sheet = $spreadsheet->getActiveSheet()->mergeCells('A'.$y.':A'.($y+$task->cell_merge));
+            Log::info($y+$task->cell_merge);
+            $spreadsheet->getActiveSheet()->setCellValue('A'.$y, $task->description);
+            $y+=$task->cell_merge+1;
+            Log::info($y);
 
-        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-        $drawing->setName('Logo');
-        $drawing->setDescription('Logo');
-        $drawing->setPath(public_path('img/logo_eba.png'));
-        $drawing->setHeight(80);
-        $drawing->setWorksheet($spreadsheet->getActiveSheet());
+        }
 
         if($format =="excel"){
 
