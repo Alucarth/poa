@@ -232,7 +232,7 @@
                                 });
 
                                 axios.post('report_task', {
-                                        months: months
+                                        months: months.toString()
                                     })
                                     .then((response) => {
                                         // this.rows = response.data.specific_tasks;
@@ -255,7 +255,7 @@
                                         // this.rows = response.data.specific_tasks;
                                         // this.rows = this.getRows(response.data,year[0]);
                                         console.log(response.data);
-                                        this.rows = this.getRows(response.data);
+                                        // this.rows = this.getRows(response.data);
                                     });
                             break;
                             case 3:
@@ -304,20 +304,7 @@
                                     });
                             break;
                         }
-                        // let year =  this.months[0].split("-");
-                        // let months =[];
-                        // this.months.forEach(item => {
-                        //     months.push(Number(item.split("-")[1])) ;
-                        // });
-                        // let query={year:year[0],months:months.toString()};
-                        // // console.log(query);
-                        // // console.log(months.toString());
-                        // axios.post('report',query)
-                        //     .then((response)=>{
-                        //     // this.rows = response.data.specific_tasks;
-                        //     this.rows = this.getRows(response.data,year[0]);
-                        //     console.log(response.data);
-                        // });
+
                     }
                 } else {
                     this.rows = [];
@@ -334,11 +321,36 @@
                     this.columns.push(row);
                 });
                 console.log(this.columns);
+                // let tasks = [];
+                // rows.forEach(task => {
+
+                //     task.programmings.forEach(programming => {
+                //         programming.task_code = task.code;
+                //         programming.task_description = task.description;
+                //         programming.task_id = task.id;
+                //         tasks.push(programming);
+                //     });
+                // });
+                this.rows = rows;
+
+                // $('[data-toggle="tooltip"]').tooltip();
+                // return tasks;
+            },
+            getRowsOperation(rows) {
+
+                this.report_list = rows;
+                this.columns =[];
+                this.columns.push({ label: "Tarea",
+                    name: "task_code",
+                    sort: false,});
+                this.columns_base.forEach(row => {
+                    this.columns.push(row);
+                });
+                console.log(this.columns);
                 let tasks = [];
                 rows.forEach(task => {
 
                     task.programmings.forEach(programming => {
-
                         programming.task_code = task.code;
                         programming.task_description = task.description;
                         programming.task_id = task.id;
@@ -354,18 +366,6 @@
                 return numeral((Number(ejecutado) * 100) / Number(meta)).format('0.00') ;
             },
 
-            // downloadExcel() {
-            //     let params = {
-            //         columns: this.columns,
-            //         rows: this.rows,
-            //         title: this.tipo.name
-            //     }
-            //     console.log(params);
-            //     axios.post('report_excel', params)
-            //         .then((response) => {
-            //             console.log(response.data);
-            //         });
-            // },
             download: function (event) {
                 // `this` inside methods point to the Vue instance
                 // self = this;
@@ -389,6 +389,8 @@
                 parameters["title"] = this.tipo.name.toUpperCase();
                 parameters["date"] = moment().format('LLL');
                 parameters["format"] = "excel";
+                parameters["type"] = this.tipo.id;
+
 
                 // parameters.excel =true;
                 // console.log(parameters);

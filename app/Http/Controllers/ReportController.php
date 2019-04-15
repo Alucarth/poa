@@ -17,6 +17,7 @@ use App\Exports\ReportExport;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf;
 use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing as drawing;
 use function GuzzleHttp\Promise\task;
 
@@ -72,15 +73,147 @@ class ReportController extends Controller
 
     public function report_task(Request $request){
         // $programmings = Programming::whereIn('month_id',$request->months)->get();
-        $tasks = Task::whereHas('programmings', function ($query) use($request) {
-                                                $query->whereIn('month_id', $request->months);
+
+        $task_rows = [];
+
+
+        $ma = explode(',',$request->months);
+        // return $ma;
+        $tasks = Task::whereHas('programmings', function ($query) use($ma) {
+                                                $query->whereIn('month_id', $ma);
                                             })->get();
-        $task_rows=array();
-        $programmings_rows=array ();
-        $list =array();
-        $total_executed =0;
-        $total_meta =0;
+        // return $tasks;
         foreach($tasks as $task){
+
+            $sql = "select 	sum(programmings.executed) as month_executed,
+                            sum(programmings.meta) as month_meta,
+                            programmings.month_id,
+                            months.name,
+                            tasks.id as task_id
+                    from tasks
+                    join programmings on tasks.id = programmings.task_id
+                    join months on months.id = programmings.month_id
+                    where programmings.month_id in (".$request->months.") and tasks.id =".$task->id."
+                    group by programmings.month_id,tasks.id,months.name
+                    order by tasks.id; ";
+            $query = DB::select($sql);
+            // return $query;
+            $meses_meta = 0;
+            // $meses_executed = 0;
+            foreach($query as $mes){
+                $meses_meta += $mes->month_meta;
+                // $meses_executed += $mes->month_executed;
+            }
+
+            $pa = 0; //programacion acumuladaq
+            $ea = 0; //ejecucion acumulada
+
+            $ppa=0;
+            $ppe=0;
+            $eea=0;
+            foreach($query as $mes){
+                $pa += $mes->month_meta;
+                $ea += $mes->month_executed;
+                $ppa = $pa/$meses_meta;
+                $ppe = $ea/$meses_meta;
+                $eea = $ea/$pa;
+
+                $row = array(
+
+                                'task_id'=> $task->id,
+                                'task_code'=> $task->code,
+                                'task_description'=> $task->description,
+                                'name'=> $mes->name,
+                                'meta'=> $mes->month_meta,
+                                'executed'=>$mes->month_executed,
+                                'efficacy'=> self::porcentaje($mes->month_executed,$mes->month_meta),
+                                'programacion_acumulada'=> $pa,
+                                'ejecucion_acumulada'=> $ea,
+                                'porcentaje_pa'=> $ppa,
+                                'porcentaje_ea'=> $ppe,
+                                'eficacia_ejecucion_acumulada'=>$eea
+
+                            );
+                array_push($task_rows,$row);//para el pinche reporte
+            }
+
+        }
+        // $task_rows=array();
+        // $programmings_rows=array ();
+
+        // // $total_executed =0;
+        // // $total_meta =0;
+        // foreach($tasks as $task){
+
+
+        //     $pa = 0; //programacion acumuladaq
+        //     $ea = 0; //ejecucion acumulada
+
+        //     $ppa=0;
+        //     $ppe=0;
+        //     $eea=0;
+        //     $programmings_rows =[];
+        //     $programmings =Programming::where('task_id',$task->id)->whereIn('month_id',$request->months)->orderBy('month_id')->get();
+        //     $periodo_meta = 0;
+        //     $periodo_executed = 0;
+        //     foreach($programmings as $programming){
+        //         $periodo_meta += $programming->meta;
+        //         $periodo_executed += $programming->executed;
+        //     }
+        //     // $total_executed +=$periodo_executed;
+        //     // $total_meta +=$periodo_meta;
+        //     foreach($programmings as $programming){
+
+        //         $pa += $programming->meta;
+        //         $ea += $programming->executed;
+        //         // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+        //         // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+        //         $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+        //         $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+        //         $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+        //         // $eea = ($ea/$pa)*100; //eficacia de ejecucion acumulada
+        //         $row = array(
+        //                         'name'=> $programming->month->name,
+        //                         'meta'=> $programming->meta,
+        //                         'executed'=>$programming->executed,
+        //                         'efficacy'=>$programming->efficacy,
+        //                         'programacion_acumulada'=> $pa,
+        //                         'ejecucion_acumulada'=> $ea,
+        //                         'porcentaje_pa'=> $ppa,
+        //                         'porcentaje_ea'=> $ppe,
+        //                         'eficacia_ejecucion_acumulada'=>$eea
+
+        //                     );
+        //         array_push($programmings_rows,$row);//para el pinche reporte
+        //         // array_push($lista,$row);
+        //     }
+        //     $task->programmings = $programmings_rows;
+        //     array_push($task_rows,$task);//adicionando las tareas con los calculos de los programaciones
+        // }//end task
+
+
+
+        return response()->json($task_rows);
+    }
+    public function report_operation(Request $request){
+
+        $operations = Operation::all();
+        $months = Month::whereIn('id',$request->months)->get();
+        $operation_rows =array();
+
+        foreach($operations as $operation){
+
+            $tasks = Task::whereHas('programmings', function ($query) use($request) {
+                                $query->whereIn('month_id', $request->months);
+                            })
+                            ->where('operation_id',$operation->id)
+                            ->get();
+            $task_rows=array();
+            $programmings_rows=array ();
+
+            // $total_executed =0;
+            // $total_meta =0;
+            foreach($tasks as $task){
 
 
             $pa = 0; //programacion acumuladaq
@@ -97,65 +230,42 @@ class ReportController extends Controller
                 $periodo_meta += $programming->meta;
                 $periodo_executed += $programming->executed;
             }
-            $total_executed +=$periodo_executed;
-            $total_meta +=$periodo_meta;
+            // $total_executed +=$periodo_executed;
+            // $total_meta +=$periodo_meta;
             foreach($programmings as $programming){
 
-                $pa += $programming->meta;
-                $ea += $programming->executed;
-                // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
-                // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
-                $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
-                $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
-                $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
-                // $eea = ($ea/$pa)*100; //eficacia de ejecucion acumulada
-                $row = array(
-                                'name'=> $programming->month->name,
-                                'meta'=> $programming->meta,
-                                'executed'=>$programming->executed,
-                                'efficacy'=>$programming->efficacy,
-                                'programacion_acumulada'=> $pa,
-                                'ejecucion_acumulada'=> $ea,
-                                'porcentaje_pa'=> $ppa,
-                                'porcentaje_ea'=> $ppe,
-                                'eficacia_ejecucion_acumulada'=>$eea
+            $pa += $programming->meta;
+            $ea += $programming->executed;
+            // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
+            // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
+            $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
+            $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
+            $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
+            // $eea = ($ea/$pa)*100; //eficacia de ejecucion acumulada
+            $row = array(
+                            'id'=> $programming->month->id, //identificador
+                            'name'=> $programming->month->name,
+                            'meta'=> $programming->meta,
+                            'executed'=>$programming->executed,
+                            'efficacy'=>$programming->efficacy,
+                            'programacion_acumulada'=> $pa,
+                            'ejecucion_acumulada'=> $ea,
+                            'porcentaje_pa'=> $ppa,
+                            'porcentaje_ea'=> $ppe,
+                            'eficacia_ejecucion_acumulada'=>$eea
 
-                            );
-                array_push($programmings_rows,$row);//para el pinche reporte
-                // array_push($lista,$row);
+                        );
+            array_push($programmings_rows,$row);//para el pinche reporte
+            // array_push($lista,$row);
             }
             $task->programmings = $programmings_rows;
-            $task->size = sizeof($programmings_rows);
             array_push($task_rows,$task);//adicionando las tareas con los calculos de los programaciones
-            // array_push($task_rows,array('task_name'=>$task->description,'tasks'=>$programmings,'size'=> sizeof($programmings)));
-        }
+            }//end task
 
 
-
-        return response()->json($task_rows);
-    }
-    public function report_operation(Request $request){
-
-        $operations = Operation::all();
-
-        $operation_rows =array();
-
-        foreach($operations as $operation){
-
-            $tasks = Task::whereHas('programmings', function ($query) use($request) {
-                                $query->whereIn('month_id', $request->months);
-                            })
-                            ->where('operation_id',$operation->id)
-                            ->get();
-            $task_rows=array();
-
-
-            $total_executed =0;
-            $total_meta =0;
-
-            foreach($tasks as $task){
-
-
+            // Log::info($task_rows);
+            foreach($months as $month){
+                //operacion del mes XD
                 $pa = 0; //programacion acumuladaq
                 $ea = 0; //ejecucion acumulada
 
@@ -163,65 +273,14 @@ class ReportController extends Controller
                 $ppe=0;
                 $eea=0;
 
-                $programmings =Programming::where('task_id',$task->id)->whereIn('month_id',$request->months)->orderBy('month_id')->get();
                 $periodo_meta = 0;
                 $periodo_executed = 0;
-
-                foreach($programmings as $programming){
-                    $periodo_meta += $programming->meta;
-                    $periodo_executed += $programming->executed;
+                foreach($task_rows->programmings as $task ){
+                    if($month->id == $task->id){
+                        $periodo_meta += $task->meta;
+                        $periodo_executed += $task->executed;
+                    }
                 }
-
-                $total_executed +=$periodo_executed;
-                $total_meta +=$periodo_meta;
-
-                foreach($programmings as $programming){
-
-                    $pa += $programming->meta;
-                    $ea += $programming->executed;
-                    // $ppa = ($pa/$periodo_meta)*100; //porcentaje  programaciion acumulado
-                    // $ppe = ($ea/$periodo_meta)*100; //porcentaje  efcicacia acumulada
-                    $ppa = self::porcentaje($pa,$periodo_meta); //porcentaje  programaciion acumulado
-                    $ppe = self::porcentaje($ea,$periodo_meta); //porcentaje  efcicacia acumulada
-                    $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
-                    // $eea = ($ea/$pa)*100; //eficacia de ejecucion acumulada
-                    $row = array(
-                    'name'=> $task->code.' '.$programming->month->name,
-                    'meta'=> $programming->meta,
-                    'executed'=>$programming->executed,
-                    'efficacy'=>$programming->efficacy,
-                    'programacion_acumulada'=> $pa,
-                    'ejecucion_acumulada'=> $ea,
-                    'porcentaje_pa'=> $ppa,
-                    'porcentaje_ea'=> $ppe,
-                    'eficacia_ejecucion_acumulada'=>$eea
-
-                    );
-                    array_push($task_rows,$row);
-                }
-
-            } //end task
-
-            $pa = 0; //programacion acumuladaq
-            $ea = 0; //ejecucion acumulada
-
-            $ppa=0;
-            $ppe=0;
-            $eea=0;
-
-            $periodo_meta = 0;
-            $periodo_executed = 0;
-            // Log::info($task_rows);
-
-            foreach($task_rows as $task_array){
-                $task = (object) $task_array;
-                $periodo_meta += $task->meta;
-                $periodo_executed += $task->executed;
-            }
-
-            foreach($task_rows as $task_array){
-
-                $task = (object) $task_array;
 
                 $pa += $task->meta;
                 $ea += $task->executed;
@@ -232,6 +291,7 @@ class ReportController extends Controller
                 $eea = self::porcentaje($ea,$pa); //eficacia de ejecucion acumulada
 
                 $row = array(
+                    // 'name'=> $operation->code.' '.$task->name,
                     'name'=> $operation->code.' '.$task->name,
                     'meta'=> $task->meta,
                     'executed'=>$task->executed,
@@ -245,10 +305,8 @@ class ReportController extends Controller
                 );
 
                 array_push($operation_rows,$row);
-            }
 
-
-
+            }//end month
 
         }//end opertaion
 
@@ -979,7 +1037,7 @@ class ReportController extends Controller
         $title = request('title');
         $date = request('date');
         $format = request('format');
-
+        $type = request('type');
         // 'programacion_acumulada'=> $pa,
         //             'ejecucion_acumulada'=> $ea,
         //             'porcentaje_pa'=> $ppa,
@@ -1072,32 +1130,45 @@ class ReportController extends Controller
         $spreadsheet->getActiveSheet()->getStyle('C4')->applyFromArray($styleArray);
         $spreadsheet->getActiveSheet()->getStyle('C5')->applyFromArray($styleArray);
 
-        $spreadsheet->getActiveSheet()
-        ->fromArray(
-            $header,  // The data to set
-            NULL,        // Array values with this value will not be set
-            'A7'         // Top left coordinate of the worksheet range where
-                        //    we want to set these values (default is A1)
-        );
+        switch ($type) {
+            case 5:
+                # Tareas
+                $spreadsheet->getActiveSheet()
+                ->fromArray(
+                    $header,  // The data to set
+                    NULL,        // Array values with this value will not be set
+                    'A7'         // Top left coordinate of the worksheet range where
+                                //    we want to set these values (default is A1)
+                );
+                $spreadsheet->getActiveSheet()
+                ->fromArray(
+                    $content,  // The data to set
+                    NULL,        // Array values with this value will not be set
+                    'B8'         // Top left coordinate of the worksheet range where
+                                //    we want to set these values (default is A1)
+                );
+                $y=8;
+                foreach($tasks as $task){
+                    Log::info(json_encode($task));
+                    $sheet = $spreadsheet->getActiveSheet()->mergeCells('A'.$y.':A'.($y+$task->cell_merge));
+                    Log::info($y+$task->cell_merge);
+                    $spreadsheet->getActiveSheet()->setCellValue('A'.$y, $task->description);
+                    $y+=$task->cell_merge+1;
+                    Log::info($y);
+
+                }
+                break;
+            case 4:
+                # operaciones
 
 
-        $spreadsheet->getActiveSheet()
-        ->fromArray(
-            $content,  // The data to set
-            NULL,        // Array values with this value will not be set
-            'B8'         // Top left coordinate of the worksheet range where
-                        //    we want to set these values (default is A1)
-        );
-        $y=8;
-        foreach($tasks as $task){
-            Log::info(json_encode($task));
-            $sheet = $spreadsheet->getActiveSheet()->mergeCells('A'.$y.':A'.($y+$task->cell_merge));
-            Log::info($y+$task->cell_merge);
-            $spreadsheet->getActiveSheet()->setCellValue('A'.$y, $task->description);
-            $y+=$task->cell_merge+1;
-            Log::info($y);
+
+
+
+                break;
 
         }
+
 
         if($format =="excel"){
 
@@ -1109,7 +1180,7 @@ class ReportController extends Controller
             $writer->save('php://output');
         }else{
 
-            $writer = new Dompdf($spreadsheet);
+            $writer = new Mpdf($spreadsheet);
             $file_name ='archivoXD';
             header('Content-Type: applicaction/vnd.ms-pdf');
             header('Content-Disposition: attachment;filename="'.$file_name.'.pdf"');
