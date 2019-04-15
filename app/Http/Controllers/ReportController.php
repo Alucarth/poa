@@ -75,8 +75,6 @@ class ReportController extends Controller
         // $programmings = Programming::whereIn('month_id',$request->months)->get();
 
         $task_rows = [];
-
-
         $ma = explode(',',$request->months);
         // return $ma;
         $tasks = Task::whereHas('programmings', function ($query) use($ma) {
@@ -248,7 +246,6 @@ class ReportController extends Controller
                     where programmings.month_id in (".$request->months.") and action_short_terms.id = ".$action_short_term->id."
                     group by programmings.month_id,action_short_terms.id,months.name
                     order by action_short_terms.id;
-
                     ";
                 $query = DB::select($sql);
                 // return $query;
