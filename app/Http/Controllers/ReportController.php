@@ -112,9 +112,9 @@ class ReportController extends Controller
             foreach($query as $mes){
                 $pa += $mes->month_meta;
                 $ea += $mes->month_executed;
-                $ppa = $pa/$meses_meta;
-                $ppe = $ea/$meses_meta;
-                $eea = $ea/$pa;
+                $ppa = self::porcentaje($pa,$meses_meta);
+                $ppe = self::porcentaje($ea,$meses_meta);
+                $eea = self::porcentaje($ea,$pa);
 
                 $row = array(
 
@@ -186,9 +186,9 @@ class ReportController extends Controller
                 foreach($query as $mes){
                 $pa += $mes->month_meta;
                 $ea += $mes->month_executed;
-                $ppa = $pa/$meses_meta;
-                $ppe = $ea/$meses_meta;
-                $eea = $ea/$pa;
+                $ppa = self::porcentaje($pa,$meses_meta);
+                $ppe = self::porcentaje($ea,$meses_meta);
+                $eea = self::porcentaje($ea,$pa);
 
                 $row = array(
 
@@ -265,9 +265,9 @@ class ReportController extends Controller
                 foreach($query as $mes){
                 $pa += $mes->month_meta;
                 $ea += $mes->month_executed;
-                $ppa = $pa/$meses_meta;
-                $ppe = $ea/$meses_meta;
-                $eea = $ea/$pa;
+                $ppa = self::porcentaje($pa,$meses_meta);
+                $ppe = self::porcentaje($ea,$meses_meta);
+                $eea = self::porcentaje($ea,$pa);
 
                 $row = array(
 
@@ -346,9 +346,9 @@ class ReportController extends Controller
                 foreach($query as $mes){
                 $pa += $mes->month_meta;
                 $ea += $mes->month_executed;
-                $ppa = $pa/$meses_meta;
-                $ppe = $ea/$meses_meta;
-                $eea = $ea/$pa;
+                $ppa = self::porcentaje($pa,$meses_meta);
+                $ppe = self::porcentaje($ea,$meses_meta);
+                $eea = self::porcentaje($ea,$pa);
 
                 $row = array(
 
@@ -431,9 +431,9 @@ class ReportController extends Controller
                 foreach($query as $mes){
                 $pa += $mes->month_meta;
                 $ea += $mes->month_executed;
-                $ppa = $pa/$meses_meta;
-                $ppe = $ea/$meses_meta;
-                $eea = $ea/$pa;
+                $ppa = self::porcentaje($pa,$meses_meta);
+                $ppe = self::porcentaje($ea,$meses_meta);
+                $eea = self::porcentaje($ea,$pa);
 
                 $row = array(
 
@@ -595,14 +595,20 @@ class ReportController extends Controller
         $sheet = $spreadsheet->getActiveSheet()->mergeCells('A1:B6');
         $sheet->setCellValue('C3', 'EMPRESA BOLIVIANA DE ALIMENTOS Y DERIVADOS');
         $sheet = $spreadsheet->getActiveSheet()->mergeCells('C3:I3');
-        $sheet->setCellValue('C4', 'GERENCIA DE PLANIFICIACION Y DESARROLLO');
+        $sheet->setCellValue('C4', 'GERENCIA DE PLANIFICACIÓN Y DESARROLLO');
         $sheet = $spreadsheet->getActiveSheet()->mergeCells('C4:I4');
         $sheet->setCellValue('C5', 'REPORTE '.$title);
         $sheet = $spreadsheet->getActiveSheet()->mergeCells('C5:I5');
+        $sheet->setCellValue('C6', ''.$date);
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('C6:I6');
 
         $spreadsheet->getActiveSheet()->getStyle('C3')->applyFromArray($styleArray);
         $spreadsheet->getActiveSheet()->getStyle('C4')->applyFromArray($styleArray);
         $spreadsheet->getActiveSheet()->getStyle('C5')->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('C6')->applyFromArray($styleArray);
+        //dando formato a  las celdas  vacias
+        $spreadsheet->getActiveSheet()->getStyle('C1:J2')->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('J3:J6')->applyFromArray($styleArray);
 
         $spreadsheet->getActiveSheet()
         ->fromArray(
@@ -628,7 +634,47 @@ class ReportController extends Controller
             Log::info($y);
 
         }
+        // aplicando estilos
+        $styleHeadArray = [
+            'font' => [
+                'bold' => true,
+                'color' => [
+                    'argb' => 'FFFFFFFF',
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ],
+            'borders' => [
+                'top' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => [
+                    'argb' => 'FF0d0446',
+                ],
+                'endColor' => [
+                    'argb' => 'FF0d0446',
+                ],
+            ],
+        ];
+        $styleBodyArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => 'FF0d0446'],
+                ],
+            ],
+        ];
+        $y--;
+        $spreadsheet->getActiveSheet()->getStyle('A7:J7')->applyFromArray($styleHeadArray);
+        $spreadsheet->getActiveSheet()->getStyle('A8:J'.$y)->applyFromArray($styleBodyArray);
+        $spreadsheet->getActiveSheet()->getStyle('A'.$y.':B'.$y)->applyFromArray($styleHeadArray);
 
+        // unset($styleBodyArray);
         if($format =="excel"){
 
             $writer = new Xlsx($spreadsheet);
