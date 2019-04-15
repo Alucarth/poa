@@ -42,11 +42,11 @@
                             <i class="fa fa-sort"></i>
                         </template>
 
-                        <template slot="task_code" slot-scope="props">
+                        <template slot="type_code" slot-scope="props">
 
-                            {{props.row.task_code}}
+                            {{props.row.type_code}}
                             <!-- <v-btn icon> -->
-                                <v-icon data-toggle="tooltip" data-placement="bottom" :title="props.row.task_description" small>
+                                <v-icon data-toggle="tooltip" data-placement="bottom" :title="props.row.type_description" small>
                                     fa-question-circle
                                 </v-icon>
                             <!-- </v-btn> -->
@@ -120,7 +120,13 @@
     export default {
         data: () => ({
             months: [],
-            columns_base: [{
+            columns_base: [
+                {
+                    label: "Tipo",
+                    name: "type_code"
+                },
+
+                {
                     label: "Mes",
                     name: "name",
                     sort: false,
@@ -205,8 +211,8 @@
                 // { id: 5,name:"Tareas Especificas"},
             ],
             tipo: {
-                id: 5,
-                name: "Tareas"
+                id: 1,
+                name: "Accion a Mediano Plazo"
             },
             items_selececcionados: [],
             periodo: null
@@ -225,7 +231,7 @@
                     if (this.tipo) {
 
                         switch (this.tipo.id) {
-                            case 5:
+                            case 5: //tareas
                                 months = [];
                                 this.months.forEach(item => {
                                     months.push(Number(item.split("-")[1]));
@@ -238,24 +244,24 @@
                                         // this.rows = response.data.specific_tasks;
                                         // this.rows = this.getRows(response.data,year[0]);
                                         console.log(response.data);
-                                        this.getRowsTask(response.data);
+                                        this.getRows(response.data,this.tipo);
                                     });
 
                             break;
-                            case 4:
+                            case 4: //operaciones
                                 months = [];
                                 this.months.forEach(item => {
                                     months.push(Number(item.split("-")[1]));
                                 });
 
                                 axios.post('report_operation', {
-                                        months: months
+                                        months: months.toString()
                                     })
                                     .then((response) => {
                                         // this.rows = response.data.specific_tasks;
                                         // this.rows = this.getRows(response.data,year[0]);
                                         console.log(response.data);
-                                        // this.rows = this.getRows(response.data);
+                                        this.getRows(response.data,this.tipo);
                                     });
                             break;
                             case 3:
@@ -265,12 +271,12 @@
                                 });
 
                                 axios.post('report_ast', {
-                                        months: months
+                                        months: months.toString()
                                     })
                                     .then((response) => {
 
-                                        // console.log(response.data);
-                                        this.rows = this.getRows(response.data);
+                                        console.log(response.data);
+                                       this.getRows(response.data,this.tipo);
                                     });
                             break;
                             case 2:
@@ -280,12 +286,12 @@
                                 });
 
                                 axios.post('report_year', {
-                                        months: months
+                                        months: months.toString()
                                     })
                                     .then((response) => {
 
-                                        // console.log(response.data);
-                                        this.rows = this.getRows(response.data);
+                                        console.log(response.data);
+                                        this.getRows(response.data,this.tipo);
                                     });
                             break;
                             case 1:
@@ -295,12 +301,12 @@
                                 });
 
                                 axios.post('report_amt', {
-                                        months: months
+                                        months: months.toString()
                                     })
                                     .then((response) => {
 
-                                        // console.log(response.data);
-                                        this.rows = this.getRowsTask(response.data);
+                                        console.log(response.data);
+                                        this.getRows(response.data,this.tipo);
                                     });
                             break;
                         }
@@ -310,58 +316,17 @@
                     this.rows = [];
                 }
             },
-            getRowsTask(rows) {
+            getRows(rows,tipo) {
+                // console.log(tipo)
+                // this.report_list = rows;
+                this.columns[0].label = tipo.name;
 
-                this.report_list = rows;
-                this.columns =[];
-                this.columns.push({ label: "Tarea",
-                    name: "task_code",
-                    sort: false,});
-                this.columns_base.forEach(row => {
-                    this.columns.push(row);
-                });
-                console.log(this.columns);
-                // let tasks = [];
-                // rows.forEach(task => {
-
-                //     task.programmings.forEach(programming => {
-                //         programming.task_code = task.code;
-                //         programming.task_description = task.description;
-                //         programming.task_id = task.id;
-                //         tasks.push(programming);
-                //     });
-                // });
                 this.rows = rows;
 
                 // $('[data-toggle="tooltip"]').tooltip();
                 // return tasks;
             },
-            getRowsOperation(rows) {
 
-                this.report_list = rows;
-                this.columns =[];
-                this.columns.push({ label: "Tarea",
-                    name: "task_code",
-                    sort: false,});
-                this.columns_base.forEach(row => {
-                    this.columns.push(row);
-                });
-                console.log(this.columns);
-                let tasks = [];
-                rows.forEach(task => {
-
-                    task.programmings.forEach(programming => {
-                        programming.task_code = task.code;
-                        programming.task_description = task.description;
-                        programming.task_id = task.id;
-                        tasks.push(programming);
-                    });
-                });
-                this.rows = tasks;
-
-                // $('[data-toggle="tooltip"]').tooltip();
-                // return tasks;
-            },
             porcentaje(ejecutado, meta) {
                 return numeral((Number(ejecutado) * 100) / Number(meta)).format('0.00') ;
             },
