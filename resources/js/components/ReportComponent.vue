@@ -23,6 +23,7 @@
                                 <button class="btn btn-success"  data-toggle="modal" data-target="#periodoModal" @click="generarPeriodo()">Periodo</button>
                                 <button class="btn btn-success" @click="download">excel</button>
                                 <button class="btn btn-info" data-toggle="modal" data-target="#pdfModal"  @click="downloadPdf()">pdf</button>
+                                <!-- <button class="btn btn-primary" @click="limpiar()">clear </button> -->
                             </small>
                         </v-flex>
                     </v-layout>
@@ -439,6 +440,10 @@
                         //  self.dialog = false;
                      });
                 }
+            },
+            limpiar(){
+                console.log("borrando lista");
+                this.items_selececcionados = [];
             },
 
             // download_pdf() {
