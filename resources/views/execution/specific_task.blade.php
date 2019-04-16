@@ -6,7 +6,6 @@
     {{-- {{ Breadcrumbs::render('home') }} --}}
 @endsection
 @section('content')
-
     <div class="row">
 
           {{-- card material design --}}
@@ -28,6 +27,6 @@
         @endforeach --}}
 
     </div>
-    <execution-specific-tasks-component></execution-specific-tasks-component>
+<execution-specific-tasks-component :alerts="{{$alerts}}"></execution-specific-tasks-component>
 
 @endsection

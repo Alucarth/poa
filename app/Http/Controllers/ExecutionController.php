@@ -12,6 +12,7 @@ use App\ActionShortTerm;
 use App\ActionMediumTerm;
 use Log;
 use App\SpecificTask;
+use App\Alert;
 class ExecutionController extends Controller
 {
     /**
@@ -24,8 +25,9 @@ class ExecutionController extends Controller
         //
         $title = 'Inicio';
         $years = Year::select('year',DB::raw('count(action_medium_term_id) as action_medium_terms'))->groupBy('year')->orderBy('year')->get();
+        $alerts = Alert::orderBy('id')->get();
         // return $years;
-        return view('execution.index',compact('title','years'));
+        return view('execution.index',compact('title','years','alerts'));
 
     }
 
@@ -33,8 +35,9 @@ class ExecutionController extends Controller
     {
         $title = 'Ejecucion Tareas Especificas';
         $years = Year::select('year',DB::raw('count(action_medium_term_id) as action_medium_terms'))->groupBy('year')->orderBy('year')->get();
+        $alerts = Alert::orderBy('id')->get();
         // return $years;
-        return view('execution.specific_task',compact('title','years'));
+        return view('execution.specific_task',compact('title','years','alerts'));
     }
     /**
      * Show the form for creating a new resource.

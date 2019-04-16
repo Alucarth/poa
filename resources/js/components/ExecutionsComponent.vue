@@ -31,6 +31,9 @@
                         <template slot="no-sort-icon">
                             <i class="fa fa-sort"></i>
                         </template>
+                        <template slot="efficacy" slot-scope="props">
+                           <span :class="getColor(props.row.efficacy)">{{props.row.efficacy}}</span>
+                        </template>
 
                         <template slot="option" slot-scope="props">
                             <v-icon @click="getDetail(props)" data-toggle="modal" data-target="#taskModalDetail" small>
@@ -206,6 +209,7 @@
 <script>
 import VueBootstrap4Table from 'vue-bootstrap4-table';
 export default {
+     props:['alerts'],
 	 data: () => ({
       date: new Date().toISOString().substr(0, 7),
       search: '',
@@ -326,6 +330,19 @@ export default {
                this.detail = response.data;
                console.log(response.data);
              });
+      },
+      getColor(value){
+          let textColor="text-black";
+          this.alerts.forEach(color => {
+            if(value >= color.min && value <= color.max)
+            {
+                console.log(value+' color:'+color.color);
+                textColor = "text-"+color.color;
+                //return color.color;
+                // break;
+            }
+          });
+        return textColor;
       }
     },
     components: {

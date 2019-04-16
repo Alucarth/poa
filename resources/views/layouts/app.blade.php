@@ -72,7 +72,7 @@
                                 <span class="float-right"></span>
                             </li>
                             <li class="dropdown-item" id="config">
-                                <i class="fa fa-cogs mr-4"></i> Configuracion
+                                <i class="fa fa-user-cog mr-4"></i> Configuracion
                                 <span class="float-right"></span>
                             </li>
                             <li class="dropdown-divider"></li>
@@ -193,9 +193,25 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('report') }}" class="nav-link">
+                                <i class="nav-icon fas fa-file-invoice"></i>
+                                <p>
+                                    Reportes
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('report') }}" class="nav-link">
                                 <i class="nav-icon fas fa-chart-area"></i>
                                 <p>
-                                    Reporte
+                                    Graficos
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('configuration') }}" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>
+                                    Configuracion
                                 </p>
                             </a>
                         </li>

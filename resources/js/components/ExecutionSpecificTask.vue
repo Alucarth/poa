@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-    
+
       <div class="col-md-auto">
           <v-date-picker class="elevation-6" v-model="date" with="290" type="month" color="green" locale="es"
               @input="getData()">
@@ -26,6 +26,12 @@
                           <i class="fa fa-sort"></i>
                       </template>
 
+                        <template slot="efficacy" slot-scope="props">
+                           <span :class="getColor(props.row.efficacy)">{{props.row.efficacy}}</span>
+                        </template>
+
+
+
                       <template slot="option" slot-scope="props">
                           <v-icon @click="getDetail(props)" data-toggle="modal" data-target="#taskModalDetail"
                               small>
@@ -42,7 +48,7 @@
           </v-card>
       </div>
 
-   
+
 
       <!-- aqui va el modal o dialog mejor dicho de vuetify -->
      <div class="modal fade" id="taskModalExecuted" tabindex="-1" role="dialog" aria-labelledby="taskModalExecutedLabel" aria-hidden="true" >
@@ -222,7 +228,9 @@
 <script>
 import VueBootstrap4Table from 'vue-bootstrap4-table';
 export default {
+     props:['alerts'],
 	 data: () => ({
+
 		date: new Date().toISOString().substr(0, 7),
 		search: '',
 		rows: [],
@@ -297,6 +305,7 @@ export default {
     }),
     mounted(){
       this.getData();
+      console.log(this.alerts);
     },
     methods:{
       getData(){
@@ -342,6 +351,19 @@ export default {
                this.detail = response.data;
                console.log(response.data);
              });
+      },
+      getColor(value){
+          let textColor="text-black";
+          this.alerts.forEach(color => {
+            if(value >= color.min && value <= color.max)
+            {
+                console.log(value+' color:'+color.color);
+                textColor = "text-"+color.color;
+                //return color.color;
+                // break;
+            }
+          });
+        return textColor;
       }
     },
     components: {

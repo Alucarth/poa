@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MonthSeeder::class);
         $this->call(ProgrammaticStructureSeeder::class);
         $this->call(ProgrammaticOperationSeeder::class);
+        $this->call(AlertTableSeeder::class);
     }
 }

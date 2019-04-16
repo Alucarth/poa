@@ -7,7 +7,7 @@
 @endsection
 @section('content')
 
-       <executions-component></executions-component>
+       <executions-component :alerts="{{$alerts}}"></executions-component>
 
 
 @endsection
