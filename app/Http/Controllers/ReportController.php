@@ -507,6 +507,7 @@ class ReportController extends Controller
 
         $columns =json_decode(request('columns'));
         $rows =json_decode(request('rows'));
+
         // Log::info($rows);
         $title = request('title');
         $date = request('date');
@@ -523,24 +524,43 @@ class ReportController extends Controller
         }
         $content = [];
         $tasks = [];
-        $type_id = 0;
+        $type_id = -1;
         $count = 0;
         $before_task=null;
 
         foreach($rows as $row){
 
-            if($type_id==$row->type_id){
-                $count ++;
-            }else
-            {
-                $type_id= $row->type_id;
-                if($count>0){
+            // Log::info($count);
 
-                    array_push($tasks,(object) array('description'=>$before_task->type_description,'cell_merge'=>$count));
+            if($row->type_id != $type_id)
+            {
+                Log::info($type_id);
+                $type_id= $row->type_id;
+                // if($tasks)
+                //actulizando el cell merge
+                $index = sizeof($tasks);
+                Log::info("index: ".$index);
+                if($index >0){
+                    Log::info("cell_merge: ".json_encode($tasks[$index-1]));
+                    $tasks[$index-1]->cell_merge = $count;
                 }
                 $count = 0;
+                array_push($tasks,(object) array('description'=>$row->type_description,'cell_merge'=>$count));
+
+                // Log::info(json_encode($tasks));
+                // $count=0;
+                // $count =0;
+            }else{
+                // if(sizeof($tasks) >=0){
+                    $count ++ ;
+                    Log::info('contador: '.$count);
+                    // $tasks[sizeof($tasks)]->cell_merge = $tasks[sizeof($tasks)]->cell_merge +1;
+                    // $tasks[sizeof($tasks)]->cell_merge++;
+                // }
             }
+
             $before_task =$row;
+
             array_push($content,array(
                 $row->name,
                 $row->meta,
@@ -554,8 +574,16 @@ class ReportController extends Controller
             ));
 
         }
+
+        // if($before_task->type_id != $type_id)
+        // {
+        //     $type_id= $before_task->type_id;
+        //     array_push($tasks,(object) array('description'=>$before_task->type_description,'cell_merge'=>$count));
+        //     $count =0;
+        // }
             // Log::info($before_task);
-            array_push($tasks,(object) array('description'=>$before_task->type_description,'cell_merge'=>$count));
+            // Log::info("ultima  adicionando ".json_encode($before_task));
+            // array_push($tasks,(object) array('description'=>$before_task->type_description,'cell_merge'=>$count));
 
 
 
@@ -628,10 +656,10 @@ class ReportController extends Controller
         foreach($tasks as $task){
             // Log::info(json_encode($task));
             $sheet = $spreadsheet->getActiveSheet()->mergeCells('A'.$y.':A'.($y+$task->cell_merge));
-            Log::info($y+$task->cell_merge);
+            // Log::info($y+$task->cell_merge);
             $spreadsheet->getActiveSheet()->setCellValue('A'.$y, $task->description);
             $y+=$task->cell_merge+1;
-            Log::info($y);
+            // Log::info($y);
 
         }
         // aplicando estilos

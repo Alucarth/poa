@@ -520,8 +520,8 @@
             },
 
             getSelectedRows(rows) {
-                this.items_selececcionados = rows.selected_items;
                 console.log(rows);
+                this.items_selececcionados = rows.selected_items;
             }
         }
     }
