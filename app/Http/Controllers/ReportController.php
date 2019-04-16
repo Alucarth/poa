@@ -534,29 +534,23 @@ class ReportController extends Controller
 
             if($row->type_id != $type_id)
             {
-                Log::info($type_id);
+                // Log::info($type_id);
                 $type_id= $row->type_id;
                 // if($tasks)
                 //actulizando el cell merge
                 $index = sizeof($tasks);
-                Log::info("index: ".$index);
+                // Log::info("index: ".$index);
                 if($index >0){
-                    Log::info("cell_merge: ".json_encode($tasks[$index-1]));
+                    // Log::info("cell_merge: ".json_encode($tasks[$index-1]));
                     $tasks[$index-1]->cell_merge = $count;
                 }
                 $count = 0;
                 array_push($tasks,(object) array('description'=>$row->type_description,'cell_merge'=>$count));
 
-                // Log::info(json_encode($tasks));
-                // $count=0;
-                // $count =0;
             }else{
-                // if(sizeof($tasks) >=0){
+
                     $count ++ ;
-                    Log::info('contador: '.$count);
-                    // $tasks[sizeof($tasks)]->cell_merge = $tasks[sizeof($tasks)]->cell_merge +1;
-                    // $tasks[sizeof($tasks)]->cell_merge++;
-                // }
+
             }
 
             $before_task =$row;
@@ -574,18 +568,6 @@ class ReportController extends Controller
             ));
 
         }
-
-        // if($before_task->type_id != $type_id)
-        // {
-        //     $type_id= $before_task->type_id;
-        //     array_push($tasks,(object) array('description'=>$before_task->type_description,'cell_merge'=>$count));
-        //     $count =0;
-        // }
-            // Log::info($before_task);
-            // Log::info("ultima  adicionando ".json_encode($before_task));
-            // array_push($tasks,(object) array('description'=>$before_task->type_description,'cell_merge'=>$count));
-
-
 
         $spreadsheet = new Spreadsheet();
 
