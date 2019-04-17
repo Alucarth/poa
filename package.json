@@ -37,6 +37,7 @@
         "@material/typography": "^0.44.1",
         "admin-lte": "3.0.0-alpha.2",
         "bootstrap": "^4.3.1",
+        "chart.js": "^2.8.0",
         "datatables.net-bs4": "^1.10.19",
         "datatables.net-dt": "^1.10.19",
         "datatables.net-responsive-bs4": "^2.2.3",

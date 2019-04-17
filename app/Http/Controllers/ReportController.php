@@ -19,7 +19,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf;
 use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing as drawing;
-use function GuzzleHttp\Promise\task;
+use App\Alert;
 
 class ReportController extends Controller
 {
@@ -34,6 +34,49 @@ class ReportController extends Controller
         return view('report.index');
     }
 
+    public function chart()
+    {
+        $alerts = Alert::orderBy('id')->get();
+        return view('report.chart',compact('alerts'));
+    }
+
+    public function years_list()
+    {
+        $years = DB::select('select year from years
+        group by years."year"
+        order by years."year";');
+        return response()->json($years);
+    }
+
+    public function amt_year($month){
+        $sql = 'select 	sum(programmings.executed) as month_executed,
+                            sum(programmings.meta) as month_meta,
+                            programmings.month_id,
+                            months.name
+                    from action_medium_terms
+                    join years on years.action_medium_term_id = action_medium_terms.id
+                    join action_short_terms on action_short_terms.year_id = years.id
+                    join operations on operations.action_short_term_id = action_short_terms.id
+                    join tasks on tasks.operation_id = operations.id
+                    join programmings on tasks.id = programmings.task_id
+                    join months on months.id = programmings.month_id
+                    where years."year"='.$month.'
+                    group by programmings.month_id,months.name
+                    order by programmings.month_id;';
+        $query = DB::select($sql);
+        return response()->json($query);
+    }
+
+    public function ast_year($month)
+    {
+        $sql = 'select action_short_terms.*
+                from action_short_terms
+                join years on action_short_terms.year_id = years.id
+                where years."year" = '.$month.'
+                order by action_short_terms.id;';
+        $query = DB::select($sql);
+        return response()->json($query);
+    }
     /**
      * Show the form for creating a new resource.
      *

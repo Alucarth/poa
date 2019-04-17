@@ -200,7 +200,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('report') }}" class="nav-link">
+                            <a href="{{ url('chart') }}" class="nav-link">
                                 <i class="nav-icon fas fa-chart-area"></i>
                                 <p>
                                     Graficos
@@ -296,7 +296,7 @@
             // $.extend( $.fn.dataTable.defaults, {
             //     responsive: true
             // } );
-            console.log(spanish_lang);
+            // console.log(spanish_lang);
             $('#lista').DataTable({
                 // responsive: {
                 //     details: {

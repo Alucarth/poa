@@ -6,7 +6,7 @@
  */
 
 require('./bootstrap');
-import 'fullcalendar';
+// import 'fullcalendar';/
 import VeeValidate from "vee-validate";
 import Vuetify from 'vuetify';
 import Multiselect from 'vue-multiselect';
@@ -30,6 +30,8 @@ Vue.component('multiselect', Multiselect)
 
 window.moment.locale('es');
 
+
+window.Chart = require('chart.js');
 window.spanish_lang = require('./datatable_spanish');
 /**
  * The following block of code may be used to automatically register your
@@ -60,6 +62,7 @@ Vue.component('executions-component', require('./components/ExecutionsComponent.
 Vue.component('specific-task-component', require('./components/SpecificTaskComponent.vue').default);
 Vue.component('execution-specific-tasks-component', require('./components/ExecutionSpecificTask.vue').default);
 Vue.component('report-component', require('./components/ReportComponent.vue').default);
+Vue.component('chart-component', require('./components/chartComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

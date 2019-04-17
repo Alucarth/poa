@@ -62,6 +62,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('report_year','ReportController@report_year');
     Route::post('report_amt','ReportController@report_amt');
 
+    Route::get('chart','ReportController@chart');
+    Route::get('years_list','ReportController@years_list');
+    Route::get('amt_year/{month}','ReportController@amt_year');
+    Route::get('ast_year/{month}','ReportController@ast_year');
+
     Route::get('test','ReportController@test');
 
     Route::resource('configuration', 'SystemController');
