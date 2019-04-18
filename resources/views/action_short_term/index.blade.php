@@ -11,7 +11,7 @@
             <div class="card card-widget widget-user-2">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div class="widget-user-header bg-info">
-                   
+
                     <div class="row">
                         <div class="col-md-4">
                                 <i class="far fa-calendar" style="font-size:50px;"></i>
@@ -24,12 +24,12 @@
                     </div>
                     <div class="row">
                         <span>  <strong>Descripcion:</strong> {{$year->action_medium_term->description}}</span>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="card-footer p-0">
                     <ul class="nav flex-column">
                         @foreach ($year->action_medium_term->years as $item)
-                        
+
                             <li class="nav-item" >
                                 <a href="{{url('action_short_term_year/'.$item->id)}}" class="nav-link">
                                     @if($item->id==$year->id)
@@ -40,9 +40,9 @@
                                  {{'Gestion '.$item->year}} <span class="float-right badge bg-success"> <i class="fa fa-flag"></i> {{$item->meta}}</span>
                                 </a>
                             </li>
-                            
+
                         @endforeach
-                        
+
                     </ul>
                 </div>
             </div>
@@ -52,7 +52,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header card-calendar">
-                            
+
                         <h3 class="card-title">
 
                             <h4 class="card-title ">

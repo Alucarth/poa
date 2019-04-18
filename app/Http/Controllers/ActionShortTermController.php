@@ -9,6 +9,7 @@ use App\Operation;
 use App\Indicator;
 use App\ProgrammaticStructure;
 use App\ActionMediumTerm;
+use Illuminate\Support\Facades\DB;
 class ActionShortTermController extends Controller
 {
     /**
@@ -61,7 +62,7 @@ class ActionShortTermController extends Controller
         $action_short_term->save();
 
         session()->flash('message',' se registro '.$action_short_term->code);
-     
+
         return back()->withInput();
     }
 
@@ -122,5 +123,27 @@ class ActionShortTermController extends Controller
     {
         $programmatic_structure = ProgrammaticStructure::all();
         return $programmatic_structure;
+    }
+
+    public function check_meta($year_id){
+
+        $total_meta = ActionShortTerm::where('year_id',$year_id)
+                                    ->select(DB::raw("sum(meta) as total_meta, sum(weighing) as total_ponderado"))
+                                    ->groupBy('year_id')
+                                    ->get();
+        $year = Year::find($year_id);
+        if(sizeof($total_meta)>0)
+        {
+            $meta = $year->meta - $total_meta[0]->total_meta;
+            $ponderacion = 100 - $total_meta[0]->total_ponderado;
+        }
+        else{
+
+            $meta = $year->meta;
+            $ponderacion = 100;
+        }
+
+        return response()->json(compact('meta','ponderacion'));
+
     }
 }
