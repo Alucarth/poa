@@ -26,7 +26,7 @@
 <body >
     <div class="wrapper" id="app">
 
-       
+
         <section class="content" style=" padding-top: 60px;">
             @yield('content')
         </section>
