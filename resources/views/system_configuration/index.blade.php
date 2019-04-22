@@ -96,11 +96,11 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             {{-- <label for="rojo">Nombre</label> --}}
-                        <input type="text" class="form-control bg-{{$alert->color}}" placeholder="Nombre" value="{{$alert->name}}" disabled>
+                            <input type="text" class="form-control bg-{{$alert->color}}" placeholder="Nombre" value="{{$alert->name}}" disabled>
                         </div>
                         <div class="form-group col-md-3">
                             {{-- <label for="rojo">valores</label> --}}
-                        <input type="text" class="form-control " name="min_{{$alert->id}}" placeholder="min" value="{{$alert->min}}">
+                            <input type="text" class="form-control " name="min_{{$alert->id}}" placeholder="min" value="{{$alert->min}}">
                             {{-- <input type="text" class="form-control col-md-5" placeholder="max"> --}}
                         </div>
                         <div class="form-group col-md-3">
