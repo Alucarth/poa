@@ -166,6 +166,14 @@
 				   with font-awesome or any other icon font library -->
 
                         <li class="nav-item">
+                            <a href="{{ url('action_medium_term') }}" class="nav-link">
+                                <i class="nav-icon fas fa-calendar"></i>
+                                <p>
+                                    Planificacion
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url('/') }}" class="nav-link">
                                 <i class="nav-icon far fa-calendar-alt"></i>
                                 {{-- <i class=" nav-icon material-icons" height="42px" width="42px"> event_note </i> --}}
@@ -180,14 +188,6 @@
                                 {{-- <i class=" nav-icon material-icons"> event_available </i> --}}
                                 <p>
                                     Tareas Especificas
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('action_medium_term') }}" class="nav-link">
-                                <i class="nav-icon fas fa-calendar"></i>
-                                <p>
-                                    Planificacion
                                 </p>
                             </a>
                         </li>
