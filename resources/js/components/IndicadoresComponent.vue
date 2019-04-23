@@ -158,9 +158,10 @@
 				if(ast)
 				{
 					this.title='Editar '+ast.code;
-                    console.log(ast);
+                    // console.log(ast);
                     axios.get(`action_short_term/${ast.id}`).then(response=>{
                             this.form = response.data.action_short_term;
+                            console.log(this.form);
                             this.meta_temp = response.data.action_short_term.meta;
                             this.ponderacion_temp = response.data.action_short_term.weighing;
                     });
@@ -170,7 +171,7 @@
                     this.meta_temp = 0;
                     this.ponderacion_temp = 0;
 				}
-                console.log(this.meta_temp);
+
                  axios.get(`check_meta_ast/${this.gestion.id}`)
                         .then(response=>{
                             console.log(response.data);

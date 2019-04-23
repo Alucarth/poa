@@ -75,7 +75,7 @@ class ActionShortTermController extends Controller
     public function show($id)
     {
         //
-        $action_short_term = ActionShortTerm::find($id);
+        $action_short_term = ActionShortTerm::with('programmatic_structure')->find($id);
         return response()->json(compact('action_short_term'));
     }
 
