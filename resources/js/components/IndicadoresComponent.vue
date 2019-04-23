@@ -22,13 +22,13 @@
                                         <v-avatar class="green darken-3">
                                             <v-icon >fa-flag</v-icon>
                                         </v-avatar>
-                                            Meta: {{total_meta}}
+                                            Meta: {{getMeta}}
                                     </v-chip>
                                     <v-chip color="bg-info" text-color="white">
                                         <v-avatar class="cyan darken-3">
                                             <v-icon >fa-percentage</v-icon>
                                         </v-avatar>
-                                            Ponderacion Disponible: {{total_ponderacion}}
+                                            Ponderacion Disponible: {{getPonderacion}}
                                     </v-chip>
 								</div>
 							</div>
@@ -41,12 +41,12 @@
                                 </div>
 								<div class="form-group col-md-3">
                                     <label for="meta">Meta</label>
-                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+total_meta" />
+                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
                                     <div class="invalid-feedback">{{ errors.first("meta") }}</div>
                                 </div>
 								<div class="form-group col-md-3">
                                     <label for="weighing">Ponderacion (%) </label>
-                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'required|decimal:2|max_value:'+total_ponderacion" />
+                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'required|decimal:2|max_value:'+getPonderacion" />
                                     <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
                                 </div>
                             </div>
@@ -138,7 +138,9 @@
             title:'',
             total_meta:0,
             total_ponderacion:0,
-			gestion:{},
+            gestion:{},
+            meta_temp:0,
+            ponderacion_temp:0
 			// programmatic_structures:[]
         }),
         mounted() {
@@ -156,11 +158,19 @@
 				if(ast)
 				{
 					this.title='Editar '+ast.code;
-					this.form = ast;
+                    console.log(ast);
+                    axios.get(`action_short_term/${ast.id}`).then(response=>{
+                            this.form = response.data.action_short_term;
+                            this.meta_temp = response.data.action_short_term.meta;
+                            this.ponderacion_temp = response.data.action_short_term.weighing;
+                    });
+                    // this.form = ast;
 				}else{
-					this.form={};
+                    this.form={};
+                    this.meta_temp = 0;
+                    this.ponderacion_temp = 0;
 				}
-                console.log(ast);
+                console.log(this.meta_temp);
                  axios.get(`check_meta_ast/${this.gestion.id}`)
                         .then(response=>{
                             console.log(response.data);
@@ -184,10 +194,10 @@
 
 					let form = document.getElementById("formActionShortTerm");
 
-						if(parseFloat(this.total_meta)>=parseFloat(this.form.meta)){
+						if(parseFloat(this.getMeta)>=parseFloat(this.form.meta)){
 						form.submit();
 						}else{
-							toastr.info(' La Meta de la Accion a Mediano Plazo: '+this.form.meta+' no puede ser mayor la Meda de la Gestion: '+this.total_meta+'');
+							toastr.info(' La Meta de la Accion a Mediano Plazo: '+this.getMeta+' no puede ser mayor la Meda de la Gestion: '+this.total_meta+'');
 						}
 						return;
 					}
@@ -213,7 +223,13 @@
 					amount+=parseFloat(element.meta);
 				});
 				return amount;
-			},
+            },
+            getMeta(){
+                return parseFloat(this.total_meta)+ parseFloat(this.meta_temp);
+            },
+            getPonderacion(){
+                return parseFloat(this.total_ponderacion)+ parseFloat(this.ponderacion_temp);
+            }
 		}
     }
 </script>

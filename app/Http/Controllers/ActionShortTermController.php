@@ -75,6 +75,8 @@ class ActionShortTermController extends Controller
     public function show($id)
     {
         //
+        $action_short_term = ActionShortTerm::find($id);
+        return response()->json(compact('action_short_term'));
     }
 
     /**
@@ -109,6 +111,13 @@ class ActionShortTermController extends Controller
     public function destroy($id)
     {
         //
+        return $id;
+    }
+    public function delete(Request $request){
+        $action_short_term = ActionShortTerm::find($request->id);
+        session()->flash('message',' se elimino el registro '.$action_short_term->code);
+        $action_short_term->delete();
+        return back()->withInput();
     }
     //adicionando logica para el flujo
     public function action_short_term_year($year_id){

@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('action_short_term_year/{year_id}','ActionShortTermController@action_short_term_year')->name('action_short_term_year');
 
     Route::resource('action_short_term','ActionShortTermController');
+    Route::post('action_short_term/delete','ActionShortTermController@delete')->name('delete_action_short_term');
 
     Route::get('ast_operations/{action_short_term_id}','OperationController@ast_operations')->name('ast_operations');
 

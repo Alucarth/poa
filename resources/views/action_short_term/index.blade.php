@@ -94,7 +94,7 @@
                                     <td>
                                         <a href="{{url('ast_operations/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a>
                                         <a href="#" data-toggle="modal" data-target="#ActionShortTermModal" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
-                                        <a href="#"><i class="material-icons text-danger">delete</i></a>
+                                        <a href="#" data-toggle="modal" data-target="#deleteModal" data-json="{{$item}}"><i class="material-icons text-danger">delete</i></a>
                                     </td>
 
                                 </tr>
@@ -113,4 +113,42 @@
     {{-- aqui los modals --}}
     <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}" :structures="{{$programmatic_structures}}"  ></indicadores-component>
 
+    <!-- Modal -->
+    {!! Form::open(['action' => 'ActionShortTermController@delete'] )!!}
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title" id="deleteModalLabel">Eliminar la Accion a corto plazo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span></span>
+                    <input type="text" name="id">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-success">Si </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {!! Form::close()!!}
 @endsection
+<script>
+@section("script")
+    $('#deleteModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var object = button.data('json');  // Extract info from data-* attributes
+    console.log(object);
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('.modal-title').text('Eliminar ' + object.code)
+    modal.find('.modal-body span').text("Desea eliminar la acciona mediano plazo "+object.code+"?");
+    modal.find('.modal-body input').val(object.id);
+    })
+@endsection()
+</script>
