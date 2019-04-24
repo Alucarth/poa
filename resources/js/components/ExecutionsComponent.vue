@@ -97,99 +97,136 @@
                   <div class="col-4">
                     <div class="list-group" id="list-tab" role="tablist">
                       <a class="list-group-item list-group-item-action " id="list-amt-list" data-toggle="list" href="#list-amt" role="tab" aria-controls="amt"> <i class="fa fa-calendar"></i> {{detail.action_medium_term.code}}</a>
-                      <a class="list-group-item list-group-item-action" id="list-year-list" data-toggle="list" href="#list-year" role="tab" aria-controls="year"><i class="fa fa-clock-o"></i> {{detail.year.year}}</a>
-                      <a class="list-group-item list-group-item-action" id="list-ast-list" data-toggle="list" href="#list-ast" role="tab" aria-controls="ast"><i class="fa fa-calendar-plus-o"></i> {{detail.action_short_term.code}}</a>
-                      <a class="list-group-item list-group-item-action" id="list-operation-list" data-toggle="list" href="#list-operation" role="tab" aria-controls="operation"><i class="fa fa-list-alt"></i> {{detail.operation.code}}</a>
-                      <a class="list-group-item list-group-item-action active" id="list-task-list" data-toggle="list" href="#list-task" role="tab" aria-controls="task"><i class="fa fa-tasks"></i> {{detail.task.code}}</a>
+                      <a class="list-group-item list-group-item-action" id="list-year-list" data-toggle="list" href="#list-year" role="tab" aria-controls="year"><i class="fa fa-clock"></i> {{detail.year.year}}</a>
+                      <a class="list-group-item list-group-item-action" id="list-ast-list" data-toggle="list" href="#list-ast" role="tab" aria-controls="ast"><i class="fa fa-calendar-alt"></i> {{detail.action_short_term.code}}</a>
+                      <a class="list-group-item list-group-item-action" id="list-operation-list" data-toggle="list" href="#list-operation" role="tab" aria-controls="operation"><i class="fa fa-clipboard-list"></i> {{detail.operation.code}}</a>
+                      <a class="list-group-item list-group-item-action active" id="list-task-list" data-toggle="list" href="#list-task" role="tab" aria-controls="task"><i class="fa fa-calendar-week"></i> {{detail.task.code}}</a>
+                      <a class="list-group-item list-group-item-action " id="list-graphics-list" data-toggle="list" href="#list-graphics" role="tab" aria-controls="graphics"><i class="fa fa-chart-line"></i> Progreso</a>
                     </div>
                   </div>
                   <div class="col-8">
                     <div class="tab-content" id="nav-tabContent">
-                      <div class="tab-pane fade show active" id="list-amt" role="tabpanel" aria-labelledby="list-home-list">
-                        <legend>Accion a Mediano Plazo {{detail.action_medium_term.code}}</legend>
-                        <p> Descripcion:<strong> {{detail.action_medium_term.description}}</strong>  </p>
-                        <v-chip color="green  " text-color="white">
-                          <v-avatar class="green darken-4"> <v-icon color="white">flag</v-icon> </v-avatar>
-                          Meta: {{detail.action_medium_term.alcance_meta}}
-                        </v-chip>
-                        <br>
-                        <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-4"> <v-icon color="white" small>fa-calendar-check-o</v-icon> </v-avatar>
-                          Ejecucion: {{detail.action_medium_term.executed}}
-                        </v-chip>
-                        <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-3"> <v-icon color="white" small>perm_data_setting</v-icon> </v-avatar>
-                          Eficacia: {{getFormaNumber(detail.action_medium_term.efficacy)+' %'}}
-                        </v-chip>
-                      </div>
-                      <div class="tab-pane fade" id="list-year" role="tabpanel" aria-labelledby="list-year-list">
-                        <legend>Gestion {{detail.year.year}}</legend>
+                        <div class="tab-pane fade show active" id="list-amt" role="tabpanel"
+                            aria-labelledby="list-home-list">
+                            <legend>Accion a Mediano Plazo {{detail.action_medium_term.code}}</legend>
+                            <p> Descripcion:<strong> {{detail.action_medium_term.description}}</strong> </p>
+                            <v-chip color="green  " text-color="white">
+                                <v-avatar class="green darken-4">
+                                    <v-icon color="white">flag</v-icon>
+                                </v-avatar>
+                                Meta: {{detail.action_medium_term.alcance_meta}}
+                            </v-chip>
+                            <br>
+                            <v-chip color=" blue  " text-color="white">
+                                <v-avatar class="blue darken-4">
+                                    <v-icon color="white" small>fa-calendar-check</v-icon>
+                                </v-avatar>
+                                Ejecucion: {{detail.action_medium_term.executed}}
+                            </v-chip>
+                            <v-chip color=" blue  " text-color="white">
+                                <v-avatar class="blue darken-3">
+                                    <v-icon color="white" small>perm_data_setting</v-icon>
+                                </v-avatar>
+                                Eficacia: {{getFormaNumber(detail.action_medium_term.efficacy)+' %'}}
+                            </v-chip>
+                        </div>
+                        <div class="tab-pane fade" id="list-year" role="tabpanel" aria-labelledby="list-year-list">
+                            <legend>Gestion {{detail.year.year}}</legend>
 
-                        <v-chip color="green  " text-color="white">
-                          <v-avatar class="green darken-3"> <v-icon color="white">flag</v-icon> </v-avatar>
-                          Meta: {{detail.year.meta}}
-                        </v-chip>
-                        <br>
-                        <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-3"> <v-icon color="white" small>fa-calendar-check-o</v-icon> </v-avatar>
-                          Ejecucion: {{detail.year.excecuted}}
-                        </v-chip>
-                        <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-4"> <v-icon color="white" small>perm_data_setting</v-icon> </v-avatar>
-                          Eficacia: {{getFormaNumber(detail.year.efficacy)+' %'}}
-                        </v-chip>
-                      </div>
-                      <div class="tab-pane fade" id="list-ast" role="tabpanel" aria-labelledby="list-ast-list">
-                        <legend>Accion a Corto Plazo {{detail.action_short_term.code}}</legend>
-                        <p> Descripcion:<strong> {{detail.action_short_term.description}}</strong>  </p>
-                        <v-chip color="green  " text-color="white">
-                          <v-avatar class="green darken-4"> <v-icon color="white">flag</v-icon> </v-avatar>
-                          Meta: {{detail.action_short_term.meta}}
-                        </v-chip>
-                        <br>
-                        <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-4"> <v-icon color="white" small>fa-calendar-check-o</v-icon> </v-avatar>
-                          Ejecucion: {{detail.action_short_term.executed}}
-                        </v-chip>
-                        <v-chip color=" blue  " text-color="white">
-                          <v-avatar class="blue darken-4"> <v-icon color="white" small>perm_data_setting</v-icon> </v-avatar>
-                          Eficacia: {{getFormaNumber(detail.action_short_term.efficacy)+' %'}}
-                        </v-chip>
-                      </div>
-                      <div class="tab-pane fade" id="list-operation" role="tabpanel" aria-labelledby="list-operation-list">
-                          <legend>Operacion {{detail.operation.code}}</legend>
-                          <p> Descripcion:<strong> {{detail.operation.description}}</strong>  </p>
-                          <v-chip color="green  " text-color="white">
-                            <v-avatar class="green darken-4"> <v-icon color="white">flag</v-icon> </v-avatar>
-                            Meta: {{detail.operation.meta}}
-                          </v-chip>
-                          <br>
-                          <v-chip color=" blue  " text-color="white">
-                            <v-avatar class="blue darken-4"> <v-icon color="white" small>fa-calendar-check-o</v-icon> </v-avatar>
-                            Ejecucion: {{detail.operation.executed}}
-                          </v-chip>
-                          <v-chip color=" blue  " text-color="white">
-                            <v-avatar class="blue darken-4"> <v-icon color="white" small>perm_data_setting</v-icon> </v-avatar>
-                            Eficacia: {{getFormaNumber(detail.operation.efficacy)+' %'}}
-                          </v-chip>
-                      </div>
-                      <div class="tab-pane fade" id="list-task" role="tabpanel" aria-labelledby="list-task-list">
-                          <legend>Tarea {{detail.task.code}}</legend>
-                          <p> Descripcion:<strong> {{detail.task.description}}</strong>  </p>
-                          <v-chip color="green  " text-color="white">
-                            <v-avatar class="green darken-4"> <v-icon color="white">flag</v-icon> </v-avatar>
-                            Meta: {{detail.task.meta}}
-                          </v-chip>
-                          <br>
-                          <v-chip color=" blue  " text-color="white">
-                            <v-avatar class="blue darken-4"> <v-icon color="white" small>fa-calendar-check-o</v-icon> </v-avatar>
-                            Ejecucion: {{detail.task.executed}}
-                          </v-chip>
-                          <v-chip color=" blue  " text-color="white">
-                            <v-avatar class="blue darken-4"> <v-icon color="white" small>perm_data_setting</v-icon> </v-avatar>
-                            Eficacia: {{getFormaNumber(detail.task.efficacy)+' %'}}
-                          </v-chip>
-                      </div>
+                            <v-chip color="green  " text-color="white">
+                                <v-avatar class="green darken-3">
+                                    <v-icon color="white">flag</v-icon>
+                                </v-avatar>
+                                Meta: {{detail.year.meta}}
+                            </v-chip>
+                            <br>
+                            <v-chip color=" blue  " text-color="white">
+                                <v-avatar class="blue darken-3">
+                                    <v-icon color="white" small>fa-calendar-check</v-icon>
+                                </v-avatar>
+                                Ejecucion: {{detail.year.excecuted}}
+                            </v-chip>
+                            <v-chip color=" blue  " text-color="white">
+                                <v-avatar class="blue darken-4">
+                                    <v-icon color="white" small>perm_data_setting</v-icon>
+                                </v-avatar>
+                                Eficacia: {{getFormaNumber(detail.year.efficacy)+' %'}}
+                            </v-chip>
+                        </div>
+                        <div class="tab-pane fade" id="list-ast" role="tabpanel" aria-labelledby="list-ast-list">
+                            <legend>Accion a Corto Plazo {{detail.action_short_term.code}}</legend>
+                            <p> Descripcion:<strong> {{detail.action_short_term.description}}</strong> </p>
+                            <v-chip color="green  " text-color="white">
+                                <v-avatar class="green darken-4">
+                                    <v-icon color="white">flag</v-icon>
+                                </v-avatar>
+                                Meta: {{detail.action_short_term.meta}}
+                            </v-chip>
+                            <br>
+                            <v-chip color=" blue  " text-color="white">
+                                <v-avatar class="blue darken-4">
+                                    <v-icon color="white" small>fa-calendar-check</v-icon>
+                                </v-avatar>
+                                Ejecucion: {{detail.action_short_term.executed}}
+                            </v-chip>
+                            <v-chip color=" blue  " text-color="white">
+                                <v-avatar class="blue darken-4">
+                                    <v-icon color="white" small>perm_data_setting</v-icon>
+                                </v-avatar>
+                                Eficacia: {{getFormaNumber(detail.action_short_term.efficacy)+' %'}}
+                            </v-chip>
+                        </div>
+                        <div class="tab-pane fade" id="list-operation" role="tabpanel"
+                            aria-labelledby="list-operation-list">
+                            <legend>Operacion {{detail.operation.code}}</legend>
+                            <p> Descripcion:<strong> {{detail.operation.description}}</strong> </p>
+                            <v-chip color="green  " text-color="white">
+                                <v-avatar class="green darken-4">
+                                    <v-icon color="white">flag</v-icon>
+                                </v-avatar>
+                                Meta: {{detail.operation.meta}}
+                            </v-chip>
+                            <br>
+                            <v-chip color=" blue  " text-color="white">
+                                <v-avatar class="blue darken-4">
+                                    <v-icon color="white" small>fa-calendar-check</v-icon>
+                                </v-avatar>
+                                Ejecucion: {{detail.operation.executed}}
+                            </v-chip>
+                            <v-chip color=" blue  " text-color="white">
+                                <v-avatar class="blue darken-4">
+                                    <v-icon color="white" small>perm_data_setting</v-icon>
+                                </v-avatar>
+                                Eficacia: {{getFormaNumber(detail.operation.efficacy)+' %'}}
+                            </v-chip>
+                        </div>
+                        <div class="tab-pane fade" id="list-task" role="tabpanel" aria-labelledby="list-task-list">
+                            <legend>Tarea {{detail.task.code}}</legend>
+                            <p> Descripcion:<strong> {{detail.task.description}}</strong> </p>
+                            <v-chip color="green  " text-color="white">
+                                <v-avatar class="green darken-4">
+                                    <v-icon color="white">flag</v-icon>
+                                </v-avatar>
+                                Meta: {{detail.task.meta}}
+                            </v-chip>
+                            <br>
+                            <v-chip color=" blue  " text-color="white">
+                                <v-avatar class="blue darken-4">
+                                    <v-icon color="white" small>fa-calendar-check</v-icon>
+                                </v-avatar>
+                                Ejecucion: {{detail.task.executed}}
+                            </v-chip>
+                            <v-chip color=" blue  " text-color="white">
+                                <v-avatar class="blue darken-4">
+                                    <v-icon color="white" small>perm_data_setting</v-icon>
+                                </v-avatar>
+                                Eficacia: {{getFormaNumber(detail.task.efficacy)+' %'}}
+                            </v-chip>
+                        </div>
+                        <div class="tab-pane fade" id="list-graphics" role="tabpanel" aria-labelledby="list-graphics-list">
+                            <legend>Detalle</legend>
+                            <canvas id="chartAst" ></canvas>
+                        </div>
                     </div>
                   </div>
               </div>
@@ -207,6 +244,7 @@
     </div>
 </template>
 <script>
+var chart=null;
 import VueBootstrap4Table from 'vue-bootstrap4-table';
 export default {
      props:['alerts'],
@@ -279,7 +317,22 @@ export default {
       },
       dialog:false,
       form:null,
-      detail:null
+      detail:null,
+      config_chart :{
+            type: 'bar',
+            data: [],
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            min:0,
+                            max:100,
+                        }
+                    }]
+                }
+            }
+        },
 
 
     }),
@@ -328,6 +381,7 @@ export default {
         axios.get(`executions/${item.row.programming_id}`)
              .then((response)=>{
                this.detail = response.data;
+               this.graficar(response.data);
                console.log(response.data);
              });
       },
@@ -343,7 +397,87 @@ export default {
             }
           });
         return textColor;
-      }
+      },
+      graficar(detail)
+      {
+            $(document).ready(()=>{
+
+
+
+                let labels = [];
+                let efficacys = [];
+                let colors = [];
+
+                labels.push(detail.action_medium_term.code);
+                efficacys.push(detail.action_medium_term.efficacy);
+                colors.push(this.getColorExa(detail.action_medium_term.efficacy));
+
+                labels.push(detail.year.year+'');
+                efficacys.push(detail.year.efficacy);
+                colors.push(this.getColorExa(detail.year.efficacy));
+
+                labels.push(detail.action_short_term.code);
+                efficacys.push(detail.action_short_term.efficacy);
+                colors.push(this.getColorExa(detail.action_short_term.efficacy));
+
+                labels.push(detail.operation.code);
+                efficacys.push(detail.operation.efficacy);
+                colors.push(this.getColorExa(detail.operation.efficacy));
+
+                labels.push(detail.task.code);
+                efficacys.push(detail.task.efficacy);
+                colors.push(this.getColorExa(detail.task.efficacy));
+
+                let data = {
+                    labels: labels,
+                    datasets: [{
+                        label: '% de Eficacia',
+                        data: efficacys,
+                        backgroundColor: colors,
+                        borderColor: colors,
+                        borderWidth: 1
+                    }]
+                };
+
+                this.config_chart.data = data;
+                // console.log(this.config_chart);
+                let ctx = document.getElementById('chartAst');
+                console.log(ctx);
+                if(chart){
+                    chart.update();
+                    console.log('renderizando');
+                }else{
+                    chart = new Chart(ctx,this.config_chart);
+                }
+            });
+        },
+        getColorExa(value){
+            let colorx="#000000";
+            this.alerts.forEach(color => {
+                if(value >= color.min && value <= color.max)
+                {
+                    // console.log(value+' color:'+color.color);
+                    switch (color.color) {
+                        case 'danger':
+                            colorx ='#EC0043';
+                            break;
+
+                        case 'warning':
+                            colorx ='#FFCE00';
+                            break;
+
+                        case 'success':
+                            colorx ='#00B345';
+                            break;
+
+                    }
+
+                    //return color.color;
+                    // break;
+                }
+            });
+            return colorx;
+        }
     },
     components: {
         VueBootstrap4Table

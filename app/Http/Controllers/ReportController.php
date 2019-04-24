@@ -614,7 +614,7 @@ class ReportController extends Controller
 
         $spreadsheet = new Spreadsheet();
 
-
+        $spreadsheet->getActiveSheet()->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
         $styleArray = [
             'font' => [
                 'bold' => true,
@@ -654,7 +654,7 @@ class ReportController extends Controller
         $sheet = $spreadsheet->getActiveSheet()->mergeCells('C5:I5');
         $sheet->setCellValue('C6', ''.$date);
         $sheet = $spreadsheet->getActiveSheet()->mergeCells('C6:I6');
-
+        // $sheet->getPageSetup()->setOrientation(PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
         $spreadsheet->getActiveSheet()->getStyle('C3')->applyFromArray($styleArray);
         $spreadsheet->getActiveSheet()->getStyle('C4')->applyFromArray($styleArray);
         $spreadsheet->getActiveSheet()->getStyle('C5')->applyFromArray($styleArray);
