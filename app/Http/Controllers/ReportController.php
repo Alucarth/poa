@@ -172,7 +172,8 @@ class ReportController extends Controller
                                 'ejecucion_acumulada'=> $ea,
                                 'porcentaje_pa'=> $ppa,
                                 'porcentaje_ea'=> $ppe,
-                                'eficacia_ejecucion_acumulada'=>$eea
+                                'eficacia_ejecucion_acumulada'=>$eea,
+                                'ponderacion'=>$task->weighing_execution
 
                             );
                 array_push($task_rows,$row);//para el pinche reporte
@@ -246,7 +247,8 @@ class ReportController extends Controller
                                 'ejecucion_acumulada'=> $ea,
                                 'porcentaje_pa'=> $ppa,
                                 'porcentaje_ea'=> $ppe,
-                                'eficacia_ejecucion_acumulada'=>$eea
+                                'eficacia_ejecucion_acumulada'=>$eea,
+                                'ponderacion'=>$operation->weighing_execution
 
                             );
                 array_push($operation_rows,$row);//para el pinche reporte
@@ -325,7 +327,8 @@ class ReportController extends Controller
                                 'ejecucion_acumulada'=> $ea,
                                 'porcentaje_pa'=> $ppa,
                                 'porcentaje_ea'=> $ppe,
-                                'eficacia_ejecucion_acumulada'=>$eea
+                                'eficacia_ejecucion_acumulada'=>$eea,
+                                'ponderacion'=>$action_short_term->weighing_execution
 
                             );
                 array_push($action_short_term_rows,$row);//para el pinche reporte
@@ -406,7 +409,8 @@ class ReportController extends Controller
                                 'ejecucion_acumulada'=> $ea,
                                 'porcentaje_pa'=> $ppa,
                                 'porcentaje_ea'=> $ppe,
-                                'eficacia_ejecucion_acumulada'=>$eea
+                                'eficacia_ejecucion_acumulada'=>$eea,
+                                'ponderacion'=>$year->weighing_execution
 
                             );
                 array_push($year_rows,$row);//para el pinche reporte
@@ -491,7 +495,8 @@ class ReportController extends Controller
                                 'ejecucion_acumulada'=> $ea,
                                 'porcentaje_pa'=> $ppa,
                                 'porcentaje_ea'=> $ppe,
-                                'eficacia_ejecucion_acumulada'=>$eea
+                                'eficacia_ejecucion_acumulada'=>$eea,
+                                'ponderacion'=>$action_medium_term->weighing_execution
 
                             );
                 array_push($action_medium_term_rows,$row);//para el pinche reporte
@@ -608,6 +613,7 @@ class ReportController extends Controller
                 $row->porcentaje_pa,
                 $row->porcentaje_ea,
                 $row->eficacia_ejecucion_acumulada,
+                $row->ponderacion,
             ));
 
         }
@@ -655,13 +661,13 @@ class ReportController extends Controller
         $sheet->setCellValue('C6', ''.$date);
         $sheet = $spreadsheet->getActiveSheet()->mergeCells('C6:I6');
         // $sheet->getPageSetup()->setOrientation(PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
-        $spreadsheet->getActiveSheet()->getStyle('C3')->applyFromArray($styleArray);
-        $spreadsheet->getActiveSheet()->getStyle('C4')->applyFromArray($styleArray);
-        $spreadsheet->getActiveSheet()->getStyle('C5')->applyFromArray($styleArray);
-        $spreadsheet->getActiveSheet()->getStyle('C6')->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('C3:C6')->applyFromArray($styleArray);
+        // $spreadsheet->getActiveSheet()->getStyle('C4')->applyFromArray($styleArray);
+        // $spreadsheet->getActiveSheet()->getStyle('C5')->applyFromArray($styleArray);
+        // $spreadsheet->getActiveSheet()->getStyle('C6')->applyFromArray($styleArray);
         //dando formato a  las celdas  vacias
-        $spreadsheet->getActiveSheet()->getStyle('C1:J2')->applyFromArray($styleArray);
-        $spreadsheet->getActiveSheet()->getStyle('J3:J6')->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('C1:k2')->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('J3:k6')->applyFromArray($styleArray);
 
         $spreadsheet->getActiveSheet()
         ->fromArray(
@@ -723,8 +729,8 @@ class ReportController extends Controller
             ],
         ];
         $y--;
-        $spreadsheet->getActiveSheet()->getStyle('A7:J7')->applyFromArray($styleHeadArray);
-        $spreadsheet->getActiveSheet()->getStyle('A8:J'.$y)->applyFromArray($styleBodyArray);
+        $spreadsheet->getActiveSheet()->getStyle('A7:k7')->applyFromArray($styleHeadArray);
+        $spreadsheet->getActiveSheet()->getStyle('A8:k'.$y)->applyFromArray($styleBodyArray);
         $spreadsheet->getActiveSheet()->getStyle('A'.$y.':B'.$y)->applyFromArray($styleHeadArray);
 
         // unset($styleBodyArray);

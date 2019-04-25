@@ -107,7 +107,8 @@ class ExecutionController extends Controller
 
         $specific_task = SpecificTask::find($request->specific_task['id']);
         $specific_task->executed= $request->specific_task['executed'];
-        $specific_task->efficacy= self::porcentaje($specific_task->executed,$specific_task->meta) ;
+        $specific_task->efficacy= self::porcentaje($specific_task->executed,$specific_task->meta);
+        $specific_task->weighing_execution = self::ponderacion( $specific_task->efficacy, $specific_task->weighing);
         $specific_task->save();
 
         $subtotal = DB::table('specific_tasks')->where('programming_id',$specific_task->programming_id)->select(DB::raw('sum(executed) as subtotal'))->groupBy('programming_id')->get();
@@ -115,6 +116,7 @@ class ExecutionController extends Controller
         $programming = Programming::find($specific_task->programming_id);
         $programming->executed= $subtotal[0]->subtotal;
         $programming->efficacy= self::porcentaje($subtotal[0]->subtotal,$programming->meta) ;
+        // $programming->weighing_execution = self::ponderacion( $programming->efficacy, $programming->weighing);
         $programming->save();
 
         $subtotal = DB::table('programmings')->where('task_id',$programming->task_id)->select(DB::raw('sum(executed) as subtotal'))->groupBy('task_id')->get();
@@ -122,6 +124,7 @@ class ExecutionController extends Controller
         $task = Task::find($programming->task_id);
         $task->executed= $subtotal[0]->subtotal;
         $task->efficacy= self::porcentaje($subtotal[0]->subtotal,$task->meta) ;
+        $task->weighing_execution = self::ponderacion( $task->efficacy, $task->weighing);
         $task->save();
 
         $subtotal = DB::table('tasks')->where('operation_id',$task->operation_id)->select(DB::raw('sum(executed) as subtotal'))->groupBy('operation_id')->get();
@@ -129,6 +132,7 @@ class ExecutionController extends Controller
         $operation = Operation::find($task->operation_id);
         $operation->executed= $subtotal[0]->subtotal;
         $operation->efficacy= self::porcentaje($subtotal[0]->subtotal,$operation->meta) ;
+        $operation->weighing_execution = self::ponderacion( $operation->efficacy, $operation->weighing);
         $operation->save();
 
         $subtotal = DB::table('operations')->where('action_short_term_id',$operation->action_short_term_id)->select(DB::raw('sum(executed) as subtotal'))->groupBy('action_short_term_id')->get();
@@ -136,6 +140,7 @@ class ExecutionController extends Controller
         $action_short_term = ActionShortTerm::find($operation->action_short_term_id);
         $action_short_term->executed= $subtotal[0]->subtotal;
         $action_short_term->efficacy= self::porcentaje($subtotal[0]->subtotal,$action_short_term->meta) ;
+        $action_short_term->weighing_execution = self::ponderacion( $action_short_term->efficacy, $action_short_term->weighing);
         $action_short_term->save();
 
 
@@ -151,6 +156,7 @@ class ExecutionController extends Controller
         $action_medium_term = ActionMediumTerm::find($year->action_medium_term_id);
         $action_medium_term->executed= $subtotal[0]->subtotal;
         $action_medium_term->efficacy= self::porcentaje($subtotal[0]->subtotal,$action_medium_term->alcance_meta) ;
+        $action_medium_term->weighing_execution = self::ponderacion( $action_medium_term->efficacy, $action_medium_term->weighing);
         $action_medium_term->save();
         return $request->all();
     }
@@ -269,6 +275,10 @@ class ExecutionController extends Controller
 
     public static  function  porcentaje( $variante, $meta ){
         return ($variante * 100)/$meta;
+    }
+
+    public static function ponderacion($eficacia,$ponderacion){
+        return  ($eficacia*$ponderacion)/100;
     }
 
 }

@@ -103,9 +103,9 @@ class OperationController extends Controller
         //
     }
     public function ast_operations($action_short_term_id){
-        
+
         $action_short_term= ActionShortTerm::find($action_short_term_id);
-      
+
         $title = 'Operaciones '. $action_short_term->code;
         return view('operation.index',compact('action_short_term','title'));
     }

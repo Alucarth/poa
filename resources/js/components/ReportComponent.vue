@@ -172,6 +172,12 @@
                     name: "eficacia_ejecucion_acumulada",
                     sort: false,
                 },
+                {
+                    label: "% P",
+                    name: "ponderacion",
+                    sort: false,
+                },
+
 
             ],
             columns:[],
@@ -330,6 +336,7 @@
                     item.porcentaje_pa =numeral(item.porcentaje_pa).format("0.00");
                     item.porcentaje_ea =numeral(item.porcentaje_ea).format("0.00");
                     item.eficacia_ejecucion_acumulada =numeral(item.eficacia_ejecucion_acumulada).format("0.00");
+                    item.ponderacion =numeral(item.ponderacion).format("0.00");
                     return item;
                 });
                 // console.log(rows);
@@ -356,16 +363,17 @@
                     this.items_selececcionados.forEach(item => {
                         rows.push(item);
                     });
-                    console.log(rows);
+                    // console.log(rows);
                     // rows = this.items_selececcionados;
                     let orders_rows = _.sortBy(rows, ['type_id']);
+                    console.log('impriendo ponderacion hdp');
                     console.log(orders_rows);
                     this.generarPeriodo();
                     orders_rows.push(this.periodo);
                     //
                     let parameters = {};
                     parameters['columns'] = JSON.stringify(this.columns);
-                    console.log(this.columns);
+                    // console.log(this.columns);
                     parameters["rows"] = JSON.stringify(orders_rows);
                     parameters["title"] = this.tipo.name.toUpperCase();
                     parameters["date"] = moment().format('LLL');
@@ -405,10 +413,10 @@
                      this.items_selececcionados.forEach(item => {
                          rows.push(item);
                      });
-                     console.log(rows);
+                    //  console.log(rows);
                      // rows = this.items_selececcionados;
                      let orders_rows = _.sortBy(rows, ['type_id']);
-                     console.log(orders_rows);
+                    //  console.log(orders_rows);
                      this.generarPeriodo();
                      orders_rows.push(this.periodo);
                      //
@@ -518,6 +526,7 @@
                                 porcentaje_pa: "",
                                 porcentaje_ea: "",
                                 eficacia_ejecucion_acumulada: "",
+                                ponderacion: "",
                                 };
                 // this.rows.forEach(element => {
 

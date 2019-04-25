@@ -3,7 +3,7 @@
 		<div class="modal fade" id="OperationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <form id='formOperation' method="post" :action="url" @submit.prevent="validateBeforeSubmit">
-                    
+
                     <div class="modal-content">
                         <div v-html='csrf'></div>
 						<input type="text" name="id" :value="form.id" v-if="form.id" hidden>
@@ -36,7 +36,12 @@
 								<div class="form-group col-md-3">
                                     <label for="meta">Meta</label>
                                     <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
-                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div> 
+                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div>
+                                </div>
+								<div class="form-group col-md-4">
+                                    <label for="weighing">Ponderacion</label>
+                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="Ponderacion" v-validate="'required|decimal:2'" />
+                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
                                 </div>
                             </div>
 
@@ -45,15 +50,15 @@
 								<!-- <div class="form-group col-md-3">
 									<label for="code">Codigo</label>
 									<v-select label="code" :options="operations" id="code" name="code" v-model="form.code"  placeholder="code" v-validate="'required'"></v-select>
-									<div class="invalid-feedback">{{ errors.first("code") }}</div> 
+									<div class="invalid-feedback">{{ errors.first("code") }}</div>
 								</div> -->
 								<div class="form-group  col-md-4">
 									<label for="programmatic_operation">Codigo</label>
-									<multiselect 
+									<multiselect
 										v-model="form.programmatic_operation"
 										:options="operations"
 										id="programmatic_operation"
-										placeholder="Seleccionar Codigo" 
+										placeholder="Seleccionar Codigo"
 										select-label="Seleccionar"
 										deselect-label="Remover"
 										selected-label="Seleccionado"
@@ -61,12 +66,12 @@
 										track-by="code" >
 
 									</multiselect>
-									<div class="invalid-feedback">{{ errors.first("code") }}</div> 
+									<div class="invalid-feedback">{{ errors.first("code") }}</div>
 								</div>
 								<div class="form-group col-md-8 " v-if="form.programmatic_operation" >
 									<label for="">Descripcion</label>
-									<input type="text" class="form-control" v-model="form.programmatic_operation.description" disabled >													
-									<input type="text" class="form-control" name='programmatic_operation_id' v-model="form.programmatic_operation.id" hidden>													
+									<input type="text" class="form-control" v-model="form.programmatic_operation.description" disabled >
+									<input type="text" class="form-control" name='programmatic_operation_id' v-model="form.programmatic_operation.id" hidden>
 								</div>
 							</div>
 							<!-- <div class="row" v-if="parseInt(form.meta)>0">
@@ -77,7 +82,7 @@
 									<span v-else>
 										Se sobrepaso <strong>{{subTotalIndicadores-parseFloat(form.meta)}}</strong> de la <strong> Meta : {{form.meta}}</strong>
 									</span>
-								</div> 
+								</div>
 							</div> -->
                         </div>
                         <div class="modal-footer">
@@ -87,7 +92,7 @@
                     </div>
                 </form>
             </div>
-        </div>	
+        </div>
 
     </div>
 </template>
@@ -120,7 +125,7 @@
 				console.log(operation);
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-			
+
 			})
 		},
 		methods:{
@@ -128,17 +133,17 @@
 				this.$validator.validateAll().then((result) => {
 					if (result) {
 					let form = document.getElementById("formOperation");
-					
+
 						form.submit();
 						return;
 					}
 					toastr.error('Debe completar la informacion correctamente')
 				});
         	},
-			
+
 		},
 		computed:{
-			
+
 		}
     }
 </script>
