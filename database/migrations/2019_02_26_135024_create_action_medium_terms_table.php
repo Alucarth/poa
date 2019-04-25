@@ -29,6 +29,7 @@ class CreateActionMediumTermsTable extends Migration
             $table->decimal('executed',8,2)->nullable();
             $table->decimal('efficacy',8,2)->nullable();
             $table->decimal('weighing',8,2)->nullable();
+            $table->decimal('weighing_execution',8,2)->nullable();
             $table->timestamps();
         });
     }

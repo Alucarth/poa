@@ -21,8 +21,9 @@ class CreateTasksTable extends Migration
             $table->string('description');
             $table->decimal('meta',8,2);
             $table->decimal('executed',8,2)->nullable(); //todo lo ejecutado se debe comparar con el 100%
-            $table->decimal('efficacy',8,2)->nullable();// 
+            $table->decimal('efficacy',8,2)->nullable();//
             $table->decimal('weighing',8,2)->nullable();
+            $table->decimal('weighing_execution',8,2)->nullable();
             $table->timestamps();
         });
     }

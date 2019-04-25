@@ -26,8 +26,9 @@ class CreateActionShortTermsTable extends Migration
             $table->string('linea_base')->nullable();
             $table->decimal('meta',8,2);
             $table->decimal('executed',8,2)->nullable();
-            $table->decimal('efficacy',8,2)->nullable();//la suma de todas las 
+            $table->decimal('efficacy',8,2)->nullable();//la suma de todas las
             $table->decimal('weighing',8,2)->nullable();
+            $table->decimal('weighing_execution',8,2)->nullable();
             $table->timestamps();
         });
     }
