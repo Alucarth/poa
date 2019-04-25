@@ -24,6 +24,7 @@ class ProgramacionMedioPlazoSeeder extends Seeder
             'linea_base' => null,
             'indicador_resultado_intermedio' => 'Promedio del cumplimiento de las operaciones',
             'alcance_meta' => '5000',
+            'weighing' => '20',
         ]);
         DB::table('action_medium_terms')->insert([
             'code' =>  'AMP-2',
@@ -37,6 +38,7 @@ class ProgramacionMedioPlazoSeeder extends Seeder
             'linea_base' => null,
             'indicador_resultado_intermedio' => 'Toneladas de Derivados producidos',
             'alcance_meta' => '5000',
+            'weighing' => '80',
         ]);
     }
 }

@@ -68,6 +68,7 @@ class ExecutionController extends Controller
         $task = Task::find($programming->task_id);
         $task->executed= $subtotal[0]->subtotal;
         $task->efficacy= self::porcentaje($subtotal[0]->subtotal,$task->meta) ;
+        $task->weighing_execution = self::ponderacion( $task->efficacy, $task->weighing);
         $task->save();
 
         $subtotal = DB::table('tasks')->where('operation_id',$task->operation_id)->select(DB::raw('sum(executed) as subtotal'))->groupBy('operation_id')->get();
@@ -75,6 +76,7 @@ class ExecutionController extends Controller
         $operation = Operation::find($task->operation_id);
         $operation->executed= $subtotal[0]->subtotal;
         $operation->efficacy= self::porcentaje($subtotal[0]->subtotal,$operation->meta) ;
+        $operation->weighing_execution = self::ponderacion( $operation->efficacy, $operation->weighing);
         $operation->save();
 
         $subtotal = DB::table('operations')->where('action_short_term_id',$operation->action_short_term_id)->select(DB::raw('sum(executed) as subtotal'))->groupBy('action_short_term_id')->get();
@@ -82,6 +84,7 @@ class ExecutionController extends Controller
         $action_short_term = ActionShortTerm::find($operation->action_short_term_id);
         $action_short_term->executed= $subtotal[0]->subtotal;
         $action_short_term->efficacy= self::porcentaje($subtotal[0]->subtotal,$action_short_term->meta) ;
+        $action_short_term->weighing_execution = self::ponderacion( $action_short_term->efficacy, $action_short_term->weighing);
         $action_short_term->save();
 
 
@@ -97,6 +100,7 @@ class ExecutionController extends Controller
         $action_medium_term = ActionMediumTerm::find($year->action_medium_term_id);
         $action_medium_term->executed= $subtotal[0]->subtotal;
         $action_medium_term->efficacy= self::porcentaje($subtotal[0]->subtotal,$action_medium_term->alcance_meta) ;
+        $action_medium_term->weighing_execution = self::ponderacion( $action_medium_term->efficacy, $action_medium_term->weighing);
         $action_medium_term->save();
 
         return response()->json(compact('programming','task','operation','action_short_term','year','action_medium_term'));
