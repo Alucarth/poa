@@ -7,6 +7,7 @@ use App\Operation;
 use App\Task;
 use App\Month;
 use App\Programming;
+use Illuminate\Support\Facades\DB;
 class TaskController extends Controller
 {
     /**
@@ -48,9 +49,9 @@ class TaskController extends Controller
             // $programming->month_id = $programacion->id;
             // $programming->meta = $programacion->meta;
             // $programming->save();
-           
+
             $programmings+=array(''.$programacion->id => ['meta' => $programacion->meta]);
-       
+
         }
         // dd($programmings);
         if($request->task_id!=''){
@@ -79,6 +80,8 @@ class TaskController extends Controller
     public function show($id)
     {
         //
+        $task = Task::with('programmings')->find($id);
+        return response()->json(compact('task'));
     }
 
     /**
@@ -121,5 +124,26 @@ class TaskController extends Controller
         $title = "Tareas de ".$operation->code;
         $meses = Month::all();
         return view('task.index',compact('operation','title','meses'));
+    }
+    public function check_meta($operation_id){
+
+        $total_meta = Task::where('operation_id',$operation_id)
+                                    ->select(DB::raw("sum(meta) as total_meta, sum(weighing) as total_ponderado"))
+                                    ->groupBy('operation_id')
+                                    ->get();
+        $operation = Operation::find($operation_id);
+        if(sizeof($total_meta)>0)
+        {
+            $meta = $operation->meta - $total_meta[0]->total_meta;
+            $ponderacion = 100 - $total_meta[0]->total_ponderado;
+        }
+        else{
+
+            $meta = $operation->meta;
+            $ponderacion = 100;
+        }
+
+        return response()->json(compact('meta','ponderacion'));
+
     }
 }

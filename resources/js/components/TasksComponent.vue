@@ -1,9 +1,9 @@
 <template>
-  
+
 		<div class="modal fade" id="TaskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <form id='formTask' method="post" :action="url" @submit.prevent="validateBeforeSubmit">
-                    
+
                     <div class="modal-content">
                         <div v-html='csrf'></div>
 
@@ -17,15 +17,18 @@
 							<input type="text" name="operation_id" v-model="operation.id" hidden>
 							<legend>Operacion</legend>
 							<div class="row">
-								
-								<div class="form-group col-md-9">
-									<label>Descripcion </label>
-									<input type="text" class="form-control" v-model="operation.description" disabled>
-								</div>
-								<div class="form-group col-md-3">
-									<label>Meta </label>
-									<input type="text" class="form-control" v-model="operation.meta" disabled>
-								</div>
+								<v-chip color="bg-success" text-color="white">
+                                    <v-avatar class="green darken-3">
+                                        <v-icon >fa-flag</v-icon>
+                                    </v-avatar>
+                                        Meta: {{getMeta}}
+                                </v-chip>
+                                <v-chip color="bg-info" text-color="white">
+                                    <v-avatar class="cyan darken-3">
+                                        <v-icon >fa-percentage</v-icon>
+                                    </v-avatar>
+                                        Ponderacion Disponible: {{getPonderacion}}
+                                </v-chip>
 							</div>
 							<legend>Tarea</legend>
                             <div class="row">
@@ -37,13 +40,13 @@
                                 </div>
 								<div class="form-group col-md-3">
                                     <label for="meta">Meta</label>
-                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
-                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div> 
+                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
+                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label for="weighing">Ponderacion (%) </label>
-                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'decimal:2'" />
-                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div> 
+                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'decimal:2|max_value:'+getPonderacion" />
+                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
                                 </div>
                             </div>
 							<legend>Programacion</legend>
@@ -56,7 +59,7 @@
 
 										<span>{{item.meta}}</span>
 										</div>
-						
+
 										<a href="#" class="small-box-footer" @click="item.edit=!item.edit" >
 											Adicionar Detalle
 										<i :class="item.edit==true?'fa fa-arrow-circle-up':'fa fa-arrow-circle-down'"></i>
@@ -75,7 +78,7 @@
 									<span v-else>
 										Se sobrepaso <strong>{{subTotalIndicadores-parseFloat(form.meta)}}</strong> de la <strong> Meta : {{form.meta}}</strong>
 									</span>
-								</div> 
+								</div>
 							</div> -->
                         </div>
                         <div class="modal-footer">
@@ -85,7 +88,7 @@
                     </div>
                 </form>
             </div>
-        </div>	
+        </div>
 
 </template>
 
@@ -97,7 +100,11 @@
 			title:'',
 			operation:{},
 			months:[],
-			programming:[],
+            programming:[],
+            meta_temp:0,
+            ponderacion_temp:0,
+            total_meta:0,
+            total_ponderacion:0,
         }),
         mounted() {
 
@@ -109,7 +116,7 @@
 			console.log('Componente Tasks XD')
 			// this.operation = JSON.parse(this.optask);
 			this.operation = this.optask;
-			
+
 			console.log(this.optask);
 			this.months = this.meses;//asignacion de este siempre tiene que ser declarado en el data por la reactividad XD
 			// console.log(this.gestion
@@ -118,47 +125,69 @@
 				let button = $(event.relatedTarget) // Button that triggered the modal
 				let object = button.data('json') // Extract info from data-* attributes
 				let programmings = button.data('programmings');
-				this.title ='Nueva Tarea ';
+                this.title ='Nueva Tarea ';
+                console.log(object);
 				if(object)
 				{
-					this.title='Editar Tarea '+object.code;
-					this.form.description = object.description;
-					this.form.meta = object.meta;
-					this.form.id = object.id;
-					console.log(programmings);
-					this.months.forEach((month) => {
-						// console.log(tarea);
-						let month_id=month.id;
-						let mes_tarea = programmings.find((mes)=>{return mes.id == month_id });
-						console.log(mes_tarea)
-						if(mes_tarea){
-							month.meta =mes_tarea.pivot.meta;
-						}else{
-							month.meta='';
-						}
-					});
+                    this.title='Editar Tarea '+object.code;
+                    axios.get(`tasks/${object.id}`).then(response=>{
+                            this.form = response.data.task;
+                            // console.log(programmings);
+                            console.log("imprimiendo la operacion");
+                            console.log( response.data);
+                            this.meta_temp = response.data.task.meta;
+                            this.ponderacion_temp = response.data.task.weighing;
+
+                            // console.log(programmings);
+                            // programmings = this.form.programmings;
+                            this.months.forEach((month) => {
+                                // console.log(tarea);
+                                let month_id=month.id;
+                                let mes_tarea = this.form.programmings.find((mes)=>{return mes.id == month_id });
+                                console.log(mes_tarea)
+                                if(mes_tarea){
+                                    month.meta =mes_tarea.pivot.meta;
+                                }else{
+                                    month.meta='';
+                                }
+                            });
+                    });
+					// this.form.description = object.description;
+					// this.form.meta = object.meta;
+					// this.form.id = object.id;
 				}else{
-					this.months=this.meses
-					this.form = {};
+					// this.months=this.meses
+                    this.form = {};
+                    this.meta_temp = 0;
+                    this.ponderacion_temp = 0;
 					this.months.forEach((month) => {
 							month.meta='';
 					});
 				}
-				console.log(object);
+                console.log(object);
+
+                 axios.get(`check_meta_task/${this.operation.id}`)
+                      .then(response=>{
+                        console.log(response.data);
+                        this.total_meta=response.data.meta;
+                        this.total_ponderacion=response.data.ponderacion;
+                        //console.log(this.total_meta);
+
+                    });
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-			
+
 			})
 		},
 		methods:{
 			validateBeforeSubmit() {
-			
+
 			},
 			validate()
 			{
 				this.$validator.validateAll().then((result) => {
 					if (result) {
-						
+
 						let form = document.getElementById("formTask");
 						if( this.subTotalTask() == this.form.meta )
 						{
@@ -179,7 +208,7 @@
 				});
 				return sum;
 			}
-			
+
 		},
 		computed:{
 			getPrograming(){
@@ -190,7 +219,13 @@
 					}
 				});
 				return this.programming;
-			}
+            },
+            getMeta(){
+                return parseFloat(this.total_meta)+ parseFloat(this.meta_temp);
+            },
+            getPonderacion(){
+                return parseFloat(this.total_ponderacion)+ parseFloat(this.ponderacion_temp);
+            }
 		}
     }
 </script>

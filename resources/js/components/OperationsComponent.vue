@@ -128,7 +128,7 @@
 				{
 					this.title='Editar '+operation.code;
 
-                     axios.get(`operations/${operation.id}`).then(response=>{
+                    axios.get(`operations/${operation.id}`).then(response=>{
                             this.form = response.data.operation;
                             console.log(this.form);
                             this.meta_temp = response.data.operation.meta;
