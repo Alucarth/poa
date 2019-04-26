@@ -17,13 +17,19 @@
 							<input type="text" name="action_short_term_id" v-model="action_short_term.id" hidden>
 							<legend>Accion a Corto Plazo</legend>
 							<div class="row">
-								<div class="form-group col-md-9">
-									<label>Descripcion </label>
-									<input type="text" class="form-control" v-model="action_short_term.description" disabled>
-								</div>
-								<div class="form-group col-md-3">
-									<label>Meta </label>
-									<input type="text" class="form-control" v-model="action_short_term.meta" disabled>
+								<div class="col-md-12">
+                                    <v-chip color="bg-success" text-color="white">
+                                        <v-avatar class="green darken-3">
+                                            <v-icon >fa-flag</v-icon>
+                                        </v-avatar>
+                                            Meta: {{getMeta}}
+                                    </v-chip>
+                                    <v-chip color="bg-info" text-color="white">
+                                        <v-avatar class="cyan darken-3">
+                                            <v-icon >fa-percentage</v-icon>
+                                        </v-avatar>
+                                            Ponderacion Disponible: {{getPonderacion}}
+                                    </v-chip>
 								</div>
 							</div>
 							<legend>Operacion</legend>
@@ -35,12 +41,12 @@
                                 </div>
 								<div class="form-group col-md-3">
                                     <label for="meta">Meta</label>
-                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
+                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
                                     <div class="invalid-feedback">{{ errors.first("meta") }}</div>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label for="weighing">Ponderacion</label>
-                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="Ponderacion" v-validate="'required|decimal:2'" />
+                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="Ponderacion" v-validate="'required|decimal:2|max_value:'+getPonderacion" />
                                     <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
                                 </div>
                             </div>
@@ -104,6 +110,10 @@
 			form:{},
 			title:'',
 			action_short_term:{},
+            meta_temp:0,
+            ponderacion_temp:0,
+            total_meta:0,
+            total_ponderacion:0,
         }),
         mounted() {
 			console.log('Componente Operations XD')
@@ -117,12 +127,31 @@
 				if(operation)
 				{
 					this.title='Editar '+operation.code;
-					this.form = operation;
+
+                     axios.get(`operations/${operation.id}`).then(response=>{
+                            this.form = response.data.operation;
+                            console.log(this.form);
+                            this.meta_temp = response.data.operation.meta;
+                            this.ponderacion_temp = response.data.operation.weighing;
+                    });
+
+					// this.form = operation;
 				}else
 				{
 					this.form={};
+                    this.meta_temp = 0;
+                    this.ponderacion_temp = 0;
 				}
 				console.log(operation);
+
+                axios.get(`check_meta_operation/${this.action_short_term.id}`)
+                     .then(response=>{
+                        console.log(response.data);
+                        this.total_meta=response.data.meta;
+                        this.total_ponderacion=response.data.ponderacion;
+                        //console.log(this.total_meta);
+
+                    });
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
@@ -143,7 +172,12 @@
 
 		},
 		computed:{
-
+            getMeta(){
+                return parseFloat(this.total_meta)+ parseFloat(this.meta_temp);
+            },
+            getPonderacion(){
+                return parseFloat(this.total_ponderacion)+ parseFloat(this.ponderacion_temp);
+            }
 		}
     }
 </script>

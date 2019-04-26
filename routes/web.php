@@ -69,6 +69,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('ast_year/{month}','ReportController@ast_year');
 
     Route::get('check_meta_ast/{year_id}','ActionShortTermController@check_meta');
+    Route::get('check_meta_operation/{action_short_term_id}','OperationController@check_meta');
+
+
+
     Route::get('test','ReportController@test');
 
     Route::resource('configuration', 'SystemController');

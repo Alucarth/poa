@@ -7,6 +7,7 @@ use App\ActionShortTerm;
 use App\Operation;
 use App\Month;
 use App\ProgrammaticOperation;
+use Illuminate\Support\Facades\DB;
 class OperationController extends Controller
 {
     /**
@@ -67,6 +68,8 @@ class OperationController extends Controller
     public function show($id)
     {
         //
+        $operation = Operation::with('programmatic_operation')->find($id);
+        return response()->json(compact('operation'));
     }
 
     /**
@@ -102,6 +105,7 @@ class OperationController extends Controller
     {
         //
     }
+
     public function ast_operations($action_short_term_id){
 
         $action_short_term= ActionShortTerm::find($action_short_term_id);
@@ -109,10 +113,33 @@ class OperationController extends Controller
         $title = 'Operaciones '. $action_short_term->code;
         return view('operation.index',compact('action_short_term','title'));
     }
+
     public function getProgrammaticOperations()
     {
         $programmatic_operations = ProgrammaticOperation::all();
         return $programmatic_operations;
+    }
+
+    public function check_meta($action_short_term_id){
+
+        $total_meta = Operation::where('action_short_term_id',$action_short_term_id)
+                                    ->select(DB::raw("sum(meta) as total_meta, sum(weighing) as total_ponderado"))
+                                    ->groupBy('action_short_term_id')
+                                    ->get();
+        $action_short_term = ActionShortTerm::find($action_short_term_id);
+        if(sizeof($total_meta)>0)
+        {
+            $meta = $action_short_term->meta - $total_meta[0]->total_meta;
+            $ponderacion = 100 - $total_meta[0]->total_ponderado;
+        }
+        else{
+
+            $meta = $action_short_term->meta;
+            $ponderacion = 100;
+        }
+
+        return response()->json(compact('meta','ponderacion'));
+
     }
 
 }
