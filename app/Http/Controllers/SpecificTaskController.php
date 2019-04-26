@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Task;
 use App\SpecificTask;
 use Illuminate\Support\Facades\DB;
+use App\Programming;
+
 class SpecificTaskController extends Controller
 {
     /**
@@ -62,6 +64,8 @@ class SpecificTaskController extends Controller
     public function show($id)
     {
         //
+        $specific_task = SpecificTask::find($id);
+        return response()->json(compact('specific_task'));
     }
 
     /**
@@ -96,7 +100,7 @@ class SpecificTaskController extends Controller
     public function destroy($id)
     {
         //
-       
+
 
     }
 
@@ -109,5 +113,26 @@ class SpecificTaskController extends Controller
         $title ='Tareas Especificas de '.$programming->name;
         return view('specific_task.index',compact('task','specific_tasks','programming','title'));
         // $title = "Tareas de ".$operation->code;
+    }
+    public function check_meta($programming_id){
+
+        $total_meta = SpecificTask::where('programming_id',$programming_id)
+                                    ->select(DB::raw("sum(meta) as total_meta, sum(weighing) as total_ponderado"))
+                                    ->groupBy('programming_id')
+                                    ->get();
+        $programming = Programming::find($programming_id);
+        if(sizeof($total_meta)>0)
+        {
+            $meta = $programming->meta - $total_meta[0]->total_meta;
+            $ponderacion = 100 - $total_meta[0]->total_ponderado;
+        }
+        else{
+
+            $meta = $programming->meta;
+            $ponderacion = 100;
+        }
+
+        return response()->json(compact('meta','ponderacion'));
+
     }
 }

@@ -3,7 +3,7 @@
 		<div class="modal fade" id="SpecificTaskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <form id='formSpecificTask' method="post" :action="url" @submit.prevent="validateBeforeSubmit">
-                    
+
                     <div class="modal-content">
                         <div v-html='csrf'></div>
 						<input type="text" name="id" :value="form.id" v-if="form.id" hidden>
@@ -17,14 +17,18 @@
 							<input type="text" name="programming_id" v-model="programming.id" hidden>
 							<legend>Tarea {{task.code}}</legend>
 							<div class="row">
-								<div class="form-group col-md-9">
-									<label>Mes </label>
-									<input type="text" class="form-control" v-model="programming.name" disabled>
-								</div>
-								<div class="form-group col-md-3">
-									<label>Meta </label>
-									<input type="text" class="form-control" v-model="programming.meta" disabled>
-								</div>
+								<v-chip color="bg-success" text-color="white">
+                                    <v-avatar class="green darken-3">
+                                        <v-icon >fa-flag</v-icon>
+                                    </v-avatar>
+                                        Meta: {{getMeta}}
+                                </v-chip>
+                                <v-chip color="bg-info" text-color="white">
+                                    <v-avatar class="cyan darken-3">
+                                        <v-icon >fa-percentage</v-icon>
+                                    </v-avatar>
+                                        Ponderacion Disponible: {{getPonderacion}}
+                                </v-chip>
 							</div>
 							<legend>Tarea Especifica</legend>
                             <div class="row">
@@ -35,17 +39,17 @@
                                 </div>
 								<div class="form-group col-md-3">
                                     <label for="meta">Meta</label>
-                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
-                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div> 
+                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
+                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div>
                                 </div>
 								<div class="form-group col-md-3">
                                     <label for="weighing">Ponderacion (%)</label>
-                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'required|decimal:2'" />
-                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div> 
+                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'required|decimal:2|max_value:'+getPonderacion" />
+                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
                                 </div>
                             </div>
 
-						
+
 							<!-- <div class="row" v-if="parseInt(form.meta)>0">
 								<div class="alert alert-warning col-md-12" role="alert" v-show="subTotalIndicadores==parseFloat(form.meta)?false:true">
 									<span v-if="subTotalIndicadores < parseFloat(form.meta)" >
@@ -54,7 +58,7 @@
 									<span v-else>
 										Se sobrepaso <strong>{{subTotalIndicadores-parseFloat(form.meta)}}</strong> de la <strong> Meta : {{form.meta}}</strong>
 									</span>
-								</div> 
+								</div>
 							</div> -->
                         </div>
                         <div class="modal-footer">
@@ -64,7 +68,7 @@
                     </div>
                 </form>
             </div>
-        </div>	
+        </div>
 
     </div>
 </template>
@@ -74,7 +78,11 @@
 		props:['url','csrf','task','programming'],
         data:()=>({
 			form:{},
-			title:'',
+            title:'',
+            meta_temp:0,
+            ponderacion_temp:0,
+            total_meta:0,
+            total_ponderacion:0,
         }),
         mounted() {
 			console.log('Componente SpecificTasks XD')
@@ -86,15 +94,31 @@
 				this.title ='Nueva Tarea Especifica ';
 				if(specific_task)
 				{
-					this.title='Editar '+specific_task.code;
-					this.form = specific_task;
+                    this.title='Editar '+specific_task.code;
+                     axios.get(`specific_tasks/${specific_task.id}`).then(response=>{
+                         this.form = response.data.specific_task;
+                         this.meta_temp = response.data.specific_task.meta;
+                         this.ponderacion_temp = response.data.specific_task.weighing;
+                     });
+
 				}else{
-					this.form ={};
+                    this.form ={};
+                    this.meta_temp = 0;
+                    this.ponderacion_temp = 0;
 				}
-				console.log(specific_task);
+                console.log(specific_task);
+
+                 axios.get(`check_meta_specific_task/${this.programming.id}`)
+                      .then(response=>{
+                        console.log(response.data);
+                        this.total_meta=response.data.meta;
+                        this.total_ponderacion=response.data.ponderacion;
+                        //console.log(this.total_meta);
+
+                    });
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-			
+
 			})
 		},
 		methods:{
@@ -102,17 +126,23 @@
 				this.$validator.validateAll().then((result) => {
 					if (result) {
 					let form = document.getElementById("formSpecificTask");
-					
+
 						form.submit();
 						return;
 					}
 					toastr.error('Debe completar la informacion correctamente')
 				});
         	},
-			
+
 		},
 		computed:{
-			
+
+            getMeta(){
+                return parseFloat(this.total_meta)+ parseFloat(this.meta_temp);
+            },
+            getPonderacion(){
+                return parseFloat(this.total_ponderacion)+ parseFloat(this.ponderacion_temp);
+            }
 		}
     }
 </script>
