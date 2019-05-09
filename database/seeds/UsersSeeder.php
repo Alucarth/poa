@@ -20,11 +20,29 @@ class UsersSeeder extends Seeder
             // 'email' => 'admin@gmail.com',
             'password' => bcrypt('123456'),
         ]);
-        
+
+        DB::table('users')->insert([
+            'username' =>  'alejandro.cossio',
+            'name' =>  'Alejandro J. Cossio',
+            // 'email' => 'admin@gmail.com',
+            'password' => bcrypt('123456'),
+        ]);
+
+        DB::table('users')->insert([
+            'username' =>  'claudia.flores',
+            'name' =>  'Claudia A. Flores',
+            // 'email' => 'admin@gmail.com',
+            'password' => bcrypt('123456'),
+        ]);
+
         $role = Role::create(['name' => 'Admin']);
         $role = Role::create(['name' => 'Planificador']);
-        
+
         $user = User::find(1);
+        $user->assignRole('Admin');
+        $user = User::find(2);
+        $user->assignRole('Admin');
+        $user = User::find(3);
         $user->assignRole('Admin');
 
         //definiendo permisos por modulo
@@ -51,13 +69,13 @@ class UsersSeeder extends Seeder
                         # delete...
                         $permission = Permission::create(['name' => 'eliminar|'.$model]);
                         break;
-                    
+
                 }
             }
 
         }
-       
-      
-        
+
+
+
     }
 }
