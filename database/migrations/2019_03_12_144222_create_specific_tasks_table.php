@@ -19,11 +19,11 @@ class CreateSpecificTasksTable extends Migration
             $table->foreign('programming_id')->references('id')->on('programmings');
             $table->string('code')->nullable();
             $table->string('description');
-            $table->decimal('meta',8,2);
-            $table->decimal('executed',8,2)->nullable();
-            $table->decimal('efficacy',8,2)->nullable();//la
-            $table->decimal('weighing',8,2)->nullable();
-            $table->decimal('weighing_execution',8,2)->nullable();
+            $table->decimal('meta',14,2);
+            $table->decimal('executed',14,2)->nullable();
+            $table->decimal('efficacy',14,2)->nullable();//la
+            $table->decimal('weighing',14,2)->nullable();
+            $table->decimal('weighing_execution',14,2)->nullable();
             $table->timestamps();
         });
     }

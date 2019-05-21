@@ -24,11 +24,11 @@ class CreateActionShortTermsTable extends Migration
             $table->string('unidad_de_medida');
             $table->string('producto_esperado');//viene del mediano plzo
             $table->string('linea_base')->nullable();
-            $table->decimal('meta',8,2);
-            $table->decimal('executed',8,2)->nullable();
-            $table->decimal('efficacy',8,2)->nullable();//la suma de todas las
-            $table->decimal('weighing',8,2)->nullable();
-            $table->decimal('weighing_execution',8,2)->nullable();
+            $table->decimal('meta',14,2);
+            $table->decimal('executed',14,2)->nullable();
+            $table->decimal('efficacy',14,2)->nullable();//la suma de todas las
+            $table->decimal('weighing',14,2)->nullable();
+            $table->decimal('weighing_execution',14,2)->nullable();
             $table->timestamps();
         });
     }

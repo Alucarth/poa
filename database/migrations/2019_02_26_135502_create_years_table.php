@@ -18,11 +18,11 @@ class CreateYearsTable extends Migration
             $table->unsignedBigInteger('action_medium_term_id');
             $table->foreign('action_medium_term_id')->references('id')->on('action_medium_terms');
             $table->integer('year');
-            $table->decimal('meta',8,2);
-            $table->decimal('excecuted',8,2)->nullable();
-            $table->decimal('efficacy',8,2)->nullable();
-            $table->decimal('weighing',8,2)->nullable(); //sumado todos los years deben dar el 100%
-            $table->decimal('weighing_execution',8,2)->nullable(); //sumado todos los years deben dar el 100%
+            $table->decimal('meta',14,2);
+            $table->decimal('excecuted',14,2)->nullable();
+            $table->decimal('efficacy',14,2)->nullable();
+            $table->decimal('weighing',14,2)->nullable(); //sumado todos los years deben dar el 100%
+            $table->decimal('weighing_execution',14,2)->nullable(); //sumado todos los years deben dar el 100%
             $table->timestamps();
         });
     }

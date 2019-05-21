@@ -25,11 +25,11 @@ class CreateActionMediumTermsTable extends Migration
             $table->string('resultado_intermedio');
             $table->string('linea_base')->nullable();
             $table->string('indicador_resultado_intermedio');
-            $table->decimal('alcance_meta',8,2);
-            $table->decimal('executed',8,2)->nullable();
-            $table->decimal('efficacy',8,2)->nullable();
-            $table->decimal('weighing',8,2)->nullable();
-            $table->decimal('weighing_execution',8,2)->nullable();
+            $table->decimal('alcance_meta',14,2);
+            $table->decimal('executed',14,2)->nullable();
+            $table->decimal('efficacy',14,2)->nullable();
+            $table->decimal('weighing',14,2)->nullable();
+            $table->decimal('weighing_execution',14,2)->nullable();
             $table->timestamps();
         });
     }
