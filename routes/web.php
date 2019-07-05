@@ -74,7 +74,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('check_meta_specific_task/{programming_id}','SpecificTaskController@check_meta');
 
 
-
+    Route::resource('programatic_structure','ProgramaticStructureController');
     Route::get('test','ReportController@test');
 
     Route::resource('configuration', 'SystemController');

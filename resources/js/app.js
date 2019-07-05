@@ -63,6 +63,7 @@ Vue.component('specific-task-component', require('./components/SpecificTaskCompo
 Vue.component('execution-specific-tasks-component', require('./components/ExecutionSpecificTask.vue').default);
 Vue.component('report-component', require('./components/ReportComponent.vue').default);
 Vue.component('chart-component', require('./components/chartComponent.vue').default);
+Vue.component('programatic-component', require('./components/ProgramaticStructure.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
