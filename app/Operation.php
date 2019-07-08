@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Operation extends Model
 {
     //
-    public function tasks() 
+    public function tasks()
     {
         return $this->hasMany('App\Task','operation_id');
     }
@@ -16,9 +16,9 @@ class Operation extends Model
     {
         return $this->belongsTo('App\ActionShortTerm');
     }
-    
-    public function programmatic_operation()
+
+    public function programmatic_operations()
     {
-        return $this->belongsTo('App\ProgrammaticOperation');
+        return $this->belongsToMany('App\ProgrammaticOperation','operation_programmations','operation_id','programmatic_operation_id');
     }
 }

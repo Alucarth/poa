@@ -231,6 +231,9 @@ export default {
             this.form.years.forEach(element => {
                  amount+=parseFloat(element.meta);
             });
+            if(this.form.tipo =="Apoyo"){
+                amount = amount/this.form.years.length
+            }
             return amount;
         },
     },

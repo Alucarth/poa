@@ -50,16 +50,50 @@
                                     <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
                                 </div>
                             </div>
-
-							<legend>Estructura Programatica</legend>
+                            <input type="text" name="programmatic_operations" :value="JSON.stringify(form.programmatic_operations)">
+						    <button @click="addItem()" type="button" class="btn btn-secondary"> Adicionar Operacion</button>
 							<div class="row">
+
+                                <table class="table">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">Codigo</th>
+                                    <th scope="col">Descripcion</th>
+                                     </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item,index) in form.programmatic_operations" :key="index">
+                                        <td>
+                                        <multiselect
+                                            v-model="item.programmatic_operation"
+                                            :options="operations"
+                                            id="programmatic_operation"
+                                            placeholder="Seleccionar Codigo"
+                                            select-label="Seleccionar"
+                                            deselect-label="Remover"
+                                            selected-label="Seleccionado"
+                                            label="code"
+                                            track-by="code" >
+
+                                        </multiselect>
+                                        </td>
+                                        <td>
+                                            <input v-if="item.programmatic_operation" type="text" class="form-control" v-model="item.programmatic_operation.description" disabled >
+                                        </td>
+                                        <td>
+                                            <i class="material-icons text-danger" @click="removeItem(item)">delete</i>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                                </table>
 								<!-- <div class="form-group col-md-3">
 									<label for="code">Codigo</label>
 									<v-select label="code" :options="operations" id="code" name="code" v-model="form.code"  placeholder="code" v-validate="'required'"></v-select>
 									<div class="invalid-feedback">{{ errors.first("code") }}</div>
 								</div> -->
-								<div class="form-group  col-md-4">
-									<label for="programmatic_operation">Codigo</label>
+								<!-- <div class="form-group  col-md-4">
+
 									<multiselect
 										v-model="form.programmatic_operation"
 										:options="operations"
@@ -78,7 +112,7 @@
 									<label for="">Descripcion</label>
 									<input type="text" class="form-control" v-model="form.programmatic_operation.description" disabled >
 									<input type="text" class="form-control" name='programmatic_operation_id' v-model="form.programmatic_operation.id" hidden>
-								</div>
+								</div> -->
 							</div>
 							<!-- <div class="row" v-if="parseInt(form.meta)>0">
 								<div class="alert alert-warning col-md-12" role="alert" v-show="subTotalIndicadores==parseFloat(form.meta)?false:true">
@@ -130,7 +164,7 @@
 
                     axios.get(`operations/${operation.id}`).then(response=>{
                             this.form = response.data.operation;
-                            console.log(this.form);
+                            console.log(response.data);
                             this.meta_temp = response.data.operation.meta;
                             this.ponderacion_temp = response.data.operation.weighing;
                     });
@@ -138,7 +172,7 @@
 					// this.form = operation;
 				}else
 				{
-					this.form={};
+					this.form={programmatic_operations:[]};
                     this.meta_temp = 0;
                     this.ponderacion_temp = 0;
 				}
@@ -168,7 +202,14 @@
 					}
 					toastr.error('Debe completar la informacion correctamente')
 				});
-        	},
+            },
+            addItem (){
+                this.form.programmatic_operations.push({});
+            },
+            removeItem(item){
+                const index = this.form.programmatic_operations.indexOf(item)
+                this.form.programmatic_operations.splice(index, 1)
+            },
 
 		},
 		computed:{

@@ -24,7 +24,7 @@
                     </div>
                     <div class="row">
                         <span> <strong>Descripcion:</strong> {{$action_short_term->description}}</span>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="card-footer p-0">
                     <ul class="nav flex-column">
@@ -32,16 +32,16 @@
                         <li class="nav-item" >
                             <a href="{{url('ast_operations/'.$action_short_term->id)}}" class="nav-link">
                                 <i class="fa fa-folder-open text-warning"></i>
-                                Operaciones 
+                                Operaciones
                             </a>
                         </li>
                         {{-- <li class="nav-item" >
                             <a href="{{url('ast_indicators/'.$action_short_term->id)}}" class="nav-link">
                                 <i class="fa fa-folder text-warning"></i>
-                                Indicadores 
+                                Indicadores
                             </a>
                         </li> --}}
-                        
+
                     </ul>
                 </div>
             </div>
@@ -51,8 +51,8 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header card-calendar">
-                            
-                        
+
+
                         <h4 class="card-title ">
                             {{$title??''}}
                             <small class="float-sm-right">
@@ -60,11 +60,11 @@
                                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#OperationModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
                             </small>
                         </h4>
-                            
-                       
+
+
                     </div>
                     <div class="card-body">
-                        
+
                         <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
                             <thead>
                                 <tr>

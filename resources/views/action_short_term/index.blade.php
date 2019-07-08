@@ -19,7 +19,7 @@
                         <div class="col-md-8">
                             <!-- /.widget-user-image -->
                             <h3 >{{ $year->action_medium_term->code}}</h3>
-                            <h5 ><i class="material-icons">flag</i>  {{ $year->action_medium_term->alcance_meta}}</h5>
+                            <h5 ><i class="material-icons">flag</i>  {{  number_format($year->action_medium_term->alcance_meta , 2, ',', '.')}}</h5>
                         </div>
                     </div>
                     <div class="row">
@@ -37,7 +37,7 @@
                                     @else
                                         <i class="fa fa-folder text-warning"></i>
                                     @endif
-                                 {{'Gestion '.$item->year}} <span class="float-right badge bg-success"> <i class="fa fa-flag"></i> {{$item->meta}}</span>
+                                 {{'Gestion '.$item->year}} <span class="float-right badge bg-success"> <i class="fa fa-flag"></i> {{number_format($item->meta , 2, ',', '.')}}</span>
                                 </a>
                             </li>
 
@@ -87,7 +87,7 @@
                                     <td>{{$item->code}}</td>
                                     <td>{{$item->description}}</td>
                                     <td>{{$item->programmatic_structure->description}}</td>
-                                    <td>{{$item->meta }}</td>
+                                    <td>{{ number_format($item->meta , 2, ',', '.') }}</td>
                                     <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
                                     <td>{{$item->executed??'' }}</td>
                                     <td>{{$item->efficacy?$item->efficacy.' %':'' }}</td>

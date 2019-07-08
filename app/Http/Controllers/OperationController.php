@@ -47,14 +47,28 @@ class OperationController extends Controller
             $operation = new Operation;
         }
         $operation->action_short_term_id = $request->action_short_term_id;
-        $operation->programmatic_operation_id = $request->programmatic_operation_id;
+        // $operation->programmatic_operation_id = $request->programmatic_operation_id;
         $operation->description = $request->description;
         $operation->meta = $request->meta;
         $operation->weighing = $request->weighing;
         $operation->save();
         $operation->code= 'OP-'.$operation->id;
         $operation->save();
+
+        $operation_programmations = json_decode($request->programmatic_operations);
+        // return $operation_programmations;
+        $ids=array();
+        foreach($operation_programmations as $operation){
+            array_push($ids,$operation->programmatic_operation->id);
+        }
+        $operation->programmatic_operations->sync($ids);
+
+        return $operation;
+        // return $operation_programmation;
+
         session()->flash('message','se registro '.$operation->code);
+
+
         return back()->withInput();
 
     }
@@ -68,7 +82,7 @@ class OperationController extends Controller
     public function show($id)
     {
         //
-        $operation = Operation::with('programmatic_operation')->find($id);
+        $operation = Operation::with('programmatic_operations')->find($id);
         return response()->json(compact('operation'));
     }
 

@@ -17,8 +17,8 @@ class CreateOperationsTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('action_short_term_id');
             $table->foreign('action_short_term_id')->references('id')->on('action_short_terms');
-            $table->unsignedBigInteger('programmatic_operation_id');//programacion corto plazo
-            $table->foreign('programmatic_operation_id')->references('id')->on('programmatic_operations');
+            // $table->unsignedBigInteger('programmatic_operation_id');//programacion corto plazo
+            // $table->foreign('programmatic_operation_id')->references('id')->on('programmatic_operations');
             $table->string('description');
             $table->string('code')->nullable();
             $table->decimal('meta',14,2);

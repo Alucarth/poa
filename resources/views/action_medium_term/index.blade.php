@@ -47,7 +47,7 @@
                                 <td>{{$item->code}}</td>
                                 <td>{{$item->description}}</td>
                                 <td>{{$item->resultado_intermedio}}</td>
-                                <td>{{$item->alcance_meta }}</td>
+                                <td>{{ number_format($item->alcance_meta , 2, ',', '.')}}</td>
                                 <td>{{$item->weighing }}</td>
                                 <td>{{$item->executed??'' }}</td>
                                 <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
