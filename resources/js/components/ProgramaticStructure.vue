@@ -15,7 +15,7 @@
                         </div>
                         <div class="modal-body">
 							<input type="text" v-if="form.id" name="programmatic_structure_id" v-model="form.id" hidden>
-                            <input type="text" name="programatic_operations" :value="JSON.stringify(form.programatic_operations)">
+                            <input type="text" name="programmatic_operations" :value="JSON.stringify(form.programmatic_operations)">
 							<legend>Estructura Programatica</legend>
 							<div class="row">
                                 <div class="form-group col-md-3">
@@ -42,7 +42,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(item,index) in this.form.programatic_operations" :key="index">
+                                        <tr v-for="(item,index) in this.form.programmatic_operations" :key="index">
                                             <th scope="row">
                                                <input type="text" class="form-control" v-model="item.code">
                                             </th>
@@ -142,11 +142,11 @@
                     ue: 0,
                     updated_at: null
                 }
-                this.form.programatic_operations.push(item);
+                this.form.programmatic_operations.push(item);
             },
             removeItem(item){
-                    const index = this.form.programatic_operations.indexOf(item)
-                    this.form.programatic_operations.splice(index, 1)
+                    const index = this.form.programmatic_operations.indexOf(item)
+                    this.form.programmatic_operations.splice(index, 1)
             },
 
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\ProgramStructure;
+use App\ProgrammaticStructure;
 use App\ProgrammaticOperation;
 
 class ProgramaticStructureController extends Controller
@@ -16,7 +16,7 @@ class ProgramaticStructureController extends Controller
     public function index()
     {
         //
-        $programatic_structures = ProgramStructure::all();
+        $programatic_structures = ProgrammaticStructure::all();
         // return $programatic_structures;
         return view('programmatic_structure.index',compact('programatic_structures'));
     }
@@ -40,16 +40,49 @@ class ProgramaticStructureController extends Controller
     public function store(Request $request)
     {
         //
-        $programmatic_structure= ProgramStructure::find($request->programmatic_structure_id);
+        $programmatic_structure= ProgrammaticStructure::find($request->programmatic_structure_id);
         $programmatic_structure->code= $request->code;
         $programmatic_structure->description= $request->description;
         $programmatic_structure->save();
-        $operations = json_decode($request->programatic_operations);
-        $ids =[];
+        // return $request->all();
+        // return $programmatic_structure;
+
+        $operations = json_decode($request->programmatic_operations);
+        // return $request->programmatic_operations;
+
+        //eliminando
+
+        foreach($programmatic_structure->programmatic_operations as $item)
+        {
+            $find = false;
+
+            foreach($operations as $operation)
+            {
+                if($operation->id > 0)
+                {
+                    if($item->id == $operation->id)
+                    {
+                        $find=true;
+                    }
+                }
+            }
+            if(!$find)
+            {
+                $item->delete();
+            }
+        }
+
         foreach($operations as $operation)
         {
             if($operation->id>0){
-                array_push($ids,$operation->id);
+                // array_push($ids,$operation->id);
+                $programmatic_operation = ProgrammaticOperation::find($operation->id);
+                $programmatic_operation->code = $operation->code;
+                $programmatic_operation->programmatic_structure_id = $programmatic_structure->id;
+                $programmatic_operation->description = $operation->description;
+                $programmatic_operation->da = $operation->da;
+                $programmatic_operation->ue = $operation->ue;
+                $programmatic_operation->save();
             }else{
                 $programmatic_operation = new ProgrammaticOperation;
                 $programmatic_operation->code = $operation->code;
@@ -58,10 +91,10 @@ class ProgramaticStructureController extends Controller
                 $programmatic_operation->da = $operation->da;
                 $programmatic_operation->ue = $operation->ue;
                 $programmatic_operation->save();
-                array_push($ids,$programmatic_operation->id);
+                // array_push($ids,$programmatic_operation->id);
             }
         }
-        $programmatic_structure->programatic_operations()->sync($ids);
+        // $programmatic_structure->programatic_operations()->sync($ids);
         return back()->withInput();
         // return $request->all();
     }
@@ -75,7 +108,7 @@ class ProgramaticStructureController extends Controller
     public function show($id)
     {
         //
-        $programatic_structure = ProgramStructure::with('programatic_operations')->find($id);
+        $programatic_structure = ProgrammaticStructure::with('programmatic_operations')->find($id);
         return response()->json($programatic_structure);
     }
 

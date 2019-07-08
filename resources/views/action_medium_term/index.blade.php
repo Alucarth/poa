@@ -10,9 +10,9 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                
+
                 <div class="card-header card-calendar">
-                    
+
                     <h4 class="card-title ">
                         {{$title??''}}
                         <small class="float-sm-right">
@@ -54,15 +54,15 @@
                                 <td>
                                     <a href="{{url('action_short_term_year/'.$item->years[0]->id)}}"><i class="material-icons text-warning">folder</i></a>
                                     <a href="#" data-toggle="modal" data-target="#ActionMediumTermModal" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
-                                    <a href="#"> <i class="material-icons text-danger deleted" data-json='{{$item}}'>delete</i></a> 
+                                    <a href="#"> <i class="material-icons text-danger deleted" data-json='{{$item}}'>delete</i></a>
                                 </td>
-                                
+
                             </tr>
-                                
+
                             @endforeach
-                            
+
                         </tbody>
-                        
+
                     </table>
                             {{-- <div id='calendar'></div> --}}
                 </div>
@@ -70,21 +70,21 @@
         </div>
 
         {{-- aqui los modals --}}
-        <years-component url='{{url('action_medium_term')}}' csrf='{!! csrf_field('POST') !!}'></year-component>
-  
-         
+    <years-component url='{{url('action_medium_term')}}' csrf='{!! csrf_field('POST') !!}' :structures="{{$programmatic_structures}}  " ></year-component>
+
+
     </div>
 
 @endsection
 <script>
-    
+
     @section('script')
         var classname = document.getElementsByClassName("deleted");
         // console.log(classname);
         function deleteItem(){
-            
+
             var data = JSON.parse(this.getAttribute("data-json"));
-          
+
             Swal.fire({
             title: 'Esta Seguro de Eliminar '+data.code+'?',
             text: "una vez eliminado no se podra revertir la accion!",
@@ -96,7 +96,7 @@
             cancelButtonText: 'No'
             }).then((result) => {
             if (result.value) {
-                
+
                 axios.delete(`action_medium_term/${data.id}`)
                     .then(response=>{
                         console.log(response);
@@ -112,11 +112,11 @@
                         // console.log(error);
                     });
 
-                
+
             }
             })
 
-        }    
+        }
         for (var i = 0; i < classname.length; i++) {
             classname[i].addEventListener('click', deleteItem, false);
         }

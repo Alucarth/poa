@@ -15,6 +15,8 @@ class CreateActionMediumTermsTable extends Migration
     {
         Schema::create('action_medium_terms', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedBigInteger('programmatic_structure_id')->nullable();//programacion a mediano plazo
+            $table->foreign('programmatic_structure_id')->references('id')->on('programmatic_structures');
             $table->string('code')->nullable();
             $table->integer('pilar');
             $table->integer('meta');

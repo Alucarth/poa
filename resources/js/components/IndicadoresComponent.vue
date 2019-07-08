@@ -52,10 +52,14 @@
                             </div>
 							<legend>Estructura Programatica</legend>
 							<div class="row">
-								<div class="form-group  col-md-4">
+                                <div class="col-md-4">
+                                    <label for="codigo">Codigo</label>
+                                    <input type="text" class="form-control" v-model="amt.programmatic_structure.code" disabled>
+                                </div>
+								<!-- <div class="form-group  col-md-4">
 									<label for="programatic_structure">Codigo</label>
 									<multiselect
-										v-model="form.programmatic_structure"
+										v-model="amt.programmatic_structure"
 										:options="structures"
 										id="programatic_structure"
 										placeholder="Seleccionar Codigo"
@@ -63,15 +67,17 @@
 										deselect-label="Remover"
 										selected-label="Seleccionado"
 										label="code"
-										track-by="code" >
+										track-by="code"
+
+                                     >
 
 									</multiselect>
 									<div class="invalid-feedback">{{ errors.first("code") }}</div>
-								</div>
-								<div class="form-group col-md-8 " v-if="form.programmatic_structure" >
+								</div> -->
+								<div class="form-group col-md-8 " v-if="amt.programmatic_structure" >
 									<label for="">Descripcion</label>
-									<input type="text" class="form-control" v-model="form.programmatic_structure.description" disabled >
-									<input type="text" class="form-control" name='structure_id' v-model="form.programmatic_structure.id" hidden>
+									<input type="text" class="form-control" v-model="amt.programmatic_structure.description" disabled >
+									<input type="text" class="form-control" name='structure_id' v-model="amt.programmatic_structure.id" hidden>
 								</div>
 							</div>
                             <legend>Indicador</legend>
@@ -131,7 +137,7 @@
 <script>
 
     export default {
-		props:['url','csrf','year','structures'],
+		props:['url','csrf','year','structures','amt'],
         data:()=>({
 			indicadores:[],
 			form:{},
@@ -146,8 +152,8 @@
         mounted() {
 			console.log('Componente Indicadores XD')
             this.gestion = JSON.parse(this.year);
-
-			console.log(this.gestion);
+            console.log(this.amt);
+			// console.log(this.gestion);
 
 			this.indicadores.push({descripcion:'',unidad:'',linea_base:'',meta:0,producto_esperado:''});
 

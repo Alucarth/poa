@@ -122,7 +122,7 @@ class ActionShortTermController extends Controller
     //adicionando logica para el flujo
     public function action_short_term_year($year_id){
         $year = Year::find($year_id);
-        $lista = ActionShortTerm::where('year_id',$year_id)->get();
+        $lista = ActionShortTerm::with('programmatic_structure')->where('year_id',$year_id)->get();
         $title = 'Acciones a Corto Plazo '.$year->year;
         $programmatic_structures = ProgrammaticStructure::all();
         return view('action_short_term.index',compact('lista','title','year','programmatic_structures'));

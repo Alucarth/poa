@@ -166,6 +166,14 @@
 				   with font-awesome or any other icon font library -->
 
                         <li class="nav-item">
+                            <a href="{{ url('programatic_structure') }}" class="nav-link">
+                                <i class="nav-icon fas fa-sitemap"></i>
+                                <p>
+                                    Estructura Programatica
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url('action_medium_term') }}" class="nav-link">
                                 <i class="nav-icon fas fa-calendar"></i>
                                 <p>

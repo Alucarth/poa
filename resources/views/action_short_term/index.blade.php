@@ -111,7 +111,7 @@
         </div>
     </div>
     {{-- aqui los modals --}}
-    <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}" :structures="{{$programmatic_structures}}"  ></indicadores-component>
+<indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}" :structures="{{$programmatic_structures}}" :amt="{{$year->action_medium_term}}"  ></indicadores-component>
 
     <!-- Modal -->
     {!! Form::open(['action' => 'ActionShortTermController@delete'] )!!}

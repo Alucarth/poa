@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\ActionMediumTerm;
 use App\Year;
+use App\ProgrammaticStructure;
 class ActionMediumTermController extends Controller
 {
     /**
@@ -16,8 +17,9 @@ class ActionMediumTermController extends Controller
     {
         //
         $title = 'Acciones a Mediano Plazo';
-        $lista = ActionMediumTerm::all();
-        return view('action_medium_term.index',compact('title','lista'));
+        $lista = ActionMediumTerm::with('programmatic_structure')->get();
+        $programmatic_structures = ProgrammaticStructure::all();
+        return view('action_medium_term.index',compact('title','lista','programmatic_structures'));
     }
 
     /**
@@ -43,10 +45,11 @@ class ActionMediumTermController extends Controller
         //
         // return $request->all();
         if($request->has('id')){
-           $action_medium_term = ActionMediumTerm::find($request->id); 
+           $action_medium_term = ActionMediumTerm::find($request->id);
         }else{
             $action_medium_term = new ActionMediumTerm(); //programacion a mediano plazo
         }
+        $action_medium_term->programmatic_structure_id = $request->programmatic_structure_id;
         $action_medium_term->pilar = $request->pilar;
         $action_medium_term->meta = $request->meta;
         $action_medium_term->resultado = $request->resultado;
@@ -63,7 +66,7 @@ class ActionMediumTermController extends Controller
         $action_medium_term->save();
 
         $gestiones = json_decode($request->gestiones);
-        // 
+        //
         foreach($gestiones as $gestion){
             if(isset($gestion->id)){
                 $year = Year::find($gestion->id);
@@ -74,7 +77,7 @@ class ActionMediumTermController extends Controller
             $year->year = $gestion->year;
             $year->meta = $gestion->meta;
             $year->save();
-            
+
         }
 
         session()->flash('message','se registro '.$action_medium_term->code);
@@ -91,7 +94,7 @@ class ActionMediumTermController extends Controller
     public function show($id)
     {
         //
-        $action_medium_term = ActionMediumTerm::find($id);
+        $action_medium_term = ActionMediumTerm::with('programmatic_structure')->find($id);
 
         return response()->json(compact('action_medium_term'));
     }
@@ -105,7 +108,7 @@ class ActionMediumTermController extends Controller
     public function edit($id)
     {
         //
-        
+
     }
 
     /**
@@ -133,24 +136,24 @@ class ActionMediumTermController extends Controller
         foreach($action_medium_term->years as $year){
             $year->delete();
         }
-        
+
         // $action_medium_term->years->delete();
         $action_medium_term->delete();
         session()->flash('delete','se elimino el registro '.$code);
         return $id;
     }
     public function report_excel(){
-        
+
         //falta corregir la hueva esta
        Excel::create('Reporte Mediano Plazo', function($excel) {
 
             $excel->sheet('New sheet', function($sheet) {
-                
+
                 $amps = ActionMediumTerm::all();
                 $sheet->loadView('programing.medium_term.excel',compact('amps'));
 
             });
-        
+
         })->download('xls');
         #
 
