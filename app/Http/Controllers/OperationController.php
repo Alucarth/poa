@@ -58,12 +58,12 @@ class OperationController extends Controller
         $operation_programmations = json_decode($request->programmatic_operations);
         // return $operation_programmations;
         $ids=array();
-        foreach($operation_programmations as $operation){
-            array_push($ids,$operation->programmatic_operation->id);
+        foreach($operation_programmations as $item){
+            array_push($ids,$item->id);
         }
-        $operation->programmatic_operations->sync($ids);
+        $operation->programmatic_operations()->sync($ids);
 
-        return $operation;
+        // return $operation;
         // return $operation_programmation;
 
         session()->flash('message','se registro '.$operation->code);

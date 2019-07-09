@@ -50,7 +50,7 @@
                                     <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
                                 </div>
                             </div>
-                            <input type="text" name="programmatic_operations" :value="JSON.stringify(form.programmatic_operations)">
+                            <input type="text" name="programmatic_operations" :value="JSON.stringify(form.programmatic_operations)" hidden>
 						    <button @click="addItem()" type="button" class="btn btn-secondary"> Adicionar Operacion</button>
 							<div class="row">
 
@@ -65,7 +65,7 @@
                                     <tr v-for="(item,index) in form.programmatic_operations" :key="index">
                                         <td>
                                         <multiselect
-                                            v-model="item.programmatic_operation"
+                                            v-model="form.programmatic_operations[index]"
                                             :options="operations"
                                             id="programmatic_operation"
                                             placeholder="Seleccionar Codigo"
@@ -78,7 +78,7 @@
                                         </multiselect>
                                         </td>
                                         <td>
-                                            <input v-if="item.programmatic_operation" type="text" class="form-control" v-model="item.programmatic_operation.description" disabled >
+                                            <input v-if="form.programmatic_operations[index]" type="text" class="form-control" v-model="form.programmatic_operations[index].description" disabled >
                                         </td>
                                         <td>
                                             <i class="material-icons text-danger" @click="removeItem(item)">delete</i>
