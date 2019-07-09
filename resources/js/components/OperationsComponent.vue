@@ -177,8 +177,9 @@
         mounted() {
 			console.log('Componente Operations XD')
 			this.action_short_term = JSON.parse(this.ast);
-			console.log(this.operations);
+            console.log(this.operations);
 
+            // $('#OperationModal').modal({backdrop: 'static', keyboard: false})
 			$('#OperationModal').on('show.bs.modal',(event)=> {
 				var button = $(event.relatedTarget) // Button that triggered the modal
 				var operation = button.data('json') // Extract info from data-* attributes

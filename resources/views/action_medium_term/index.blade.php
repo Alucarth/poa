@@ -17,7 +17,7 @@
                         {{$title??''}}
                         <small class="float-sm-right">
                             {{-- <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a>  --}}
-                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ActionMediumTermModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ActionMediumTermModal" data-backdrop="static" data-keyboard="false" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
                         </small>
                     </h4>
                 </div>
@@ -53,7 +53,7 @@
                                 <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
                                 <td>
                                     <a href="{{url('action_short_term_year/'.$item->years[0]->id)}}"><i class="material-icons text-warning">folder</i></a>
-                                    <a href="#" data-toggle="modal" data-target="#ActionMediumTermModal" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
+                                    <a href="#" data-toggle="modal" data-target="#ActionMediumTermModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
                                     <a href="#"> <i class="material-icons text-danger deleted" data-json='{{$item}}'>delete</i></a>
                                 </td>
 

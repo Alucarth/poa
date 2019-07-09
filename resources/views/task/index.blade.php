@@ -11,7 +11,7 @@
             <div class="card card-widget widget-user-2">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div class="widget-user-header bg-success">
-                   
+
                     <div class="row">
                         <div class="col-md-4">
                                 <i class="material-icons" style="font-size:50px;">assignment</i>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="row">
                         <span> <strong>Descripcion:</strong> {{$operation->description}}</span>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="card-footer p-0">
                     <ul class="nav flex-column">
@@ -32,11 +32,11 @@
                         <li class="nav-item" >
                             <a href="{{url('operation_tasks/'.$operation->id)}}" class="nav-link">
                                 <i class="fa fa-folder-open text-success"></i>
-                                Tareas 
+                                Tareas
                             </a>
                         </li>
-                
-                        
+
+
                     </ul>
                 </div>
             </div>
@@ -46,19 +46,19 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header card-calendar">
-                            
+
                         <h3 class="card-title">
                             <h4 class="card-title ">
                                 {{$title??''}}
                                 <small class="float-sm-right">
                                     {{-- <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a>  --}}
-                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#TaskModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#TaskModal" data-backdrop="static" data-keyboard="false" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
                                 </small>
                             </h4>
                         </h3>
                     </div>
                     <div class="card-body">
-                        
+
                         <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
                             <thead>
                                 <tr>
@@ -82,7 +82,7 @@
                                     <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
                                     <td>
                                         <a href="{{url('specific_task/'.$item->id.'/'.$item->programmings[0]->pivot->id)}}"><i class="material-icons text-warning">folder</i></a>
-                                    <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#TaskModal" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
+                                    <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#TaskModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
                                         <a href="#"><i class="material-icons text-danger">delete</i></a>
                                     </td>
 
@@ -101,6 +101,6 @@
         <tasks-component url='{{url('tasks')}}' csrf='{!! csrf_field('POST') !!}' :optask="{{$operation}}" :meses="{{$meses}}" ></operations-component>
     </div>
 	{{-- aqui los modals --}}
-	
+
 
 @endsection

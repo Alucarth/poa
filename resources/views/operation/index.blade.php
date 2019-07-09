@@ -57,7 +57,7 @@
                             {{$title??''}}
                             <small class="float-sm-right">
                                 {{-- <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a>  --}}
-                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#OperationModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
+                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#OperationModal"  data-backdrop="static" data-keyboard="false"  data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
                             </small>
                         </h4>
 
@@ -90,7 +90,7 @@
                                     <td>{{$item->efficacy?$item->efficacy.' %':'' }}</td>
                                     <td>
                                         <a href="{{url('operation_tasks/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a>
-                                        <a href="#" data-toggle="modal" data-target="#OperationModal" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
+                                        <a href="#" data-toggle="modal" data-target="#OperationModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
                                         <a href="#"><i class="material-icons text-danger">delete</i></a>
                                     </td>
 

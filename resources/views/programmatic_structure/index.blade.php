@@ -46,8 +46,8 @@
                                     <td>{{$item->description}}</td>
                                     <td>
                                         {{-- <a href="{{url('ast_operations/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a> --}}
-                                        <a href="#" data-toggle="modal" data-target="#ProgramaticModal" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
-                                        <a href="#" data-toggle="modal" data-target="#deleteModal" data-json="{{$item}}"><i class="material-icons text-danger">delete</i></a>
+                                        <a href="#" data-toggle="modal" data-target="#ProgramaticModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
+                                        <a href="#" data-toggle="modal" data-target="#deleteModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}"><i class="material-icons text-danger">delete</i></a>
                                     </td>
 
                                 </tr>
