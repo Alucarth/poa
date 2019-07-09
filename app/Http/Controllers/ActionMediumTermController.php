@@ -19,6 +19,7 @@ class ActionMediumTermController extends Controller
         $title = 'Acciones a Mediano Plazo';
         $lista = ActionMediumTerm::with('programmatic_structure')->get();
         $programmatic_structures = ProgrammaticStructure::all();
+        // return $programmatic_structures;
         return view('action_medium_term.index',compact('title','lista','programmatic_structures'));
     }
 
