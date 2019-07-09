@@ -26,6 +26,7 @@ class CreateOperationsTable extends Migration
             $table->decimal('efficacy',14,2)->nullable();//
             $table->decimal('weighing',14,2)->nullable();
             $table->decimal('weighing_execution',14,2)->nullable();
+            $table->boolean('its_contribution'); //si contribuye a la meta
             $table->timestamps();
         });
     }

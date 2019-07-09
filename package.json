@@ -55,6 +55,7 @@
         "vee-validate": "^2.1.7",
         "vue-bootstrap4-table": "^1.0.27",
         "vue-multiselect": "^2.1.4",
+        "vue-switches": "^2.0.1",
         "vuetify": "^1.5.4"
     }
 }

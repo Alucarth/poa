@@ -49,6 +49,13 @@ class OperationController extends Controller
         $operation->action_short_term_id = $request->action_short_term_id;
         // $operation->programmatic_operation_id = $request->programmatic_operation_id;
         $operation->description = $request->description;
+        if($request->its_contribution =='true')
+        {
+            $operation->its_contribution = true;
+        }else {
+            $operation->its_contribution = false;
+        }
+        // $operation->its_contribution = $request->its_contribution;
         $operation->meta = $request->meta;
         $operation->weighing = $request->weighing;
         $operation->save();
@@ -137,9 +144,11 @@ class OperationController extends Controller
     public function check_meta($action_short_term_id){
 
         $total_meta = Operation::where('action_short_term_id',$action_short_term_id)
+                                    ->where('its_contribution','=',true)
                                     ->select(DB::raw("sum(meta) as total_meta, sum(weighing) as total_ponderado"))
                                     ->groupBy('action_short_term_id')
                                     ->get();
+        // return response()->json($total_meta);
         $action_short_term = ActionShortTerm::find($action_short_term_id);
         if(sizeof($total_meta)>0)
         {

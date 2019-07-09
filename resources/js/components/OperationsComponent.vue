@@ -32,6 +32,16 @@
                                     </v-chip>
 								</div>
 							</div>
+                             <div class="form-group col-md-3">
+                                <label for="description">Contribuye a la Meta :   {{form.its_contribution?'Si':'No'}}</label>
+                                <!-- <select name="its_contribution" v-model="form.its_contribution" class="custom-select" placeholder="Seleccionar" v-validate="'required'" >
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
+                                </select> -->
+                                <switches v-model="form.its_contribution"  theme="bootstrap" color="primary"></switches>
+                                <input type="text" name="its_contribution" :value="form.its_contribution" hidden>
+
+                            </div>
 							<legend>Operacion</legend>
                             <div class="row">
                                 <div class="form-group col-md-9">
@@ -39,16 +49,30 @@
                                     <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
                                     <div class="invalid-feedback">{{ errors.first("description") }}</div>
                                 </div>
-								<div class="form-group col-md-3">
+                                <div class="form-group col-md-3" v-if="form.its_contribution">
                                     <label for="meta">Meta</label>
                                     <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
                                     <div class="invalid-feedback">{{ errors.first("meta") }}</div>
                                 </div>
-								<div class="form-group col-md-4">
+                                <div class="form-group col-md-4" v-if="form.its_contribution">
                                     <label for="weighing">Ponderacion</label>
                                     <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="Ponderacion" v-validate="'required|decimal:2|max_value:'+getPonderacion" />
                                     <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
                                 </div>
+
+
+                                <div class="form-group col-md-3" v-if="!form.its_contribution">
+                                    <label for="meta">Meta</label>
+                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
+                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div>
+                                </div>
+                                <div class="form-group col-md-4" v-if="!form.its_contribution">
+                                    <label for="weighing">Ponderacion</label>
+                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="Ponderacion" v-validate="'required|decimal:2'" />
+                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
+                                </div>
+
+
                             </div>
                             <input type="text" name="programmatic_operations" :value="JSON.stringify(form.programmatic_operations)" hidden>
 						    <button @click="addItem()" type="button" class="btn btn-secondary"> Adicionar Operacion</button>
@@ -138,6 +162,7 @@
 </template>
 
 <script>
+    import Switches from 'vue-switches';
     export default {
 		props:['url','csrf','ast','operations'],
         data:()=>({
@@ -214,11 +239,16 @@
 		},
 		computed:{
             getMeta(){
-                return parseFloat(this.total_meta)+ parseFloat(this.meta_temp);
+                let value = parseFloat(this.total_meta)+ parseFloat(this.meta_temp)
+
+                return value;
             },
             getPonderacion(){
                 return parseFloat(this.total_ponderacion)+ parseFloat(this.ponderacion_temp);
             }
-		}
+        },
+        components: {
+            Switches
+        },
     }
 </script>

@@ -51,7 +51,7 @@
                                     <input type="text" id="alcance_meta" name="alcance_meta" v-model="form.alcance_meta" class="form-control" placeholder="Alcance Meta" v-validate="'required|decimal:2|min_value:1'" />
                                     <div class="invalid-feedback">{{ errors.first("alcance_meta") }}</div>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-2">
                                     <label for="description">Tipo</label>
                                     <select name="tipo" v-model="form.tipo" class="custom-select" placeholder="Seleccionar" v-validate="'required'" >
                                     <option value="Proceso">Proceso</option>
@@ -59,6 +59,7 @@
                                     </select>
                                     <div class="invalid-feedback">{{ errors.first("tipo") }}</div>
                                 </div>
+
                                 <div class="form-group col-md-4">
                                     <label for="resultado_intermedio">Resultado Intermedio</label>
                                     <input type="text" id="resultado_intermedio" name="resultado_intermedio" v-model="form.resultado_intermedio" class="form-control" placeholder="Resultado Intermedio" v-validate="'required'" />
@@ -145,6 +146,7 @@
 <script>
 
 // console.log(form);
+import Switches from 'vue-switches';
 export default {
     props:['url','csrf','structures'],
     data:()=>({
@@ -236,6 +238,9 @@ export default {
             }
             return amount;
         },
+    },
+    components: {
+        Switches
     },
 }
 </script>
