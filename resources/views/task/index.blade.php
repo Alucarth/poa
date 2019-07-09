@@ -19,7 +19,7 @@
                         <div class="col-md-8">
                             <!-- /.widget-user-image -->
                             <h3 >{{ $operation->code}}</h3>
-                            <h5 > <i class="material-icons">flag</i> {{ $operation->meta}}</h5>
+                            <h5 > <i class="material-icons">flag</i> {{  number_format($operation->meta , 2, ',', '.')}}</h5>
                         </div>
                     </div>
                     <div class="row">
@@ -76,7 +76,7 @@
                                 <tr>
                                     <td>{{$item->code}}</td>
                                     <td>{{$item->description}}</td>
-                                    <td>{{$item->meta }}</td>
+                                    <td>{{ number_format($item->meta , 2, ',', '.') }}</td>
                                     <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
                                     <td>{{$item->executed??'' }}</td>
                                     <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>

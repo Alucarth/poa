@@ -20,7 +20,7 @@
                         <div class="col-md-8">
                             <!-- /.widget-user-image -->
                             <h3 >{{ $task->code}}</h3>
-                            <h5 >  <i class="material-icons">flag</i> {{ $task->meta}}</h5>
+                            <h5 >  <i class="material-icons">flag</i> {{ number_format($task->meta , 2, ',', '.')}}</h5>
                         </div>
                     </div>
                     <div class="row">
@@ -37,7 +37,7 @@
                                     @else
                                         <i class="fa fa-folder text-warning"></i>
                                     @endif
-									{{$month->name}}  <span class="float-right badge bg-success"> <i class="fa fa-flag"></i> {{$month->pivot->meta}}</span>
+									{{$month->name}}  <span class="float-right badge bg-success"> <i class="fa fa-flag"></i> {{number_format($month->pivot->meta , 2, ',', '.')}}</span>
 								</a>
 							</li>
 						@endforeach
@@ -81,7 +81,7 @@
                                 <tr>
                                     <td>{{$item->code}}</td>
                                     <td>{{$item->description}}</td>
-                                    <td>{{$item->meta }}</td>
+                                    <td>{{ number_format($item->meta , 2, ',', '.') }}</td>
                                     <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
                                     <td>{{$item->executed??'' }}</td>
                                     <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
