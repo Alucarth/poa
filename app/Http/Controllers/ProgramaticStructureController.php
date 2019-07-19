@@ -145,4 +145,12 @@ class ProgramaticStructureController extends Controller
     {
         //
     }
+
+    public function delete(Request $request)
+    {
+        $structure_programmatic = ProgrammaticStructure::find($request->id);
+        $structure_programmatic->delete();
+        session()->flash('delete','se elimino la estructura');
+        return back()->withInput();
+    }
 }

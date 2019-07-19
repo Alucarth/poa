@@ -68,19 +68,19 @@
     {{-- <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}" :structures="{{$programmatic_structures}}"  ></indicadores-component> --}}
 
     <!-- Modal -->
-    {{-- {!! Form::open(['action' => 'ActionShortTermController@delete'] )!!}
+    {!! Form::open(['action' => 'ProgramaticStructureController@delete'] )!!}
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-danger">
-                    <h5 class="modal-title" id="deleteModalLabel">Eliminar la Accion a corto plazo</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">Eliminar la estructura programatica corto plazo</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <span></span>
-                    <input type="text" name="id">
+                    <input type="text" name="id" hidden>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
@@ -89,7 +89,7 @@
             </div>
         </div>
     </div>
-    {!! Form::close()!!} --}}
+    {!! Form::close()!!}
 @endsection
 <script>
 @section("script")

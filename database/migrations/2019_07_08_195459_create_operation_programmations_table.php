@@ -20,6 +20,7 @@ class CreateOperationProgrammationsTable extends Migration
             $table->unsignedBigInteger('operation_id');//programacion corto plazo
             $table->foreign('operation_id')->references('id')->on('operations');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

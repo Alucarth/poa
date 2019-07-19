@@ -20,6 +20,7 @@ class CreateAlertsTable extends Migration
             $table->integer('max');
             $table->string('color');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

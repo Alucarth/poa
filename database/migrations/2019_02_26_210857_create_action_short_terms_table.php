@@ -31,6 +31,7 @@ class CreateActionShortTermsTable extends Migration
             $table->decimal('weighing_execution',14,2)->nullable();
             // $table->boolean('its_contrution')->default(true); //si contribuye a la meta
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

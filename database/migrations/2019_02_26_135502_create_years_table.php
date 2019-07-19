@@ -24,6 +24,7 @@ class CreateYearsTable extends Migration
             $table->decimal('weighing',14,2)->nullable(); //sumado todos los years deben dar el 100%
             $table->decimal('weighing_execution',14,2)->nullable(); //sumado todos los years deben dar el 100%
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -51,7 +51,7 @@
                                 </div>
                             </div>
 							<legend>Estructura Programatica</legend>
-							<div class="row">
+							<div class="row" v-if="amt.programmatic_structure" >
                                 <div class="col-md-4">
                                     <label for="codigo">Codigo</label>
                                     <input type="text" class="form-control" v-model="amt.programmatic_structure.code" disabled>

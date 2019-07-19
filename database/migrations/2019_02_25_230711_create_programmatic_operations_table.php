@@ -22,6 +22,7 @@ class CreateProgrammaticOperationsTable extends Migration
             $table->bigInteger('da');
             $table->bigInteger('ue');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -86,7 +86,7 @@
                                 <tr>
                                     <td>{{$item->code}}</td>
                                     <td>{{$item->description}}</td>
-                                    <td>{{$item->programmatic_structure->description}}</td>
+                                    <td>{{ $item->programmatic_structure?$item->programmatic_structure->description:""}}</td>
                                     <td>{{ number_format($item->meta , 2, ',', '.') }}</td>
                                     <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
                                     <td>{{$item->executed??'' }}</td>

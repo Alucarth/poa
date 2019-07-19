@@ -15,7 +15,7 @@
                         </div>
                         <div class="modal-body">
 							<input type="text" v-if="form.id" name="programmatic_structure_id" v-model="form.id" hidden>
-                            <input type="text" name="programmatic_operations" :value="JSON.stringify(form.programmatic_operations)">
+                            <input type="text" name="programmatic_operations" :value="JSON.stringify(form.programmatic_operations)" hidden>
 							<legend>Estructura Programatica</legend>
 							<div class="row">
                                 <div class="form-group col-md-3">
@@ -29,7 +29,7 @@
                                     <div class="invalid-feedback">{{ errors.first("description") }}</div>
                                 </div>
 							</div>
-                            <button @click="addItem()" class="btn btn-primary" type="button"> Adicionar Operacion</button>
+                            <button @click="addItem()" class="btn btn-primary" type="button"> Adicionar Estructura Programática </button>
                             <div class="row">
                                 <table class="table">
                                     <thead>

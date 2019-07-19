@@ -75,6 +75,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::resource('programatic_structure','ProgramaticStructureController');
+    Route::post('programatic_structure/delete','ProgramaticStructureController@delete')->name('delete_programatic_structure');
     Route::get('test','ReportController@test');
 
     Route::resource('configuration', 'SystemController');

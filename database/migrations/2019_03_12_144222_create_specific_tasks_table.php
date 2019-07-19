@@ -25,6 +25,7 @@ class CreateSpecificTasksTable extends Migration
             $table->decimal('weighing',14,2)->nullable();
             $table->decimal('weighing_execution',14,2)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

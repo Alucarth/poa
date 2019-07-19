@@ -31,6 +31,7 @@
                     <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
+                                <th>Nº</th>
                                 <th>Cod.</th>
                                 <th>Accion Mediano Plazo</th>
                                 <th>Resultado</th>
@@ -44,6 +45,7 @@
                         <tbody>
                             @foreach ($lista as $item)
                             <tr>
+                                <td>{{$item->id}}</td>
                                 <td>{{$item->code}}</td>
                                 <td>{{$item->description}}</td>
                                 <td>{{$item->resultado_intermedio}}</td>
