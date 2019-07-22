@@ -18,7 +18,16 @@ class ActionMediumTermController extends Controller
         //
         $title = 'Acciones a Mediano Plazo';
         $lista = ActionMediumTerm::with('programmatic_structure')->orderBy('id')->get();
-
+        $ponderacion = 0;
+        foreach($lista as $asm)
+        {
+            if($asm->tipo =="Proceso"){
+                $ponderacion += $asm->weighing;
+            }
+        }
+        if($ponderacion > 100){
+            session()->flash('error','Se sobrepaso el 100% de la ponderacion estimada en accion a mediano plazo ');
+        }
         $programmatic_structures = ProgrammaticStructure::all();
         // return $programmatic_structures;
         return view('action_medium_term.index',compact('title','lista','programmatic_structures'));
@@ -58,6 +67,7 @@ class ActionMediumTermController extends Controller
         $action_medium_term->accion = $request->accion;
         $action_medium_term->description = $request->description;
         $action_medium_term->tipo = $request->tipo;
+        $action_medium_term->clasificacion = $request->clasificacion;
         $action_medium_term->resultado_intermedio = $request->resultado_intermedio;
         $action_medium_term->linea_base = $request->linea_base;
         $action_medium_term->indicador_resultado_intermedio = $request->indicador_resultado_intermedio;

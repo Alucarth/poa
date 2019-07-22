@@ -54,10 +54,18 @@
                                 <div class="form-group col-md-2">
                                     <label for="description">Tipo</label>
                                     <select name="tipo" v-model="form.tipo" class="custom-select" placeholder="Seleccionar" v-validate="'required'" >
-                                    <option value="Proceso">Proceso</option>
-                                    <option value="Apoyo">Apoyo</option>
+                                        <option value="Proceso">Proceso</option>
+                                        <option value="Apoyo">Apoyo</option>
                                     </select>
                                     <div class="invalid-feedback">{{ errors.first("tipo") }}</div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="clasificacion">Clasificacion</label>
+                                    <select name="clasificacion" v-model="form.clasificacion" class="custom-select" placeholder="Seleccionar" v-validate="'required'" >
+                                        <option value="Absoluto">Absoluto</option>
+                                        <option value="Relativo">Relativo</option>
+                                    </select>
+                                    <div class="invalid-feedback">{{ errors.first("clasificacion") }}</div>
                                 </div>
 
                                 <div class="form-group col-md-4">
@@ -165,11 +173,12 @@ export default {
         $('#ActionMediumTermModal').on('show.bs.modal',(event)=> {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var amt = button.data('json') // Extract info from data-* attributes
-            console.log(amt);
+            // console.log(amt);
             this.title ='Nueva Accion a Mediano Plazo';
             if(amt)
             {
                 this.form = amt;
+                console.log(this.form);
                 this.$set(this.form, 'initial_year', amt.years[0].year);
                 // this.form.initial_year = amt.years[0].year;//termina quitando la reactividad averiguar el por que
                 //   console.log();
@@ -233,7 +242,7 @@ export default {
             this.form.years.forEach(element => {
                  amount+=parseFloat(element.meta);
             });
-            if(this.form.tipo =="Apoyo"){
+            if(this.form.clasificacion == "Relativo"){
                 amount = amount/this.form.years.length
             }
             return amount;

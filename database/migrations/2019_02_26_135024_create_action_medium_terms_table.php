@@ -24,6 +24,7 @@ class CreateActionMediumTermsTable extends Migration
             $table->integer('accion');
             $table->string('description');
             $table->enum('tipo', ['Proceso', 'Apoyo'])->default('Proceso')->nullable();
+            $table->enum('clasificacion', ['Absoluto', 'Relativo'])->default('Absoluto')->nullable();
             $table->string('resultado_intermedio');
             $table->string('linea_base')->nullable();
             $table->string('indicador_resultado_intermedio');
