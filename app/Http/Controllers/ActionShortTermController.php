@@ -49,6 +49,8 @@ class ActionShortTermController extends Controller
         {
             $action_short_term = new ActionShortTerm;
         }
+        $year = Year::find($request->year_id);
+
         $action_short_term->year_id = $request->year_id;
         $action_short_term->programmatic_structure_id = $request->structure_id;
         $action_short_term->description = $request->description;
@@ -57,9 +59,10 @@ class ActionShortTermController extends Controller
         $action_short_term->unidad_de_medida = $request->unidad_de_medida;
         $action_short_term->linea_base = $request->linea_base;
         $action_short_term->producto_esperado = $request->producto_esperado;
+        $action_short_term->code = $year->action_medium_term->programmatic_structure->code;
         $action_short_term->save();
-        $action_short_term->code = 'ACP-'.$action_short_term->id;
-        $action_short_term->save();
+        // $action_short_term->code = 'ACP-'.$action_short_term->id;
+        // $action_short_term->save();
 
         session()->flash('message',' se registro '.$action_short_term->code);
 

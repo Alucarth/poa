@@ -24,7 +24,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles','RolController',['names'=>['index'=>'roles']]);
     Route::resource('users','UserController',['names'=>['index'=>'users']]);
 
-    Route::resource('action_medium_term','ActionMediumTermController',['names'=>['index'=>'action_medium_term']]);
+    Route::resource('action_medium_term','ActionMediumTermController',['names'=>['index'=>'action_medium_term']])
+    ;
+    Route::post('action_medium_term/delete','ActionMediumTermController@delete')->name('action_medium_term');
+    Route::get('last_amt','ActionMediumTermController@last_amt')->name('last_amt');
 
     Route::get('action_short_term_year/{year_id}','ActionShortTermController@action_short_term_year')->name('action_short_term_year');
 

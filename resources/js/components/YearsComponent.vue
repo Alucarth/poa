@@ -41,6 +41,13 @@
                             </div>
                             <legend>Accion de Mediano Plazo del PEE</legend>
                             <div class="row">
+                                <div class="col-md-3">
+                                    <label for="code">Numeración</label>
+                                    <input type="text" id="code" name="code" v-model="form.code" class="form-control" placeholder="Codigo" v-validate="'required|decimal'" />
+                                    <div class="invalid-feedback">{{ errors.first("code") }}</div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-group col-md-8">
                                     <label for="description">Descripcion</label>
                                     <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
@@ -85,7 +92,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="ponderacion"> Ponderacion (%)</label>
-                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="Ponderacion" v-validate="'numeric'" />
+                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="Ponderacion" v-validate="'decimal'" />
                                     <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
                                 </div>
 
@@ -184,7 +191,17 @@ export default {
                 //   console.log();
                 this.title='Editar '+amt.code;
             }else{
-                this.form = {years:[]};
+                axios.get('last_amt')
+                    .then((response)=>{
+                        console.log(response.data);
+                        // this.form.code = response.data.code +1;
+                        let code =  parseInt(response.data.code)+1;
+                        this.form = {code: code,years:[]};
+                        console.log(this.form);
+                    })
+
+
+
             }
 
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).

@@ -17,7 +17,7 @@ class ActionMediumTermController extends Controller
     {
         //
         $title = 'Acciones a Mediano Plazo';
-        $lista = ActionMediumTerm::with('programmatic_structure')->orderBy('id')->get();
+        $lista = ActionMediumTerm::with('programmatic_structure')->orderBy('code')->get();
         $ponderacion = 0;
         foreach($lista as $asm)
         {
@@ -73,8 +73,7 @@ class ActionMediumTermController extends Controller
         $action_medium_term->indicador_resultado_intermedio = $request->indicador_resultado_intermedio;
         $action_medium_term->alcance_meta = $request->alcance_meta;
         $action_medium_term->weighing = $request->weighing;
-        $action_medium_term->save();
-        $action_medium_term->code='AMP-'.$action_medium_term->id;
+        $action_medium_term->code = $request->code;
         $action_medium_term->save();
 
         $gestiones = json_decode($request->gestiones);
@@ -91,6 +90,16 @@ class ActionMediumTermController extends Controller
             $year->save();
 
         }
+        //actualizacion de numeracion
+        $amts= ActionMediumTerm::where('id','>',$action_medium_term->id)->orderBy('id')->get();
+        $num = $action_medium_term->code ;
+        foreach($amts as  $amt){
+            $num++;
+            $amt->code = $num;
+            $amt->save();
+        }
+
+
 
         session()->flash('message','se registro '.$action_medium_term->code);
 
@@ -154,6 +163,19 @@ class ActionMediumTermController extends Controller
         session()->flash('delete','se elimino el registro '.$code);
         return $id;
     }
+    public function delete(Request $request)
+    {
+        $action_medium_term = ActionMediumTerm::find($request->id);
+        $code =$action_medium_term->code;
+        foreach($action_medium_term->years as $year){
+            $year->delete();
+        }
+
+        // $action_medium_term->years->delete();
+        $action_medium_term->delete();
+        session()->flash('delete','se elimino el registro '.$code);
+        return back()->withInput();
+    }
     public function report_excel(){
 
         //falta corregir la hueva esta
@@ -169,5 +191,9 @@ class ActionMediumTermController extends Controller
         })->download('xls');
         #
 
+    }
+    public function last_amt(){
+        $amt = ActionMediumTerm::orderBy('id','DESC')->first();
+        return response()->json($amt);
     }
 }
