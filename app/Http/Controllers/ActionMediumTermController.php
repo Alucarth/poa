@@ -166,11 +166,18 @@ class ActionMediumTermController extends Controller
     public function delete(Request $request)
     {
         $action_medium_term = ActionMediumTerm::find($request->id);
+     //   return $action_medium_term;
         $code =$action_medium_term->code;
         foreach($action_medium_term->years as $year){
-            $year->delete();
+            foreach($year->action_short_terms as $ast){
+                $ast->delete();
+            }
+            // $year->delete();
         }
+        // foreach($action_medium_term->years as $year){
 
+            // $year->delete();
+        // }
         // $action_medium_term->years->delete();
         $action_medium_term->delete();
         session()->flash('delete','se elimino el registro '.$code);
