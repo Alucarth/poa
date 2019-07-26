@@ -63,6 +63,7 @@ class TaskController extends Controller
         $task->description = $request->description;
         $task->meta = $request->meta;
         $task->weighing = $request->weighing;
+        $task->code = $request->code;
         if($request->its_contribution =='true')
         {
             $task->its_contribution = true;
@@ -70,9 +71,20 @@ class TaskController extends Controller
             $task->its_contribution = false;
         }
         $task->save();
-        $task->code = 'T-'.$task->id;
-        $task->save();
+        // $task->code = 'T-'.$task->id;
+        // $task->save();
         $task->programmings()->sync($programmings);
+
+
+         //actualizacion de numeracion
+         $tasks= Task::where('id','>',$task->id)->orderBy('id')->get();
+         $num = $task->code ;
+         foreach($tasks as  $task){
+             $num++;
+             $task->code = $num;
+             $task->save();
+         }
+
         session()->flash('message','se registro '.$task->code);
         return back()->withInput();
     }

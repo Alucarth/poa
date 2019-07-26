@@ -57,10 +57,11 @@ class OperationController extends Controller
         }
         // $operation->its_contribution = $request->its_contribution;
         $operation->meta = $request->meta;
+        $operation->code = $request->code;
         $operation->weighing = $request->weighing;
         $operation->save();
-        $operation->code= 'OP-'.$operation->id;
-        $operation->save();
+        // $operation->code= 'OP-'.$operation->id;
+        // $operation->save();
 
         $operation_programmations = json_decode($request->programmatic_operations);
         // return $operation_programmations;
@@ -69,6 +70,17 @@ class OperationController extends Controller
             array_push($ids,$item->id);
         }
         $operation->programmatic_operations()->sync($ids);
+
+
+         //actualizacion de numeracion
+         $operations= Operation::where('id','>',$operation->id)->orderBy('id')->get();
+         $num = $operation->code ;
+         foreach($operations as  $operation){
+             $num++;
+             $operation->code = $num;
+             $operation->save();
+         }
+
 
         // return $operation;
         // return $operation_programmation;
@@ -138,7 +150,7 @@ class OperationController extends Controller
     public function ast_operations($action_short_term_id){
 
         $action_short_term= ActionShortTerm::find($action_short_term_id);
-
+        // return $action_short_term->operations;
         $title = 'Operaciones '. $action_short_term->code;
         return view('operation.index',compact('action_short_term','title'));
     }
@@ -149,7 +161,8 @@ class OperationController extends Controller
         return $programmatic_operations;
     }
 
-    public function check_meta($action_short_term_id){
+    public function check_meta($action_short_term_id)
+    {
 
         $total_meta = Operation::where('action_short_term_id',$action_short_term_id)
                                     ->where('its_contribution','=',true)

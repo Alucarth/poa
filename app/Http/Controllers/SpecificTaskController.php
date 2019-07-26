@@ -48,6 +48,7 @@ class SpecificTaskController extends Controller
         $specific_task->description = $request->description;
         $specific_task->meta = $request->meta;
         $specific_task->weighing = $request->weighing;
+        $specific_task->code = $request->code;
         if($request->its_contribution =='true')
         {
             $specific_task->its_contribution = true;
@@ -55,8 +56,19 @@ class SpecificTaskController extends Controller
             $specific_task->its_contribution = false;
         }
         $specific_task->save();
-        $specific_task->code= 'TE-'.$specific_task->id;
-        $specific_task->save();
+        // $specific_task->code= 'TE-'.$specific_task->id;
+        // $specific_task->save();
+
+          //actualizacion de numeracion
+        $specific_tasks= SpecificTask::where('id','>',$specific_task->id)->orderBy('id')->get();
+        $num = $specific_task->code ;
+        foreach($specific_tasks as  $specific_task){
+            $num++;
+            $specific_task->code = $num;
+            $specific_task->save();
+        }
+
+
         session()->flash('message','se registro '.$specific_task->code);
         return back()->withInput();
     }

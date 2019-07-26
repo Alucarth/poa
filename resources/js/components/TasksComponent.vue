@@ -38,6 +38,11 @@
 							<legend>Tarea</legend>
                             <div class="row">
 								<input type="text" name="task_id" v-model="form.id" hidden>
+                                 <div class="col-md-3">
+                                    <label for="code">Numeración</label>
+                                    <input type="text" id="code" name="code" v-model="form.code" class="form-control" placeholder="Codigo" v-validate="'required|decimal'" />
+                                    <div class="invalid-feedback">{{ errors.first("code") }}</div>
+                                </div>
                                 <div class="form-group col-md-9">
                                     <label for="description">Descripcion</label>
                                     <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
