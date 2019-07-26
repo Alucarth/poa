@@ -127,6 +127,14 @@ class OperationController extends Controller
         //
     }
 
+    public function delete(Request $request)
+    {
+        $operation = Operation::find($request->id);
+        session()->flash('message',' Se elimino el registro '.$operation->code);
+        $operation->delete();
+        return back()->withInput();
+    }
+
     public function ast_operations($action_short_term_id){
 
         $action_short_term= ActionShortTerm::find($action_short_term_id);

@@ -117,48 +117,4 @@
     modal.find('.modal-body span').text("Desea eliminar la acciona mediano plazo "+object.code+"?");
     modal.find('.modal-body input').val(object.id);
     })
-
-
-        // var classname = document.getElementsByClassName("deleted");
-        // // console.log(classname);
-        // function deleteItem(){
-
-        //     var data = JSON.parse(this.getAttribute("data-json"));
-
-        //     Swal.fire({
-        //     title: 'Esta Seguro de Eliminar '+data.code+'?',
-        //     text: "una vez eliminado no se podra revertir la accion!",
-        //     type: 'warning',
-        //     showCancelButton: true,
-        //     confirmButtonColor: '#3085d6',
-        //     cancelButtonColor: '#d33',
-        //     confirmButtonText: 'Si, borrar!',
-        //     cancelButtonText: 'No'
-        //     }).then((result) => {
-        //     if (result.value) {
-
-        //         axios.delete(`action_medium_term/${data.id}`)
-        //             .then(response=>{
-        //                 console.log(response);
-        //                 location.reload();
-        //             })
-        //             .catch(error=>{
-        //                 // handle error
-        //                 Swal.fire(
-        //                 'Error! contactese con soporte tecnico',
-        //                 ''+error,
-        //                 'error'
-        //                 )
-        //                 // console.log(error);
-        //             });
-
-
-        //     }
-        //     })
-
-        // }
-        // for (var i = 0; i < classname.length; i++) {
-        //     classname[i].addEventListener('click', deleteItem, false);
-        // }
-    @endsection
 </script>

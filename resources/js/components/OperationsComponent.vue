@@ -75,7 +75,7 @@
 
                             </div>
                             <input type="text" name="programmatic_operations" :value="JSON.stringify(form.programmatic_operations)" hidden>
-						    <button @click="addItem()" type="button" class="btn btn-secondary"> Adicionar Operacion</button>
+						    <button @click="addItem()" type="button" class="btn btn-secondary"> Adicionar Esctructura Programatica</button>
 							<div class="row">
 
                                 <table class="table">

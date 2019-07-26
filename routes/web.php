@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('action_medium_term','ActionMediumTermController',['names'=>['index'=>'action_medium_term']])
     ;
-    Route::post('action_medium_term/delete','ActionMediumTermController@delete')->name('action_medium_term');
+    Route::post('action_medium_term/delete','ActionMediumTermController@delete')->name('action_medium_term_delte');
     Route::get('last_amt','ActionMediumTermController@last_amt')->name('last_amt');
 
     Route::get('action_short_term_year/{year_id}','ActionShortTermController@action_short_term_year')->name('action_short_term_year');
@@ -39,7 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('operations','OperationController');
 
     Route::get ('operation_tasks/{operation_id}','TaskController@operation_tasks')->name('operation_tasks');
-
+    Route::post('operation/delete','OperationController@delete');
     Route::resource('tasks','TaskController');
 
     Route::get('execution_year/{year_month}','ExecutionController@execution_year')->name('exection_year'); //para tareas

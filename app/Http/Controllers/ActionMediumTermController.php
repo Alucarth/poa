@@ -56,7 +56,7 @@ class ActionMediumTermController extends Controller
         //
         // return $request->all();
         if($request->has('id')){
-           $action_medium_term = ActionMediumTerm::find($request->id);
+            $action_medium_term = ActionMediumTerm::find($request->id);
         }else{
             $action_medium_term = new ActionMediumTerm(); //programacion a mediano plazo
         }
@@ -177,7 +177,7 @@ class ActionMediumTermController extends Controller
         // foreach($action_medium_term->years as $year){
 
             // $year->delete();
-        // }
+        // }git stat
         // $action_medium_term->years->delete();
         $action_medium_term->delete();
         session()->flash('delete','se elimino el registro '.$code);
