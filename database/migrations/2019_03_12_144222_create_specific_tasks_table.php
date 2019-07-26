@@ -24,6 +24,7 @@ class CreateSpecificTasksTable extends Migration
             $table->decimal('efficacy',14,2)->nullable();//la
             $table->decimal('weighing',14,2)->nullable();
             $table->decimal('weighing_execution',14,2)->nullable();
+            $table->boolean('its_contribution')->default(true); //si contribuye a la meta
             $table->timestamps();
             $table->softDeletes();
         });

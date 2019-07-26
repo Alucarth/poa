@@ -54,23 +54,23 @@
                                     <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
                                     <div class="invalid-feedback">{{ errors.first("meta") }}</div>
                                 </div>
-                                <div class="form-group col-md-4" v-if="form.its_contribution">
+                                <div class="form-group col-md-3" v-if="!form.its_contribution">
+                                    <label for="meta">Meta</label>
+                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
+                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div>
+                                </div>
+                                <div class="form-group col-md-4">
                                     <label for="weighing">Ponderacion</label>
                                     <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="Ponderacion" v-validate="'required|decimal:2|max_value:'+getPonderacion" />
                                     <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
                                 </div>
 
 
-                                <div class="form-group col-md-3" v-if="!form.its_contribution">
-                                    <label for="meta">Meta</label>
-                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
-                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div>
-                                </div>
-                                <div class="form-group col-md-4" v-if="!form.its_contribution">
+                                <!-- <div class="form-group col-md-4" v-if="!form.its_contribution">
                                     <label for="weighing">Ponderacion</label>
                                     <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="Ponderacion" v-validate="'required|decimal:2'" />
                                     <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
-                                </div>
+                                </div> -->
 
 
                             </div>

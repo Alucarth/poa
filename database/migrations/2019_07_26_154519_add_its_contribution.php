@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddClassificationAcm extends Migration
+class AddItsContribution extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,12 @@ class AddClassificationAcm extends Migration
     public function up()
     {
         //
-        // Schema::table('action_medium_terms', function (Blueprint $table) {
-        //     $table->enum('clasificacion', ['Absoluto', 'Relativo'])->default('Absoluto')->nullable();
-        // });
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->boolean('its_contribution')->default(true);
+        });
+        Schema::table('specific_tasks', function (Blueprint $table) {
+            $table->boolean('its_contribution')->default(true);
+        });
     }
 
     /**
