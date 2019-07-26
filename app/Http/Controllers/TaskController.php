@@ -63,6 +63,12 @@ class TaskController extends Controller
         $task->description = $request->description;
         $task->meta = $request->meta;
         $task->weighing = $request->weighing;
+        if($request->its_contribution =='true')
+        {
+            $task->its_contribution = true;
+        }else {
+            $task->its_contribution = false;
+        }
         $task->save();
         $task->code = 'T-'.$task->id;
         $task->save();

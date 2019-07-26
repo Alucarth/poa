@@ -48,6 +48,12 @@ class SpecificTaskController extends Controller
         $specific_task->description = $request->description;
         $specific_task->meta = $request->meta;
         $specific_task->weighing = $request->weighing;
+        if($request->its_contribution =='true')
+        {
+            $specific_task->its_contribution = true;
+        }else {
+            $specific_task->its_contribution = false;
+        }
         $specific_task->save();
         $specific_task->code= 'TE-'.$specific_task->id;
         $specific_task->save();

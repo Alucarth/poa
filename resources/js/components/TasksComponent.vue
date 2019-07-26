@@ -30,6 +30,11 @@
                                         Ponderacion Disponible: {{getPonderacion}}
                                 </v-chip>
 							</div>
+                            <div class="form-group col-md-3">
+                                <label for="description">Contribuye a la Meta :   {{form.its_contribution?'Si':'No'}}</label>
+                                <switches v-model="form.its_contribution"  theme="bootstrap" color="primary"></switches>
+                                <input type="text" name="its_contribution" :value="form.its_contribution" hidden>
+                            </div>
 							<legend>Tarea</legend>
                             <div class="row">
 								<input type="text" name="task_id" v-model="form.id" hidden>
@@ -93,6 +98,7 @@
 </template>
 
 <script>
+    import Switches from 'vue-switches';
     export default {
 		props:['url','csrf','optask','meses'],
         data:()=>({
@@ -226,6 +232,9 @@
             getPonderacion(){
                 return parseFloat(this.total_ponderacion)+ parseFloat(this.ponderacion_temp);
             }
-		}
+        },
+        components: {
+            Switches
+        },
     }
 </script>

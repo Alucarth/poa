@@ -34,13 +34,8 @@
 							</div>
                              <div class="form-group col-md-3">
                                 <label for="description">Contribuye a la Meta :   {{form.its_contribution?'Si':'No'}}</label>
-                                <!-- <select name="its_contribution" v-model="form.its_contribution" class="custom-select" placeholder="Seleccionar" v-validate="'required'" >
-                                <option value="true">Si</option>
-                                <option value="false">No</option>
-                                </select> -->
                                 <switches v-model="form.its_contribution"  theme="bootstrap" color="primary"></switches>
                                 <input type="text" name="its_contribution" :value="form.its_contribution" hidden>
-
                             </div>
 							<legend>Operacion</legend>
                             <div class="row">
