@@ -169,18 +169,35 @@ class OperationController extends Controller
                                     ->select(DB::raw("sum(meta) as total_meta, sum(weighing) as total_ponderado"))
                                     ->groupBy('action_short_term_id')
                                     ->get();
+        $total_contribution = Operation::where('action_short_term_id',$action_short_term_id)
+                            // ->where('its_contribution','=',true)
+                            ->select(DB::raw("sum(weighing) as total_ponderado"))
+                            ->groupBy('action_short_term_id')
+                            ->get();
         // return response()->json($total_meta);
         $action_short_term = ActionShortTerm::find($action_short_term_id);
         if(sizeof($total_meta)>0)
         {
             $meta = $action_short_term->meta - $total_meta[0]->total_meta;
-            $ponderacion = 100 - $total_meta[0]->total_ponderado;
+            // $ponderacion = 100 - $total_meta[0]->total_ponderado;
         }
         else{
 
             $meta = $action_short_term->meta;
+            // $ponderacion = 100;
+        }
+
+        if(sizeof($total_contribution)>0)
+        {
+            // $meta = $action_short_term->meta - $total_meta[0]->total_meta;
+            $ponderacion = 100 - $total_contribution[0]->total_ponderado;
+        }
+        else{
+
+            // $meta = $action_short_term->meta;
             $ponderacion = 100;
         }
+
 
         return response()->json(compact('meta','ponderacion'));
 
