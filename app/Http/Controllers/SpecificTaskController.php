@@ -122,7 +122,8 @@ class SpecificTaskController extends Controller
 
     }
 
-    public function specific_task($task_id,$programming_id){
+    public function specific_task($task_id,$programming_id)
+    {
         // $task = Task::with('programmings')->where('id',$task_id)->first();
         $task = Task::find($task_id);
         $specific_tasks = SpecificTask::where('programming_id',$programming_id)->get();
@@ -132,21 +133,34 @@ class SpecificTaskController extends Controller
         return view('specific_task.index',compact('task','specific_tasks','programming','title'));
         // $title = "Tareas de ".$operation->code;
     }
-    public function check_meta($programming_id){
+
+    public function check_meta($programming_id)
+    {
 
         $total_meta = SpecificTask::where('programming_id',$programming_id)
                                     ->select(DB::raw("sum(meta) as total_meta, sum(weighing) as total_ponderado"))
+                                    ->where('its_contribution','=',true)
                                     ->groupBy('programming_id')
                                     ->get();
         $programming = Programming::find($programming_id);
+
+        $total_contribution = SpecificTask::where('programming_id',$programming_id)
+                            ->select(DB::raw("sum(meta) as total_meta, sum(weighing) as total_ponderado"))
+                            ->groupBy('programming_id')
+                            ->get();
+
         if(sizeof($total_meta)>0)
         {
             $meta = $programming->meta - $total_meta[0]->total_meta;
-            $ponderacion = 100 - $total_meta[0]->total_ponderado;
         }
         else{
-
             $meta = $programming->meta;
+        }
+
+        if(sizeof($total_contribution)>0)
+        {
+            $ponderacion = 100 - $total_contribution[0]->total_ponderado;
+        }else{
             $ponderacion = 100;
         }
 

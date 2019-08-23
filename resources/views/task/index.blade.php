@@ -7,7 +7,7 @@
 @endsection
 @section('content')
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card card-widget widget-user-2">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div class="widget-user-header bg-success">
@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <div class="col-md-9 justify-content-center">
+        <div class="col-md-10 justify-content-center">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header card-calendar">
@@ -59,7 +59,7 @@
                     </div>
                     <div class="card-body">
 
-                        <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                        <table id="task_list" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Cod.</th>
@@ -104,3 +104,35 @@
 
 
 @endsection
+<script>
+@section('script')
+    $('#task_list').DataTable({
+            // responsive: {
+            //     details: {
+            //         renderer: function ( api, rowIdx, columns ) {
+            //             var data = $.map( columns, function ( col, i ) {
+            //                 return col.hidden ?
+            //                     '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+            //                         '<td> <strong>'+col.title+':'+'</strong> </td> '+
+            //                         '<td>'+col.data+'</td>'+
+            //                     '</tr>' :
+            //                     '';
+            //             } ).join('');
+            //             return data ?
+            //                 $('<table/>').append( data ) :
+            //                 false;
+            //         }
+            //     }
+            // },
+            responsive: true,
+            columnDefs: [
+                { responsivePriority: 1, targets: 0 },
+                { responsivePriority: 10002, targets: 2 },
+                { responsivePriority: 10001, targets: 4 },
+                { responsivePriority: 2, targets: -1 }
+            ],
+            language: spanish_lang
+
+        });
+@endsection
+</script>

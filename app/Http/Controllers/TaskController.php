@@ -146,18 +146,33 @@ class TaskController extends Controller
     public function check_meta($operation_id){
 
         $total_meta = Task::where('operation_id',$operation_id)
-                                    ->select(DB::raw("sum(meta) as total_meta, sum(weighing) as total_ponderado"))
+                                    ->select(DB::raw("sum(meta) as total_meta"))
+                                    ->where('its_contribution','=',true)
                                     ->groupBy('operation_id')
                                     ->get();
+
+        $total_contribution = Task::where('operation_id',$operation_id)
+                                ->select(DB::raw("sum(weighing) as total_ponderado"))
+                                ->groupBy('operation_id')
+                                ->get();
+        // $total_contribution = Operation::where('action_short_term_id',$action_short_term_id)
+        //                             // ->where('its_contribution','=',true)
+        //                             ->select(DB::raw("sum(weighing) as total_ponderado"))
+        //                             ->groupBy('action_short_term_id')
+        //                             ->get();
         $operation = Operation::find($operation_id);
         if(sizeof($total_meta)>0)
         {
             $meta = $operation->meta - $total_meta[0]->total_meta;
-            $ponderacion = 100 - $total_meta[0]->total_ponderado;
         }
         else{
 
             $meta = $operation->meta;
+        }
+        if(sizeof($total_contribution)>0)
+        {
+            $ponderacion = 100 - $total_contribution[0]->total_ponderado;
+        }else{
             $ponderacion = 100;
         }
 

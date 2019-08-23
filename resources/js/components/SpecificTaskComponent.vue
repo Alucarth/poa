@@ -100,7 +100,8 @@
 			console.log(this.task);
 
 			$('#SpecificTaskModal').on('show.bs.modal',(event)=> {
-				var button = $(event.relatedTarget) // Button that triggered the modal
+
+                var button = $(event.relatedTarget) // Button that triggered the modal
 				var specific_task = button.data('json') // Extract info from data-* attributes
 				this.title ='Nueva Tarea Especifica ';
 				if(specific_task)
@@ -108,8 +109,8 @@
                     this.title='Editar '+specific_task.code;
                      axios.get(`specific_tasks/${specific_task.id}`).then(response=>{
                          this.form = response.data.specific_task;
-                         this.meta_temp = response.data.specific_task.meta;
-                         this.ponderacion_temp = response.data.specific_task.weighing;
+                         this.meta_temp = parseFloat(response.data.specific_task.meta || 0);
+                         this.ponderacion_temp = parseFloat(response.data.specific_task.weighing || 0);
                      });
 
 				}else{
@@ -144,7 +145,6 @@
 					toastr.error('Debe completar la informacion correctamente')
 				});
         	},
-
 		},
 		computed:{
 

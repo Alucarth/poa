@@ -128,7 +128,7 @@
 			// this.operation = JSON.parse(this.optask);
 			this.operation = this.optask;
 
-			console.log(this.optask);
+			console.log(this.operation);
 			this.months = this.meses;//asignacion de este siempre tiene que ser declarado en el data por la reactividad XD
 			// console.log(this.gestion
 
@@ -137,25 +137,26 @@
 				let object = button.data('json') // Extract info from data-* attributes
 				let programmings = button.data('programmings');
                 this.title ='Nueva Tarea ';
-                console.log(object);
+                // console.log(object);
 				if(object)
 				{
                     this.title='Editar Tarea '+object.code;
                     axios.get(`tasks/${object.id}`).then(response=>{
                             this.form = response.data.task;
                             // console.log(programmings);
-                            console.log("imprimiendo la operacion");
+                            console.log("imprimiendo la tarea");
                             console.log( response.data);
-                            this.meta_temp = response.data.task.meta;
-                            this.ponderacion_temp = response.data.task.weighing;
-
+                            this.meta_temp = parseFloat(this.form.meta || 0);
+                            this.ponderacion_temp = parseFloat(this.form.weighing || 0);
+                            // console.log(this.meta_temp);
+                            // console.log(this.ponderacion_temp);
                             // console.log(programmings);
                             // programmings = this.form.programmings;
                             this.months.forEach((month) => {
                                 // console.log(tarea);
                                 let month_id=month.id;
                                 let mes_tarea = this.form.programmings.find((mes)=>{return mes.id == month_id });
-                                console.log(mes_tarea)
+                                // console.log(mes_tarea)
                                 if(mes_tarea){
                                     month.meta =mes_tarea.pivot.meta;
                                 }else{
@@ -175,10 +176,11 @@
 							month.meta='';
 					});
 				}
-                console.log(object);
+                // console.log(object);
 
                  axios.get(`check_meta_task/${this.operation.id}`)
-                      .then(response=>{
+                      .then((response)=>{
+                        console.log("check_meta_task");
                         console.log(response.data);
                         this.total_meta=response.data.meta;
                         this.total_ponderacion=response.data.ponderacion;

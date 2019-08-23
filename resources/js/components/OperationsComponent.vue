@@ -191,8 +191,8 @@
                     axios.get(`operations/${operation.id}`).then(response=>{
                             this.form = response.data.operation;
                             console.log(response.data);
-                            this.meta_temp = response.data.operation.meta;
-                            this.ponderacion_temp = response.data.operation.weighing;
+                            this.meta_temp = parseFloat(response.data.operation.meta || 0);
+                            this.ponderacion_temp = parseFloat(response.data.operation.weighing || 0);
                     });
 
 					// this.form = operation;
