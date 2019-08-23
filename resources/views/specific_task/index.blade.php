@@ -8,7 +8,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card card-widget widget-user-2">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div class="widget-user-header bg-primary">
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="col-md-9 justify-content-center">
+        <div class="col-md-10 justify-content-center">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header card-calendar">
