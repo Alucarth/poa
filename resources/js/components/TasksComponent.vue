@@ -48,7 +48,12 @@
                                     <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
                                     <div class="invalid-feedback">{{ errors.first("description") }}</div>
                                 </div>
-								<div class="form-group col-md-3">
+								<div class="form-group col-md-3" v-if="!form.its_contribution">
+                                    <label for="meta">Meta</label>
+                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
+                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div>
+                                </div>
+								<div class="form-group col-md-3" v-else>
                                     <label for="meta">Meta</label>
                                     <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
                                     <div class="invalid-feedback">{{ errors.first("meta") }}</div>
