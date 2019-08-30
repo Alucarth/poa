@@ -58,41 +58,43 @@
                         </h3>
                     </div>
                     <div class="card-body">
+                        <div class="table-responsive-md">
 
-                        <table id="task_list" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Cod.</th>
-                                    <th>Tareas</th>
-                                    <th>Meta</th>
-                                    <th>Ponderacion</th>
-                                    <th>Ejecutado</th>
-                                    <th>Eficacia</th>
-                                    <th>Opciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($operation->tasks as $item)
-                                <tr>
-                                    <td>{{$item->code}}</td>
-                                    <td>{{$item->description}}</td>
-                                    <td>{{ number_format($item->meta , 2, ',', '.') }}</td>
-                                    <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
-                                    <td>{{$item->executed??'' }}</td>
-                                    <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
-                                    <td>
-                                        <a href="{{url('specific_task/'.$item->id.'/'.$item->programmings[0]->pivot->id)}}"><i class="material-icons text-warning">folder</i></a>
-                                    <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#TaskModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
-                                        <a href="#"><i class="material-icons text-danger">delete</i></a>
-                                    </td>
+                            <table id="task_list" class="table table-responsive table-bordered table-hover" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col-1">Cod.</th>
+                                        <th scope="col-6">Tareas</th>
+                                        <th scope="col-2">Meta</th>
+                                        <th scope="col-1">Ponderacion</th>
+                                        <th scope="col-1">Ejecutado</th>
+                                        <th scope="col-1">Eficacia</th>
+                                        <th scope="col-1">Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($operation->tasks as $item)
+                                    <tr>
+                                        <td>{{$item->code}}</td>
+                                        <td>{{$item->description}}</td>
+                                        <td>{{ number_format($item->meta , 2, ',', '.') }}</td>
+                                        <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
+                                        <td>{{$item->executed??'' }}</td>
+                                        <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
+                                        <td>
+                                            <a href="{{url('specific_task/'.$item->id.'/'.$item->programmings[0]->pivot->id)}}"><i class="material-icons text-warning">folder</i></a>
+                                        <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#TaskModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
+                                            <a href="#"><i class="material-icons text-danger">delete</i></a>
+                                        </td>
 
-                                </tr>
+                                    </tr>
 
-                                @endforeach
+                                    @endforeach
 
-                            </tbody>
+                                </tbody>
 
-                        </table>
+                            </table>
+                        </div>
                         {{-- <div id='calendar'></div> --}}
                     </div>
                 </div>
@@ -127,8 +129,9 @@
             responsive: true,
             columnDefs: [
                 { responsivePriority: 1, targets: 0 },
-                { responsivePriority: 10002, targets: 2 },
-                { responsivePriority: 10001, targets: 4 },
+                { responsivePriority: 10001, targets: 3 },
+                { responsivePriority: 10002, targets: 4 },
+                { responsivePriority: 10003, targets: 5 },
                 { responsivePriority: 2, targets: -1 }
             ],
             language: spanish_lang

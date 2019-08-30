@@ -63,41 +63,43 @@
                         </h3>
                     </div>
                     <div class="card-body">
+                        <div class="table-responsive-md">
 
-                        <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Cod.</th>
-                                    <th>Tareas</th>
-                                    <th>Meta</th>
-                                    <th>Ponderacion</th>
-                                    <th>Ejecutado</th>
-                                    <th>Eficacia</th>
-                                    <th>Opciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($specific_tasks as $item)
-                                <tr>
-                                    <td>{{$item->code}}</td>
-                                    <td>{{$item->description}}</td>
-                                    <td>{{ number_format($item->meta , 2, ',', '.') }}</td>
-                                    <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
-                                    <td>{{$item->executed??'' }}</td>
-                                    <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
-                                    <td>
-                                        {{-- <a href="{{url('operation_tasks/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a> --}}
-                                    <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#SpecificTaskModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
-                                        <a href="#"><i class="material-icons text-danger">delete</i></a>
-                                    </td>
+                            <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Cod.</th>
+                                        <th>Tareas</th>
+                                        <th>Meta</th>
+                                        <th>Ponderacion</th>
+                                        <th>Ejecutado</th>
+                                        <th>Eficacia</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($specific_tasks as $item)
+                                    <tr>
+                                        <td>{{$item->code}}</td>
+                                        <td>{{$item->description}}</td>
+                                        <td>{{ number_format($item->meta , 2, ',', '.') }}</td>
+                                        <td>{{$item->weighing?$item->weighing.' %':'' }}</td>
+                                        <td>{{$item->executed??'' }}</td>
+                                        <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
+                                        <td>
+                                            {{-- <a href="{{url('operation_tasks/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a> --}}
+                                        <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#SpecificTaskModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
+                                            <a href="#"><i class="material-icons text-danger">delete</i></a>
+                                        </td>
 
-                                </tr>
+                                    </tr>
 
-                                @endforeach
+                                    @endforeach
 
-                            </tbody>
+                                </tbody>
 
-                        </table>
+                            </table>
+                        </div>
                         {{-- <div id='calendar'></div> --}}
                     </div>
                 </div>
