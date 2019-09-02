@@ -39,12 +39,13 @@ class SpecificTaskController extends Controller
     public function store(Request $request)
     {
         //
+        // return $request->all();
         if($request->has('id')){
             $specific_task = SpecificTask::find($request->id);
         }else{
             $specific_task = new  SpecificTask;
         }
-        $specific_task->programming_id = $request->programming_id;
+        $specific_task->task_id = $request->task_id;
         $specific_task->description = $request->description;
         $specific_task->meta = $request->meta;
         $specific_task->weighing = $request->weighing;
@@ -68,6 +69,23 @@ class SpecificTaskController extends Controller
             $specific_task->save();
         }
 
+        $specific_programmings = json_decode($request->specific_programmings);
+        // return $specific_programmings;
+
+        foreach($specific_programmings  as $specific_programming)
+        {
+            // return json_encode($specific_programming);
+            if($specific_programming->meta > 0)
+            {
+                $sp_programming = new SpecificTaskProgrammation;
+                $sp_programming->programming_id = $specific_programming->programming_id;
+                $sp_programming->specific_task_id = $specific_task->id;
+                $sp_programming->meta = $specific_programming->meta;
+                $sp_programming->save();
+            }
+
+            // return $sp_programming;
+        }
 
         session()->flash('message','se registro '.$specific_task->code);
         return back()->withInput();
@@ -164,15 +182,26 @@ class SpecificTaskController extends Controller
             $ponderacion = 100;
         }
 
-        $programmings = Programmings::where('task_id',$task->id)->get();
+        $programmings = Programming::with('month')->where('task_id',$task->id)->get();
+        $specific_programmings= [];
         foreach($programmings as $programming)
         {
+            $specific_task_programmations = SpecificTaskProgrammation::with('programming')
+                                                                    ->where('programming_id',$programming->id)
+                                                                    ->get();
+            $sum_meta = 0;
 
-
+            foreach($specific_task_programmations as $specific_task_programmation )
+            {
+                $sum_meta+= $specific_task_programmation->meta;
+                // array_push();
+            }
+            $programming->meta -= $sum_meta;
+            array_push($specific_programmings,$programming);
         }
 
 
-        return response()->json(compact('meta','ponderacion'));
+        return response()->json(compact('meta','ponderacion','specific_programmings'));
 
     }
 }

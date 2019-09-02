@@ -72,6 +72,7 @@
                                 </div>
 
                             </div>
+                            <input type="text" name="specific_programmings" :value="JSON.stringify(this.programmings)" >
                             <div class="row">
 
 								<div class="col-md-3"  v-for="(item,index) in programmings" :key="index">
@@ -109,6 +110,7 @@
 
                         </div>
                         <div class="modal-footer">
+                            {{getTotalMeta}}
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cancelar</button>
                             <button type="submit" class="btn btn-success">Guardar</button>
                         </div>
@@ -138,15 +140,15 @@
 			console.log('Componente SpecificTasks XD')
 			console.log(this.task);
 
-            this.task.programmings.forEach(programming => {
-                let item={};
-                item.programming_id = programming.pivot.id
-                item.name = programming.name
-                item.meta_programming = programming.pivot.meta
-                item.meta = ""
-                item.edit = true;
-                this.programmings.push(item);
-            });
+            // this.task.programmings.forEach(programming => {
+            //     let item={};
+            //     item.programming_id = programming.pivot.id
+            //     item.name = programming.name
+            //     item.meta_programming = programming.pivot.meta
+            //     item.meta = ""
+            //     item.edit = true;
+            //     this.programmings.push(item);
+            // });
             console.log(this.programmings);
 			$('#SpecificTaskModal').on('show.bs.modal',(event)=> {
 
@@ -174,6 +176,18 @@
                         console.log(response.data);
                         this.total_meta=response.data.meta;
                         this.total_ponderacion=response.data.ponderacion;
+
+                        this.programmings = [];
+                        response.data.specific_programmings.forEach(programming => {
+                            let item={};
+                            item.programming_id = programming.id
+                            item.name = programming.month.name
+                            item.meta_programming = programming.meta
+                            item.meta = ""
+                            item.edit = true;
+                            this.programmings.push(item);
+                        });
+                        // this.programmings = response.data.specific_programmings;
                         //console.log(this.total_meta);
 
                     });
@@ -193,7 +207,8 @@
 					}
 					toastr.error('Debe completar la informacion correctamente')
 				});
-        	},
+            },
+
 		},
 		computed:{
 
@@ -202,6 +217,14 @@
             },
             getPonderacion(){
                 return parseFloat(this.total_ponderacion)+ parseFloat(this.ponderacion_temp);
+            },
+            getTotalMeta(){
+                let meta =0;
+                this.programmings.forEach(item => {
+                    meta+= parseFloat(item.meta || 0)
+                });
+                // console.log(meta);
+                return meta;
             }
         },
         components: {
