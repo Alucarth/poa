@@ -122,15 +122,15 @@ class SpecificTaskController extends Controller
 
     }
 
-    public function specific_task($task_id,$programming_id)
+    public function specific_task($task_id)
     {
         // $task = Task::with('programmings')->where('id',$task_id)->first();
-        $task = Task::find($task_id);
-        $specific_tasks = SpecificTask::where('programming_id',$programming_id)->get();
-        $programming = DB::table('programmings')->join('months','months.id','=','programmings.month_id')->where('programmings.id',$programming_id)->select('programmings.*','months.name')->first();
+        $task = Task::with('programmings')->find($task_id);
+        $specific_tasks = SpecificTask::where('task_id',$task->id)->get();
+        // $programming = DB::table('programmings')->join('months','months.id','=','programmings.month_id')->where('programmings.id',$programming_id)->select('programmings.*','months.name')->first();
         // return json_encode($programming);
-        $title ='Tareas Especificas de '.$programming->name;
-        return view('specific_task.index',compact('task','specific_tasks','programming','title'));
+        $title ='Tareas Especificas ';
+        return view('specific_task.index',compact('task','specific_tasks','title'));
         // $title = "Tareas de ".$operation->code;
     }
 

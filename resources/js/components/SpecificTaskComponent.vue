@@ -14,62 +14,98 @@
                             </button>
                         </div>
                         <div class="modal-body">
-							<input type="text" name="programming_id" v-model="programming.id" hidden>
-							<legend>Tarea {{task.code}}</legend>
-							<div class="row">
-								<v-chip color="bg-success" text-color="white">
-                                    <v-avatar class="green darken-3">
-                                        <v-icon >fa-flag</v-icon>
-                                    </v-avatar>
-                                        Meta: {{getMeta}}
-                                </v-chip>
-                                <v-chip color="bg-info" text-color="white">
-                                    <v-avatar class="cyan darken-3">
-                                        <v-icon >fa-percentage</v-icon>
-                                    </v-avatar>
-                                        Ponderacion Disponible: {{getPonderacion}}
-                                </v-chip>
-							</div>
-                            <div class="form-group col-md-3">
-                                <label for="description">Contribuye a la Meta :   {{form.its_contribution?'Si':'No'}}</label>
-                                <switches v-model="form.its_contribution"  theme="bootstrap" color="primary"></switches>
-                                <input type="text" name="its_contribution" :value="form.its_contribution" hidden>
-                            </div>
-							<legend>Tarea Especifica</legend>
+							<input type="text" name="task_id" v-model="task.id" hidden>
                             <div class="row">
-                                <div class="col-md-3">
-                                    <label for="code">Numeración</label>
-                                    <input type="text" id="code" name="code" v-model="form.code" class="form-control" placeholder="Codigo" v-validate="'required|decimal'" />
-                                    <div class="invalid-feedback">{{ errors.first("code") }}</div>
+                                <div class="col-md-6">
+
+                                    <legend>Tarea Especifica</legend>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="code">Numeración</label>
+                                            <input type="text" id="code" name="code" v-model="form.code" class="form-control" placeholder="Codigo" v-validate="'required|decimal'" />
+                                            <div class="invalid-feedback">{{ errors.first("code") }}</div>
+                                        </div>
+
+                                        <div class="form-group col-md-4">
+                                            <label for="meta">Meta</label>
+                                            <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
+                                            <div class="invalid-feedback">{{ errors.first("meta") }}</div>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="weighing">Ponderacion (%)</label>
+                                            <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'required|decimal:2|max_value:'+getPonderacion" />
+                                            <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="description">Descripcion</label>
+                                            <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
+                                            <div class="invalid-feedback">{{ errors.first("description") }}</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-9">
-                                    <label for="description">Descripcion</label>
-                                    <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
-                                    <div class="invalid-feedback">{{ errors.first("description") }}</div>
+
+                                <div class="col-md-6">
+                                    <div class="card" >
+                                        <div class="card-body">
+                                        <legend>Tarea {{task.code}}</legend>
+                                        <div class="row">
+                                            <v-chip color="bg-success" text-color="white">
+                                                <v-avatar class="green darken-3">
+                                                    <v-icon >fa-flag</v-icon>
+                                                </v-avatar>
+                                                    Meta: {{getMeta}}
+                                            </v-chip>
+                                            <v-chip color="bg-info" text-color="white">
+                                                <v-avatar class="cyan darken-3">
+                                                    <v-icon >fa-percentage</v-icon>
+                                                </v-avatar>
+                                                    Ponderacion Disponible: {{getPonderacion}}
+                                            </v-chip>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="description">Contribuye a la Meta :   {{form.its_contribution?'Si':'No'}}</label>
+                                            <switches v-model="form.its_contribution"  theme="bootstrap" color="primary"></switches>
+                                            <input type="text" name="its_contribution" :value="form.its_contribution" hidden>
+                                        </div>
+                                        </div>
+                                    </div>
                                 </div>
-								<div class="form-group col-md-3">
-                                    <label for="meta">Meta</label>
-                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
-                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div>
-                                </div>
-								<div class="form-group col-md-3">
-                                    <label for="weighing">Ponderacion (%)</label>
-                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'required|decimal:2|max_value:'+getPonderacion" />
-                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
-                                </div>
+
                             </div>
+                            <div class="row">
+								<div class="col-md-3"  v-for="(item,index) in programmings" :key="index">
+									<div :class="item.meta.length>0?'small-box bg-primary':'small-box bg-success'" >
+										<div class="inner" @click="item.edit=!item.edit">
+                                        <div class="row">
+                                            <h4>{{item.name}}
+                                                    <v-chip
+                                                    class="ma-2"
+                                                    color="indigo"
+                                                    text-color="white"
+                                                    small
+                                                    >
+                                                    <v-avatar left>
+                                                        <v-icon>flag</v-icon>
+                                                    </v-avatar>
+                                                    {{item.meta}}
+                                                    </v-chip>
+                                            </h4>
+                                        </div>
 
+										<span></span>
+										</div>
 
-							<!-- <div class="row" v-if="parseInt(form.meta)>0">
-								<div class="alert alert-warning col-md-12" role="alert" v-show="subTotalIndicadores==parseFloat(form.meta)?false:true">
-									<span v-if="subTotalIndicadores < parseFloat(form.meta)" >
-										Falta <strong> {{parseFloat(form.meta)-subTotalIndicadores}}</strong> para llegar a la <strong> Meta : {{form.meta}}</strong>
-									</span>
-									<span v-else>
-										Se sobrepaso <strong>{{subTotalIndicadores-parseFloat(form.meta)}}</strong> de la <strong> Meta : {{form.meta}}</strong>
-									</span>
+										<a href="#" class="small-box-footer" @click="item.edit=!item.edit" >
+											Adicionar Detalle
+										<i :class="item.edit==true?'fa fa-arrow-circle-up':'fa fa-arrow-circle-down'"></i>
+										</a>
+										<transition  name="fade">
+											<input v-if="item.edit" v-model="item.meta" v-on:keyup.enter="item.edit=false" :id='index' :name="index" v-validate="'decimal:2'" class="form-control" >
+										</transition>
+									</div>
 								</div>
-							</div> -->
+							</div>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cancelar</button>
@@ -86,7 +122,7 @@
 <script>
     import Switches from 'vue-switches';
     export default {
-		props:['url','csrf','task','programming'],
+		props:['url','csrf','task'],
         data:()=>({
 			form:{},
             title:'',
@@ -94,11 +130,22 @@
             ponderacion_temp:0,
             total_meta:0,
             total_ponderacion:0,
+            programmings:[],
+
         }),
         mounted() {
 			console.log('Componente SpecificTasks XD')
 			console.log(this.task);
 
+            this.task.programmings.forEach(programming => {
+                let item={};
+                item.programming_id = programming.pivot.id
+                item.name = programming.name
+                item.meta = programming.pivot.meta
+                item.edit = true;
+                this.programmings.push(item);
+            });
+            console.log(this.programmings);
 			$('#SpecificTaskModal').on('show.bs.modal',(event)=> {
 
                 var button = $(event.relatedTarget) // Button that triggered the modal
@@ -120,14 +167,14 @@
 				}
                 console.log(specific_task);
 
-                 axios.get(`check_meta_specific_task/${this.programming.id}`)
-                      .then(response=>{
-                        console.log(response.data);
-                        this.total_meta=response.data.meta;
-                        this.total_ponderacion=response.data.ponderacion;
-                        //console.log(this.total_meta);
+                //  axios.get(`check_meta_specific_task/${this.programming.id}`)
+                //       .then(response=>{
+                //         console.log(response.data);
+                //         this.total_meta=response.data.meta;
+                //         this.total_ponderacion=response.data.ponderacion;
+                //         //console.log(this.total_meta);
 
-                    });
+                //     });
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 

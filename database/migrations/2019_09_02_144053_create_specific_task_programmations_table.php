@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSpecificTasksTable extends Migration
+class CreateSpecificTaskProgrammationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,18 @@ class CreateSpecificTasksTable extends Migration
      */
     public function up()
     {
-        Schema::create('specific_tasks', function (Blueprint $table) {
+        Schema::create('specific_task_programmations', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('programming_id');
+            $table->foreign('programming_id')->references('id')->on('programmings');
             $table->unsignedInteger('task_id');
             $table->foreign('task_id')->references('id')->on('tasks');
-            $table->string('code')->nullable();
-            $table->string('description');
             $table->decimal('meta',14,2);
-            $table->decimal('executed',14,2)->nullable();
-            $table->decimal('efficacy',14,2)->nullable();//la
-            $table->decimal('weighing',14,2)->nullable();
+            $table->decimal('executed',14,2)->nullable();//ejecucion
+            $table->decimal('efficacy',14,2)->nullable();//porcentaje de eficiencia
+            $table->decimal('weighing',14,2)->nullable();//ponderacion
             $table->decimal('weighing_execution',14,2)->nullable();
-            $table->boolean('its_contribution')->default(true); //si contribuye a la meta
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -37,6 +35,6 @@ class CreateSpecificTasksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('specific_tasks');
+        Schema::dropIfExists('specific_task_programmations');
     }
 }

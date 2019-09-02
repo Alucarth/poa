@@ -52,7 +52,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('specific_task_show/{specific_task_id}','ExecutionController@specific_task_show')->name('specific_task_show');
     Route::get('get_programmatic_structures','ActionShortTermController@getProgrammaticStructures'); //structura programatica
     Route::get('get_programmatic_operations','OperationController@getProgrammaticOperations');//operaciones de la estructura XD
-    Route::get('specific_task/{task_id}/{programming_id}','SpecificTaskController@specific_task')->name('specific_task');
+    // Route::get('specific_task/{task_id}/{programming_id}','SpecificTaskController@specific_task')->name('specific_task');
+    Route::get('specific_task/{task_id}','SpecificTaskController@specific_task')->name('specific_task');
     Route::resource('specific_tasks','SpecificTaskController');
 
     Route::get('execution_specific_tasks','ExecutionController@specific_tasks');//vista

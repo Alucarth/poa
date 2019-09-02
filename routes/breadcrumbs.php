@@ -33,8 +33,8 @@ Breadcrumbs::for('operation_tasks', function ($trail,$operation) {
     $trail->push($operation->code, route('operation_tasks',$operation->id));
 });
 
-Breadcrumbs::for('specific_tasks', function ($trail,$task,$programming) {
+Breadcrumbs::for('specific_tasks', function ($trail,$task) {
     $trail->parent('operation_tasks',$task->operation);
-    $trail->push($task->code.' / '.$programming->name, route('specific_task',[$task->id,$programming->id]));
+    $trail->push($task->code, route('specific_task',$task->id));
 });
 
