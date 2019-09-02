@@ -27,46 +27,48 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    <div class="table-responsive-md">
 
-                    <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
-                        <thead>
-                            <tr>
-                                {{-- <th>Nº</th> --}}
-                                <th>Cod.</th>
-                                <th>Accion Mediano Plazo</th>
-                                <th>Resultado</th>
-                                <th>Meta</th>
-                                <th>Ponderacion</th>
-                                <th>Ejecutado</th>
-                                <th>Eficacia</th>
-                                <th>Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($lista as $item)
-                            <tr>
-                                {{-- <td>{{$item->id}}</td> --}}
-                                <td>{{$item->code}}</td>
-                                <td>{{$item->description}}</td>
-                                <td>{{$item->resultado_intermedio}}</td>
-                                <td>{{ number_format($item->alcance_meta , 2, ',', '.')}}</td>
-                                <td>{{$item->weighing }}</td>
-                                <td>{{$item->executed??'' }}</td>
-                                <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
-                                <td>
-                                    <a href="{{url('action_short_term_year/'.$item->years[0]->id)}}"><i class="material-icons text-warning">folder</i></a>
-                                    <a href="#" data-toggle="modal" data-target="#ActionMediumTermModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
-                                    {{-- <a href="#"> <i class="material-icons text-danger deleted" data-json='{{$item}}'>delete</i></a> --}}
-                                    <a href="#" data-toggle="modal" data-target="#deleteModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}"><i class="material-icons text-danger">delete</i></a>
-                                </td>
+                        <table id="lista" class="table table-responsive table-bordered table-hover" style="width:100%">
+                            <thead>
+                                <tr>
+                                    {{-- <th>Nº</th> --}}
+                                    <th scope="col-1">Cod.</th>
+                                    <th scope="col-5">Accion Mediano Plazo</th>
+                                    <th scope="col-1">Resultado</th>
+                                    <th scope="col-1">Meta</th>
+                                    <th scope="col-1">Ponderacion</th>
+                                    <th scope="col-1">Ejecutado</th>
+                                    <th scope="col-1">Eficacia</th>
+                                    <th scope="col-1">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($lista as $item)
+                                <tr>
+                                    {{-- <td>{{$item->id}}</td> --}}
+                                    <td>{{$item->code}}</td>
+                                    <td>{{$item->description}}</td>
+                                    <td>{{$item->resultado_intermedio}}</td>
+                                    <td>{{ number_format($item->alcance_meta , 2, ',', '.')}}</td>
+                                    <td>{{$item->weighing }}</td>
+                                    <td>{{$item->executed??'' }}</td>
+                                    <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
+                                    <td>
+                                        <a href="{{url('action_short_term_year/'.$item->years[0]->id)}}"><i class="material-icons text-warning">folder</i></a>
+                                        <a href="#" data-toggle="modal" data-target="#ActionMediumTermModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
+                                        {{-- <a href="#"> <i class="material-icons text-danger deleted" data-json='{{$item}}'>delete</i></a> --}}
+                                        <a href="#" data-toggle="modal" data-target="#deleteModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}"><i class="material-icons text-danger">delete</i></a>
+                                    </td>
 
-                            </tr>
+                                </tr>
 
-                            @endforeach
+                                @endforeach
 
-                        </tbody>
+                            </tbody>
 
-                    </table>
+                        </table>
+                    </div>
                             {{-- <div id='calendar'></div> --}}
                 </div>
             </div>
@@ -117,4 +119,5 @@
     modal.find('.modal-body span').text("Desea eliminar la acciona mediano plazo "+object.code+"?");
     modal.find('.modal-body input').val(object.id);
     })
+    @endsection
 </script>
