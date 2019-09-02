@@ -17,8 +17,8 @@ class CreateSpecificTaskProgrammationsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('programming_id');
             $table->foreign('programming_id')->references('id')->on('programmings');
-            $table->unsignedInteger('task_id');
-            $table->foreign('task_id')->references('id')->on('tasks');
+            $table->unsignedInteger('specific_task_id');
+            $table->foreign('specific_task_id')->references('id')->on('specific_tasks');
             $table->decimal('meta',14,2);
             $table->decimal('executed',14,2)->nullable();//ejecucion
             $table->decimal('efficacy',14,2)->nullable();//porcentaje de eficiencia

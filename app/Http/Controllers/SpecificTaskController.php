@@ -7,7 +7,7 @@ use App\Task;
 use App\SpecificTask;
 use Illuminate\Support\Facades\DB;
 use App\Programming;
-
+use App\SpecificTaskProgrammation;
 class SpecificTaskController extends Controller
 {
     /**
@@ -134,27 +134,27 @@ class SpecificTaskController extends Controller
         // $title = "Tareas de ".$operation->code;
     }
 
-    public function check_meta($programming_id)
+    public function check_meta($task_id)
     {
 
-        $total_meta = SpecificTask::where('programming_id',$programming_id)
+        $total_meta = SpecificTask::where('task_id',$task_id)
                                     ->select(DB::raw("sum(meta) as total_meta, sum(weighing) as total_ponderado"))
                                     ->where('its_contribution','=',true)
-                                    ->groupBy('programming_id')
+                                    ->groupBy('task_id')
                                     ->get();
-        $programming = Programming::find($programming_id);
 
-        $total_contribution = SpecificTask::where('programming_id',$programming_id)
+        $task = Task::find($task_id);
+        $total_contribution = SpecificTask::where('task_id',$task_id)
                             ->select(DB::raw("sum(meta) as total_meta, sum(weighing) as total_ponderado"))
-                            ->groupBy('programming_id')
+                            ->groupBy('task_id')
                             ->get();
 
         if(sizeof($total_meta)>0)
         {
-            $meta = $programming->meta - $total_meta[0]->total_meta;
+            $meta = $task->meta - $total_meta[0]->total_meta;
         }
         else{
-            $meta = $programming->meta;
+            $meta = $task->meta;
         }
 
         if(sizeof($total_contribution)>0)
@@ -163,6 +163,14 @@ class SpecificTaskController extends Controller
         }else{
             $ponderacion = 100;
         }
+
+        $programmings = Programmings::where('task_id',$task->id)->get();
+        foreach($programmings as $programming)
+        {
+
+
+        }
+
 
         return response()->json(compact('meta','ponderacion'));
 

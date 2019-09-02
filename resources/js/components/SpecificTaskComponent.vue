@@ -73,26 +73,27 @@
 
                             </div>
                             <div class="row">
+
 								<div class="col-md-3"  v-for="(item,index) in programmings" :key="index">
-									<div :class="item.meta.length>0?'small-box bg-primary':'small-box bg-success'" >
+									<div class="small-box bg-primary" >
 										<div class="inner" @click="item.edit=!item.edit">
                                         <div class="row">
-                                            <h4>{{item.name}}
+                                            <h5>{{item.name}}
                                                     <v-chip
                                                     class="ma-2"
-                                                    color="indigo"
+                                                    color="bg-success"
                                                     text-color="white"
                                                     small
                                                     >
                                                     <v-avatar left>
-                                                        <v-icon>flag</v-icon>
+                                                        <v-icon>fa-flag</v-icon>
                                                     </v-avatar>
-                                                    {{item.meta}}
+                                                    {{item.meta_programming}}
                                                     </v-chip>
-                                            </h4>
+                                            </h5>
                                         </div>
 
-										<span></span>
+										<span> Meta: {{item.meta}}</span>
 										</div>
 
 										<a href="#" class="small-box-footer" @click="item.edit=!item.edit" >
@@ -141,7 +142,8 @@
                 let item={};
                 item.programming_id = programming.pivot.id
                 item.name = programming.name
-                item.meta = programming.pivot.meta
+                item.meta_programming = programming.pivot.meta
+                item.meta = ""
                 item.edit = true;
                 this.programmings.push(item);
             });
@@ -167,14 +169,14 @@
 				}
                 console.log(specific_task);
 
-                //  axios.get(`check_meta_specific_task/${this.programming.id}`)
-                //       .then(response=>{
-                //         console.log(response.data);
-                //         this.total_meta=response.data.meta;
-                //         this.total_ponderacion=response.data.ponderacion;
-                //         //console.log(this.total_meta);
+                 axios.get(`check_meta_specific_task/${this.task.id}`)
+                      .then(response=>{
+                        console.log(response.data);
+                        this.total_meta=response.data.meta;
+                        this.total_ponderacion=response.data.ponderacion;
+                        //console.log(this.total_meta);
 
-                //     });
+                    });
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 

@@ -75,7 +75,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('check_meta_ast/{year_id}','ActionShortTermController@check_meta');
     Route::get('check_meta_operation/{action_short_term_id}','OperationController@check_meta');
     Route::get('check_meta_task/{operation_id}','TaskController@check_meta');
-    Route::get('check_meta_specific_task/{programming_id}','SpecificTaskController@check_meta');
+    Route::get('check_meta_specific_task/{task_id}','SpecificTaskController@check_meta');
 
 
     Route::resource('programatic_structure','ProgramaticStructureController');

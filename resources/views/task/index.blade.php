@@ -82,7 +82,7 @@
                                         <td>{{$item->executed??'' }}</td>
                                         <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
                                         <td>
-                                            <a href="{{url('specific_task/'.$item->id.'/'.$item->programmings[0]->pivot->id)}}"><i class="material-icons text-warning">folder</i></a>
+                                            <a href="{{url('specific_task/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a>
                                         <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#TaskModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
                                             <a href="#"><i class="material-icons text-danger">delete</i></a>
                                         </td>
