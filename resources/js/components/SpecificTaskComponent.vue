@@ -72,7 +72,13 @@
                                 </div>
 
                             </div>
-                            <input type="text" name="specific_programmings" :value="JSON.stringify(this.programmings)" >
+                            <input type="text" name="specific_programmings" :value="JSON.stringify(this.programmings)" hidden>
+                            <div class="row" v-if="getTotalMeta>0">
+                                <div :class="getTotalMeta> (form.meta || 0) ?'alert alert-danger col-md-12':'alert alert-primary col-md-12'" role="alert">
+                                   Meta Tarea Especifica: <strong>{{form.meta}}</strong> y
+                                   Sumatoria de las Metas: <strong>{{ getTotalMeta }}</strong>
+                                </div>
+                            </div>
                             <div class="row">
 
 								<div class="col-md-3"  v-for="(item,index) in programmings" :key="index">
@@ -102,7 +108,7 @@
 										<i :class="item.edit==true?'fa fa-arrow-circle-up':'fa fa-arrow-circle-down'"></i>
 										</a>
 										<transition  name="fade">
-											<input v-if="item.edit" v-model="item.meta" v-on:keyup.enter="item.edit=false" :id='index' :name="index" v-validate="'decimal:2'" class="form-control" >
+											<input v-if="item.edit" v-model="item.meta" v-on:keyup.enter="item.edit=false" :id='index' :name="index" v-validate="'decimal:2|max_value:'+item.meta_programming" class="form-control" >
 										</transition>
 									</div>
 								</div>
@@ -134,6 +140,7 @@
             total_meta:0,
             total_ponderacion:0,
             programmings:[],
+            specific_task_programmings:[],
 
         }),
         mounted() {
@@ -149,27 +156,57 @@
             //     item.edit = true;
             //     this.programmings.push(item);
             // });
-            console.log(this.programmings);
+            // console.log(this.programmings);
 			$('#SpecificTaskModal').on('show.bs.modal',(event)=> {
 
                 var button = $(event.relatedTarget) // Button that triggered the modal
 				var specific_task = button.data('json') // Extract info from data-* attributes
-				this.title ='Nueva Tarea Especifica ';
+                this.title ='Nueva Tarea Especifica ';
+                this.specific_task_programmings =[];
 				if(specific_task)
 				{
                     this.title='Editar '+specific_task.code;
                      axios.get(`specific_tasks/${specific_task.id}`).then(response=>{
+                         console.log(response.data);
                          this.form = response.data.specific_task;
                          this.meta_temp = parseFloat(response.data.specific_task.meta || 0);
                          this.ponderacion_temp = parseFloat(response.data.specific_task.weighing || 0);
+                         this.specific_task_programmings = response.data.specific_task_programmation;
+                         this.MetaCheck()
                      });
 
 				}else{
                     this.form ={};
                     this.meta_temp = 0;
                     this.ponderacion_temp = 0;
+                    this.MetaCheck()
 				}
-                console.log(specific_task);
+                // console.log(specific_task);
+
+				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+			})
+		},
+		methods:{
+			validateBeforeSubmit() {
+				this.$validator.validateAll().then((result) => {
+					if (result) {
+                    if(this.getTotalMeta > this.form.meta)
+                    {
+                        toastr.error('La sumatoria de las metas de cada mes no puede ser superior a la meta de la tarea')
+                    }else{
+
+                        let form = document.getElementById("formSpecificTask");
+
+                            form.submit();
+                            return;
+                        }
+                    }
+					toastr.error('Debe completar la informacion correctamente')
+				});
+            },
+            MetaCheck(){
 
                  axios.get(`check_meta_specific_task/${this.task.id}`)
                       .then(response=>{
@@ -185,29 +222,26 @@
                             item.meta_programming = programming.meta
                             item.meta = ""
                             item.edit = true;
+
+                            if(this.specific_task_programmings.length > 0)
+                            {
+                              let item_finded = _.find(this.specific_task_programmings, (o) => { return o.programming.month_id == programming.month_id; });
+                               console.log(item_finded)
+                               if(item_finded)
+                               {
+                                   item.id = item_finded.id;
+                                   item.meta_programming += parseFloat (item_finded.meta);
+                                   item.meta = parseFloat(item_finded.meta);
+                               }
+                            }
+
                             this.programmings.push(item);
                         });
                         // this.programmings = response.data.specific_programmings;
                         //console.log(this.total_meta);
 
                     });
-				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-
-			})
-		},
-		methods:{
-			validateBeforeSubmit() {
-				this.$validator.validateAll().then((result) => {
-					if (result) {
-					let form = document.getElementById("formSpecificTask");
-
-						form.submit();
-						return;
-					}
-					toastr.error('Debe completar la informacion correctamente')
-				});
-            },
+            }
 
 		},
 		computed:{

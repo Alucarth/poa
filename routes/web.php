@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Route::get('specific_task/{task_id}/{programming_id}','SpecificTaskController@specific_task')->name('specific_task');
     Route::get('specific_task/{task_id}','SpecificTaskController@specific_task')->name('specific_task');
     Route::resource('specific_tasks','SpecificTaskController');
+    Route::post('specific_tasks/delete','SpecificTaskController@delete');
 
     Route::get('execution_specific_tasks','ExecutionController@specific_tasks');//vista
 

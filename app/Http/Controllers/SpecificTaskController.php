@@ -70,14 +70,20 @@ class SpecificTaskController extends Controller
         }
 
         $specific_programmings = json_decode($request->specific_programmings);
-        // return $specific_programmings;
+        return $specific_programmings;
 
         foreach($specific_programmings  as $specific_programming)
         {
             // return json_encode($specific_programming);
             if($specific_programming->meta > 0)
             {
-                $sp_programming = new SpecificTaskProgrammation;
+                if(isset($specific_programming->id))
+                {
+                    $sp_programming = SpecificTaskProgrammation::find($specific_programming->id);
+                }else
+                {
+                    $sp_programming = new SpecificTaskProgrammation;
+                }
                 $sp_programming->programming_id = $specific_programming->programming_id;
                 $sp_programming->specific_task_id = $specific_task->id;
                 $sp_programming->meta = $specific_programming->meta;
@@ -101,7 +107,9 @@ class SpecificTaskController extends Controller
     {
         //
         $specific_task = SpecificTask::find($id);
-        return response()->json(compact('specific_task'));
+        $specific_task_programmation = SpecificTaskProgrammation::with('programming')->where('specific_task_id',$specific_task->id)->get();
+        // $specific_task->$specific_task_programmation = $specific_task_programmation ;
+        return response()->json(compact('specific_task','specific_task_programmation'));
     }
 
     /**
@@ -138,6 +146,18 @@ class SpecificTaskController extends Controller
         //
 
 
+    }
+    public function delete(Request $request)
+    {
+        $specific_task = SpecificTask::find($request->id);
+        $specific_task_programmations = SpecificTaskProgrammation::where('specific_task_id',$specific_task->id)->get();
+        foreach($specific_task_programmations as $specific_task_programmation)
+        {
+            $specific_task_programmation->delete();
+        }
+        session()->flash('message',' Se elimino el registro '.$specific_task->code);
+        $specific_task->delete();
+        return back()->withInput();
     }
 
     public function specific_task($task_id)
