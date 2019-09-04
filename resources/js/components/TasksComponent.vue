@@ -243,7 +243,8 @@
             },
             getPonderacion(){
                 return parseFloat(this.total_ponderacion)+ parseFloat(this.ponderacion_temp);
-            }
+            },
+
         },
         components: {
             Switches

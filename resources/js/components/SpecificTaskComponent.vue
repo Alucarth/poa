@@ -192,9 +192,9 @@
 			validateBeforeSubmit() {
 				this.$validator.validateAll().then((result) => {
 					if (result) {
-                    if(this.getTotalMeta > this.form.meta)
+                    if(this.getTotalMeta != this.form.meta)
                     {
-                        toastr.error('La sumatoria de las metas de cada mes no puede ser superior a la meta de la tarea')
+                        toastr.error('La sumatoria de las metas dede ser iguala a la meta de la tarea especifica')
                     }else{
 
                         let form = document.getElementById("formSpecificTask");

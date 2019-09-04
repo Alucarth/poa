@@ -71,15 +71,23 @@ class OperationController extends Controller
         }
         $operation->programmatic_operations()->sync($ids);
 
+        $programaciones = json_decode($request->programacion);
+
+        $programmings=[];
+        foreach($programaciones as $programacion)
+        {
+            $programmings+=array(''.$programacion->id => ['meta' => $programacion->meta]);
+        }
+        $operation->operation_programmings()->sync($programmings);
 
          //actualizacion de numeracion
-         $operations= Operation::where('id','>',$operation->id)->orderBy('id')->get();
-         $num = $operation->code ;
-         foreach($operations as  $operation){
+        $operations= Operation::where('id','>',$operation->id)->orderBy('id')->get();
+        $num = $operation->code ;
+        foreach($operations as  $operation){
              $num++;
              $operation->code = $num;
              $operation->save();
-         }
+        }
 
 
         // return $operation;
@@ -101,7 +109,7 @@ class OperationController extends Controller
     public function show($id)
     {
         //
-        $operation = Operation::with('programmatic_operations')->find($id);
+        $operation = Operation::with('programmatic_operations','operation_programmings')->find($id);
         return response()->json(compact('operation'));
     }
 
@@ -152,7 +160,8 @@ class OperationController extends Controller
         $action_short_term= ActionShortTerm::find($action_short_term_id);
         // return $action_short_term->operations;
         $title = 'Operaciones '. $action_short_term->code;
-        return view('operation.index',compact('action_short_term','title'));
+        $meses = Month::all();
+        return view('operation.index',compact('action_short_term','title','meses'));
     }
 
     public function getProgrammaticOperations()

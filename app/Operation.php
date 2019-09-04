@@ -8,6 +8,13 @@ class Operation extends Model
 {
     //
     use SoftDeletes;
+
+    public function operation_programmings()
+    {
+        // return $this->hasMany('App\Programming','task_id');
+        return $this->belongsToMany('App\Month','operation_programmings','operation_id','month_id')
+                    ->withPivot('id','meta','executed','efficacy');
+    }
     public function tasks()
     {
         return $this->hasMany('App\Task','operation_id');
