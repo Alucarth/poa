@@ -13,7 +13,7 @@ class CreateOperationProgrammationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('operation_programmations', function (Blueprint $table) {
+        Schema::create('operation_programmations', function (Blueprint $table) {  //esto es de la estructura programatica
             $table->increments('id');
             $table->unsignedBigInteger('programmatic_operation_id');//programacion corto plazo
             $table->foreign('programmatic_operation_id')->references('id')->on('programmatic_operations');
