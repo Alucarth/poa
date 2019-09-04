@@ -8,6 +8,7 @@ use App\SpecificTask;
 use Illuminate\Support\Facades\DB;
 use App\Programming;
 use App\SpecificTaskProgrammation;
+use Log;
 class SpecificTaskController extends Controller
 {
     /**
@@ -70,24 +71,37 @@ class SpecificTaskController extends Controller
         }
 
         $specific_programmings = json_decode($request->specific_programmings);
-        return $specific_programmings;
+        // return $specific_programmings;
 
         foreach($specific_programmings  as $specific_programming)
         {
             // return json_encode($specific_programming);
             if($specific_programming->meta > 0)
             {
+
                 if(isset($specific_programming->id))
                 {
+                    Log::info("id specific_programming = ".$specific_programming->id);
                     $sp_programming = SpecificTaskProgrammation::find($specific_programming->id);
+                    Log::info($sp_programming);
                 }else
                 {
                     $sp_programming = new SpecificTaskProgrammation;
+                    Log::info('creando una nueva tarea especifica');
                 }
                 $sp_programming->programming_id = $specific_programming->programming_id;
                 $sp_programming->specific_task_id = $specific_task->id;
                 $sp_programming->meta = $specific_programming->meta;
                 $sp_programming->save();
+            }else
+            {
+                if(isset($specific_programming->id))
+                {
+                    Log::info(" borrando id specific_programming = ".$specific_programming->id);
+                    $sp_programming = SpecificTaskProgrammation::find($specific_programming->id);
+                    $sp_programming->delete();
+                    Log::info("se elimino registro");
+                }
             }
 
             // return $sp_programming;
@@ -180,6 +194,7 @@ class SpecificTaskController extends Controller
                                     ->where('its_contribution','=',true)
                                     ->groupBy('task_id')
                                     ->get();
+        // return $total_meta;
 
         $task = Task::find($task_id);
         $total_contribution = SpecificTask::where('task_id',$task_id)

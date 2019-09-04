@@ -247,7 +247,14 @@
 		computed:{
 
             getMeta(){
-                return parseFloat(this.total_meta)+ parseFloat(this.meta_temp);
+                let meta =0;
+                if(this.form.its_contribution)
+                {
+                    meta = parseFloat(this.total_meta)+ parseFloat(this.meta_temp);
+                }else{
+                    meta = parseFloat(this.total_meta);
+                }
+                return meta;
             },
             getPonderacion(){
                 return parseFloat(this.total_ponderacion)+ parseFloat(this.ponderacion_temp);
