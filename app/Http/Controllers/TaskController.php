@@ -7,6 +7,7 @@ use App\Operation;
 use App\Task;
 use App\Month;
 use App\Programming;
+use App\OperationProgramming;
 use Illuminate\Support\Facades\DB;
 class TaskController extends Controller
 {
@@ -138,12 +139,13 @@ class TaskController extends Controller
 
     public function operation_tasks($operation_id)
     {
-        $operation = Operation::find($operation_id);
+        $operation = Operation::with('operation_programmings')->find($operation_id);
         $title = "Tareas de ".$operation->code;
         $meses = Month::all();
         return view('task.index',compact('operation','title','meses'));
     }
     public function check_meta($operation_id){
+
 
         $total_meta = Task::where('operation_id',$operation_id)
                                     ->select(DB::raw("sum(meta) as total_meta"))
@@ -155,11 +157,7 @@ class TaskController extends Controller
                                 ->select(DB::raw("sum(weighing) as total_ponderado"))
                                 ->groupBy('operation_id')
                                 ->get();
-        // $total_contribution = Operation::where('action_short_term_id',$action_short_term_id)
-        //                             // ->where('its_contribution','=',true)
-        //                             ->select(DB::raw("sum(weighing) as total_ponderado"))
-        //                             ->groupBy('action_short_term_id')
-        //                             ->get();
+
         $operation = Operation::find($operation_id);
         if(sizeof($total_meta)>0)
         {
@@ -175,6 +173,27 @@ class TaskController extends Controller
         }else{
             $ponderacion = 100;
         }
+        $programmings = OperationProgramming::where('operation_id',$operation->id)->get();
+
+        // $programmings = Programming::with('month')->where('task_id',$task->id)->get();
+        // $specific_programmings= [];
+        $operation_programmings=[];
+        // foreach($programmings as $programming)
+        // {
+        //     // $specific_task_programmations = SpecificTaskProgrammation::with('programming')
+        //     //                                                         ->where('programming_id',$programming->id)
+        //     //                                                         ->get();
+        //     $operation_programmations = Programming::where('')->get();
+        //     $sum_meta = 0;
+
+        //     foreach($specific_task_programmations as $specific_task_programmation )
+        //     {
+        //         $sum_meta+= $specific_task_programmation->meta;
+        //         // array_push();
+        //     }
+        //     $programming->meta -= $sum_meta;
+        //     array_push($specific_programmings,$programming);
+        // }
 
         return response()->json(compact('meta','ponderacion'));
 

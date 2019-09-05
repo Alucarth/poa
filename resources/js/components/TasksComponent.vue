@@ -14,56 +14,72 @@
                             </button>
                         </div>
                         <div class="modal-body">
-							<input type="text" name="operation_id" v-model="operation.id" hidden>
-							<legend>Operacion</legend>
-							<div class="row">
-								<v-chip color="bg-success" text-color="white">
-                                    <v-avatar class="green darken-3">
-                                        <v-icon >fa-flag</v-icon>
-                                    </v-avatar>
-                                        Meta: {{getMeta}}
-                                </v-chip>
-                                <v-chip color="bg-info" text-color="white">
-                                    <v-avatar class="cyan darken-3">
-                                        <v-icon >fa-percentage</v-icon>
-                                    </v-avatar>
-                                        Ponderacion Disponible: {{getPonderacion}}
-                                </v-chip>
-							</div>
-                            <div class="form-group col-md-3">
-                                <label for="description">Contribuye a la Meta :   {{form.its_contribution?'Si':'No'}}</label>
-                                <switches v-model="form.its_contribution"  theme="bootstrap" color="primary"></switches>
-                                <input type="text" name="its_contribution" :value="form.its_contribution" hidden>
-                            </div>
-							<legend>Tarea</legend>
                             <div class="row">
-								<input type="text" name="task_id" v-model="form.id" hidden>
-                                 <div class="col-md-3">
-                                    <label for="code">Numeración</label>
-                                    <input type="text" id="code" name="code" v-model="form.code" class="form-control" placeholder="Codigo" v-validate="'required|decimal'" />
-                                    <div class="invalid-feedback">{{ errors.first("code") }}</div>
+                                <div class="col-md-7">
+                                    <legend>Tarea</legend>
+                                    <div class="row">
+                                        <input type="text" name="task_id" v-model="form.id" hidden>
+                                        <div class="col-md-4">
+                                            <label for="code">Numeración</label>
+                                            <input type="text" id="code" name="code" v-model="form.code" class="form-control" placeholder="Codigo" v-validate="'required|decimal'" />
+                                            <div class="invalid-feedback">{{ errors.first("code") }}</div>
+                                        </div>
+
+                                        <div class="form-group col-md-4" v-if="!form.its_contribution">
+                                            <label for="meta">Meta</label>
+                                            <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
+                                            <div class="invalid-feedback">{{ errors.first("meta") }}</div>
+                                        </div>
+                                        <div class="form-group col-md-4" v-else>
+                                            <label for="meta">Meta</label>
+                                            <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
+                                            <div class="invalid-feedback">{{ errors.first("meta") }}</div>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="weighing">Ponderacion (%) </label>
+                                            <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'decimal:2|max_value:'+getPonderacion" />
+                                            <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="description">Descripcion</label>
+                                            <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
+                                            <div class="invalid-feedback">{{ errors.first("description") }}</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-9">
-                                    <label for="description">Descripcion</label>
-                                    <input type="text" id="description" name="description" v-model="form.description" class="form-control" placeholder="Descripcion" v-validate="'required'" />
-                                    <div class="invalid-feedback">{{ errors.first("description") }}</div>
+                                <div class="col-md-5">
+
+                                    <input type="text" name="operation_id" v-model="operation.id" hidden>
+                                     <div class="card" >
+                                        <div class="card-body">
+
+                                        <legend>Operacion</legend>
+                                        <div class="row">
+                                            <v-chip color="bg-success" text-color="white">
+                                                <v-avatar class="green darken-3">
+                                                    <v-icon >fa-flag</v-icon>
+                                                </v-avatar>
+                                                    Meta: {{getMeta}}
+                                            </v-chip>
+                                            <v-chip color="bg-info" text-color="white">
+                                                <v-avatar class="cyan darken-3">
+                                                    <v-icon >fa-percentage</v-icon>
+                                                </v-avatar>
+                                                    Ponderacion: {{getPonderacion}}
+                                            </v-chip>
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            <label for="description">Contribuye a la Meta :   {{form.its_contribution?'Si':'No'}}</label>
+                                            <switches v-model="form.its_contribution"  theme="bootstrap" color="primary"></switches>
+                                            <input type="text" name="its_contribution" :value="form.its_contribution" hidden>
+                                        </div>
+                                        </div>
+                                    </div>
                                 </div>
-								<div class="form-group col-md-3" v-if="!form.its_contribution">
-                                    <label for="meta">Meta</label>
-                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
-                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div>
-                                </div>
-								<div class="form-group col-md-3" v-else>
-                                    <label for="meta">Meta</label>
-                                    <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
-                                    <div class="invalid-feedback">{{ errors.first("meta") }}</div>
-                                </div>
-								<div class="form-group col-md-4">
-                                    <label for="weighing">Ponderacion (%) </label>
-                                    <input type="text" id="weighing" name="weighing" v-model="form.weighing" class="form-control" placeholder="ponderacion" v-validate="'decimal:2|max_value:'+getPonderacion" />
-                                    <div class="invalid-feedback">{{ errors.first("weighing") }}</div>
-                                </div>
+
                             </div>
+
+
 							<legend>Programacion</legend>
 							<input type="text" name="programacion" :value="JSON.stringify(getPrograming)" class="form-control" hidden>
 							<div class="row">
@@ -121,6 +137,7 @@
             ponderacion_temp:0,
             total_meta:0,
             total_ponderacion:0,
+            programmings:[],
         }),
         mounted() {
 
