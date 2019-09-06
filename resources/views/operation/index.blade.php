@@ -114,24 +114,24 @@
      <!-- Modal -->
      {!! Form::open(['action' => 'OperationController@delete'] )!!}
      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-         <div class="modal-dialog" role="document">
-             <div class="modal-content">
-                 <div class="modal-header bg-danger">
-                     <h5 class="modal-title" id="deleteModalLabel">Eliminar la Operacion</h5>
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                         <span aria-hidden="true">&times;</span>
-                     </button>
-                 </div>
-                 <div class="modal-body">
-                     <span></span>
-                     <input type="text" name="id">
-                 </div>
-                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                     <button type="submit" class="btn btn-success">Si </button>
-                 </div>
-             </div>
-         </div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title" id="deleteModalLabel">Eliminar la Operacion</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span></span>
+                    <input type="text" name="id">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-success">Si </button>
+                </div>
+            </div>
+        </div>
      </div>
      {!! Form::close()!!}
 @endsection
@@ -144,9 +144,9 @@
         // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
         var modal = $(this)
-        modal.find('.modal-title').text('Eliminar ' + object.code)
-        modal.find('.modal-body span').text("Desea eliminar la operacion "+object.code+"?");
-        modal.find('.modal-body input').val(object.id);
+            modal.find('.modal-title').text('Eliminar ' + object.code)
+            modal.find('.modal-body span').text("Desea eliminar la operacion "+object.code+"?");
+            modal.find('.modal-body input').val(object.id);
         })
     @endsection
 </script>

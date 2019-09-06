@@ -51,7 +51,7 @@ class TaskController extends Controller
             // $programming->meta = $programacion->meta;
             // $programming->save();
 
-            $programmings+=array(''.$programacion->id => ['meta' => $programacion->meta]);
+            $programmings+=array(''.$programacion->id => ['meta' => $programacion->meta,'operation_programming_id'=>$programacion->operation_programming_id]);
 
         }
         // dd($programmings);
@@ -72,6 +72,8 @@ class TaskController extends Controller
             $task->its_contribution = false;
         }
         $task->save();
+
+        // return $task;
         // $task->code = 'T-'.$task->id;
         // $task->save();
         $task->programmings()->sync($programmings);
@@ -126,6 +128,21 @@ class TaskController extends Controller
         //
     }
 
+    public function delete(Request $request)
+    {
+        try {
+            $task = Task::find($request->id);
+            $code= $task->code;
+            $task->delete();
+            session()->flash('message','Se elimino el registro '.$task->code);
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            session()->flash('error','no se pudo eliminar debido a que tiene tareas especificas.');
+        }
+
+        return back()->withInput();
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -173,29 +190,22 @@ class TaskController extends Controller
         }else{
             $ponderacion = 100;
         }
-        $programmings = OperationProgramming::where('operation_id',$operation->id)->get();
+        $programmings = OperationProgramming::with('month')->where('operation_id',$operation->id)->get();
 
-        // $programmings = Programming::with('month')->where('task_id',$task->id)->get();
-        // $specific_programmings= [];
-        $operation_programmings=[];
-        // foreach($programmings as $programming)
-        // {
-        //     // $specific_task_programmations = SpecificTaskProgrammation::with('programming')
-        //     //                                                         ->where('programming_id',$programming->id)
-        //     //                                                         ->get();
-        //     $operation_programmations = Programming::where('')->get();
-        //     $sum_meta = 0;
+        $task_programmings=[];
+        foreach($programmings as $programming){
 
-        //     foreach($specific_task_programmations as $specific_task_programmation )
-        //     {
-        //         $sum_meta+= $specific_task_programmation->meta;
-        //         // array_push();
-        //     }
-        //     $programming->meta -= $sum_meta;
-        //     array_push($specific_programmings,$programming);
-        // }
+            $task_programations = Programming::where('operation_programming_id',$programming->id)->get();
+            $sum_meta = 0;
+            foreach($task_programations  as $task_programation)
+            {
+                $sum_meta += $task_programation->meta;
+            }
+            $programming->meta -= $sum_meta;
+            array_push($task_programmings,$programming);
+        }
 
-        return response()->json(compact('meta','ponderacion'));
+        return response()->json(compact('meta','ponderacion','task_programmings'));
 
     }
 }

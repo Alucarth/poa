@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get ('operation_tasks/{operation_id}','TaskController@operation_tasks')->name('operation_tasks');
     Route::post('operation/delete','OperationController@delete');
     Route::resource('tasks','TaskController');
+    Route::post('task/delete','TaskController@delete');
 
     Route::get('execution_year/{year_month}','ExecutionController@execution_year')->name('exection_year'); //para tareas
     Route::get('execution_specific_task/{year_month}','ExecutionController@execution_specific_task')->name('execution_specific_task'); //para tareas especificas

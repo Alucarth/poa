@@ -58,14 +58,14 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive-md">
+                        <div class="table-responsive-md col-md-12">
 
                             <table id="task_list" class="table table-responsive table-bordered table-hover" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th scope="col-1">Cod.</th>
                                         <th scope="col-6">Tareas</th>
-                                        <th scope="col-2">Meta</th>
+                                        <th scope="col-1">Meta</th>
                                         <th scope="col-1">Ponderacion</th>
                                         <th scope="col-1">Ejecutado</th>
                                         <th scope="col-1">Eficacia</th>
@@ -83,8 +83,8 @@
                                         <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
                                         <td>
                                             <a href="{{url('specific_task/'.$item->id)}}"><i class="material-icons text-warning">folder</i></a>
-                                        <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#TaskModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
-                                            <a href="#"><i class="material-icons text-danger">delete</i></a>
+                                            <a href="#"><i class="material-icons text-primary" data-toggle="modal" data-target="#TaskModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}" data-programmings='{{$item->programmings}}'>edit</i></a>
+                                            <a href="#" data-toggle="modal" data-target="#deleteModal" data-json="{{$item}}"><i class="material-icons text-danger">delete</i></a>
                                         </td>
 
                                     </tr>
@@ -103,7 +103,29 @@
         <tasks-component url='{{url('tasks')}}' csrf='{!! csrf_field('POST') !!}' :optask="{{$operation}}" :meses="{{$meses}}" ></operations-component>
     </div>
 	{{-- aqui los modals --}}
-
+    <!-- Modal -->
+    {!! Form::open(['action' => 'TaskController@delete'] )!!}
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+       <div class="modal-dialog" role="document">
+           <div class="modal-content">
+               <div class="modal-header bg-danger">
+                   <h5 class="modal-title" id="deleteModalLabel">Eliminar la Tarea</h5>
+                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                   </button>
+               </div>
+               <div class="modal-body">
+                   <span></span>
+                   <input type="text" name="id">
+               </div>
+               <div class="modal-footer">
+                   <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                   <button type="submit" class="btn btn-success">Si </button>
+               </div>
+           </div>
+       </div>
+    </div>
+    {!! Form::close()!!}
 
 @endsection
 <script>
@@ -136,6 +158,18 @@
             ],
             language: spanish_lang
 
-        });
+    });
+
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var object = button.data('json');  // Extract info from data-* attributes
+        console.log(object);
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+            modal.find('.modal-title').text('Eliminar ' + object.code)
+            modal.find('.modal-body span').text("Desea eliminar la operacion "+object.code+"?");
+            modal.find('.modal-body input').val(object.id);
+    })
 @endsection
 </script>

@@ -79,16 +79,35 @@
 
                             </div>
 
-
+                            <div class="row" v-if="getTotalMeta>0">
+                                <div :class="getTotalMeta> (form.meta || 0) ?'alert alert-danger col-md-12':'alert alert-primary col-md-12'" role="alert">
+                                   Meta Tarea Especifica: <strong>{{form.meta}}</strong> y
+                                   Sumatoria de las Metas: <strong>{{ getTotalMeta }}</strong>
+                                </div>
+                            </div>
 							<legend>Programacion</legend>
 							<input type="text" name="programacion" :value="JSON.stringify(getPrograming)" class="form-control" hidden>
 							<div class="row">
 								<div class="col-md-3"  v-for="(item,index) in months" :key="index">
-									<div :class="item.meta.length>0?'small-box bg-primary':'small-box bg-success'" >
+									<div class="small-box bg-primary" >
 										<div class="inner" @click="item.edit=!item.edit">
-										<h4>{{item.name}}<sup style="font-size: 15px"></sup></h4>
+                                        <div class="row">
+                                            <h5>{{item.name}}
+                                                    <v-chip
+                                                    class="ma-2"
+                                                    color="bg-success"
+                                                    text-color="white"
+                                                    small
+                                                    >
+                                                    <v-avatar left>
+                                                        <v-icon>fa-flag</v-icon>
+                                                    </v-avatar>
+                                                    {{item.meta_programming}}
+                                                    </v-chip>
+                                            </h5>
+                                        </div>
 
-										<span>{{item.meta}}</span>
+										<span> Meta: {{item.meta}}</span>
 										</div>
 
 										<a href="#" class="small-box-footer" @click="item.edit=!item.edit" >
@@ -96,7 +115,7 @@
 										<i :class="item.edit==true?'fa fa-arrow-circle-up':'fa fa-arrow-circle-down'"></i>
 										</a>
 										<transition  name="fade">
-											<input v-if="item.edit" v-model="item.meta" v-on:keyup.enter="item.edit=false" :id='index' :name="index" v-validate="'decimal:2'" class="form-control" >
+											<input v-if="item.edit" v-model="item.meta" v-on:keyup.enter="item.edit=false" :id='index' :name="index" v-validate="'decimal:2|max_value:'+item.meta_programming" class="form-control" >
 										</transition>
 									</div>
 								</div>
@@ -142,16 +161,19 @@
         mounted() {
 
 			console.log(this.meses);
-			this.meses.forEach(month => {
-				month.edit =false;
-				month.meta ='';
-			});
+			// this.meses.forEach(month => {
+			// 	month.edit =false;
+			// 	month.meta ='';
+			// });
 			console.log('Componente Tasks XD')
-			// this.operation = JSON.parse(this.optask);
+            // this.operation = JSON.parse(this.optask);
 			this.operation = this.optask;
+            // this.operation.operation_programmings.forEach(item => {
+            //     let programming = {id:item.pivot.id,name:item.name ,meta: }
+            // });
 
 			console.log(this.operation);
-			this.months = this.meses;//asignacion de este siempre tiene que ser declarado en el data por la reactividad XD
+			// this.months = this.meses;//asignacion de este siempre tiene que ser declarado en el data por la reactividad XD
 			// console.log(this.gestion
 
 			$('#TaskModal').on('show.bs.modal',(event)=> {
@@ -160,55 +182,59 @@
 				let programmings = button.data('programmings');
                 this.title ='Nueva Tarea ';
                 // console.log(object);
-				if(object)
-				{
-                    this.title='Editar Tarea '+object.code;
-                    axios.get(`tasks/${object.id}`).then(response=>{
-                            this.form = response.data.task;
-                            // console.log(programmings);
-                            console.log("imprimiendo la tarea");
-                            console.log( response.data);
-                            this.meta_temp = parseFloat(this.form.meta || 0);
-                            this.ponderacion_temp = parseFloat(this.form.weighing || 0);
-                            // console.log(this.meta_temp);
-                            // console.log(this.ponderacion_temp);
-                            // console.log(programmings);
-                            // programmings = this.form.programmings;
-                            this.months.forEach((month) => {
-                                // console.log(tarea);
-                                let month_id=month.id;
-                                let mes_tarea = this.form.programmings.find((mes)=>{return mes.id == month_id });
-                                // console.log(mes_tarea)
-                                if(mes_tarea){
-                                    month.meta =mes_tarea.pivot.meta;
-                                }else{
-                                    month.meta='';
-                                }
-                            });
-                    });
-					// this.form.description = object.description;
-					// this.form.meta = object.meta;
-					// this.form.id = object.id;
-				}else{
-					// this.months=this.meses
-                    this.form = {};
-                    this.meta_temp = 0;
-                    this.ponderacion_temp = 0;
-					this.months.forEach((month) => {
-							month.meta='';
-					});
-				}
-                // console.log(object);
 
-                 axios.get(`check_meta_task/${this.operation.id}`)
-                      .then((response)=>{
+                axios.get(`check_meta_task/${this.operation.id}`)
+                        .then((response)=>{
                         console.log("check_meta_task");
                         console.log(response.data);
                         this.total_meta=response.data.meta;
                         this.total_ponderacion=response.data.ponderacion;
-                        //console.log(this.total_meta);
+                        this.months= [];
+                        response.data.task_programmings.forEach((item) => {
+                            let month = {id:item.month.id,operation_programming_id:item.id, name: item.month.name,meta_programming:item.meta,edit:true,meta:""};
+                            this.months.push(month);
+                        });
 
-                    });
+
+                        if(object)
+                        {
+                            this.title='Editar Tarea '+object.code;
+                            axios.get(`tasks/${object.id}`).then(response=>{
+                                    this.form = response.data.task;
+                                    // console.log(programmings);
+                                    console.log("imprimiendo la tarea");
+                                    console.log( response.data);
+                                    this.meta_temp = parseFloat(this.form.meta || 0);
+                                    this.ponderacion_temp = parseFloat(this.form.weighing || 0);
+
+                                    this.months.forEach((month) => {
+                                        // console.log(tarea);
+                                        let month_id=month.id;
+                                        let mes_tarea = this.form.programmings.find((mes)=>{return mes.id == month_id });
+                                        // console.log(mes_tarea)
+                                        if(mes_tarea){
+                                            month.meta =mes_tarea.pivot.meta;
+                                        }else{
+                                            month.meta='';
+                                        }
+                                    });
+                            });
+                            // this.form.description = object.description;
+                            // this.form.meta = object.meta;
+                            // this.form.id = object.id;
+                        }else{
+                            // this.months=this.meses
+                            this.form = {};
+                            this.meta_temp = 0;
+                            this.ponderacion_temp = 0;
+                            this.months.forEach((month) => {
+                                    month.meta='';
+                            });
+                        }
+                });
+                // console.log(object);
+
+
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
@@ -261,6 +287,14 @@
             getPonderacion(){
                 return parseFloat(this.total_ponderacion)+ parseFloat(this.ponderacion_temp);
             },
+            getTotalMeta(){
+                let meta =0;
+                this.months.forEach(item => {
+                    meta += parseFloat(item.meta || 0)
+                });
+                // console.log(meta);
+                return meta;
+            }
 
         },
         components: {
