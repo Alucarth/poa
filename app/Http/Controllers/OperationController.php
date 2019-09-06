@@ -149,9 +149,16 @@ class OperationController extends Controller
 
     public function delete(Request $request)
     {
-        $operation = Operation::find($request->id);
-        session()->flash('message',' Se elimino el registro '.$operation->code);
-        $operation->delete();
+        try {
+            //code...
+            $operation = Operation::find($request->id);
+            $code = $operation->code;
+            $operation->delete();
+            session()->flash('message',' Se elimino el registro '.$code);
+        } catch (\Throwable $th) {
+            //throw $th;
+            session()->flash('error',' No se pudo eliminar la operaciones debido a que esta cuenta con tareas. ');
+        }
         return back()->withInput();
     }
 
