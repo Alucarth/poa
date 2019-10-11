@@ -8,6 +8,7 @@ use App\SpecificTask;
 use Illuminate\Support\Facades\DB;
 use App\Programming;
 use App\SpecificTaskProgrammation;
+use App\Month;
 use Log;
 class SpecificTaskController extends Controller
 {
@@ -179,9 +180,9 @@ class SpecificTaskController extends Controller
 
         $task = Task::with('programmings')->find($task_id);
         $specific_tasks = SpecificTask::where('task_id',$task->id)->get();
-
+        $meses = Month::all();
         $title ='Tareas Especificas ';
-        return view('specific_task.index',compact('task','specific_tasks','title'));
+        return view('specific_task.index',compact('task','specific_tasks','title','meses'));
 
     }
 

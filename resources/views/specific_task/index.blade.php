@@ -108,7 +108,7 @@
     </div>
 	{{-- aqui los modals --}}
 
-    <specific-task-component url='{{url('specific_tasks')}}' csrf='{!! csrf_field('POST') !!}' :task="{{$task}}"></specific-task-component>
+    <specific-task-component url='{{url('specific_tasks')}}' csrf='{!! csrf_field('POST') !!}' :task="{{$task}}" :months="{{$meses}}" ></specific-task-component>
     {{-- <indicadores-component url='{{url('action_short_term')}}' csrf='{!! csrf_field('POST') !!}' year="{{$year}}"  ></indicadores-component> --}}
     {!! Form::open(['action' => 'SpecificTaskController@delete'] )!!}
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">

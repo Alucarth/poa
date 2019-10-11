@@ -74,7 +74,7 @@
                             </div>
                             <input type="text" name="specific_programmings" :value="JSON.stringify(this.programmings)" hidden>
                             <div class="row" v-if="getTotalMeta>0">
-                                <div :class="getTotalMeta> (form.meta || 0) ?'alert alert-danger col-md-12':'alert alert-primary col-md-12'" role="alert">
+                                <div :class="getTotalMeta > (form.meta || 0) ?'alert alert-danger col-md-12':'alert alert-primary col-md-12'" role="alert">
                                    Meta Tarea Especifica: <strong>{{form.meta}}</strong> y
                                    Sumatoria de las Metas: <strong>{{ getTotalMeta }}</strong>
                                 </div>
@@ -131,7 +131,7 @@
 <script>
     import Switches from 'vue-switches';
     export default {
-		props:['url','csrf','task'],
+		props:['url','csrf','task','months'],
         data:()=>({
 			form:{},
             title:'',
@@ -145,7 +145,8 @@
         }),
         mounted() {
 			console.log('Componente SpecificTasks XD')
-			console.log(this.task);
+            console.log(this.task);
+            console.log(this.months);
 
             // this.task.programmings.forEach(programming => {
             //     let item={};
