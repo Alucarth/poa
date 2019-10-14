@@ -79,7 +79,7 @@
                                    Sumatoria de las Metas: <strong>{{ getTotalMeta }}</strong>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" v-if="form.its_contribution" >
 
 								<div class="col-md-3"  v-for="(item,index) in programmings" :key="index">
 									<div class="small-box bg-primary" >
@@ -113,6 +113,29 @@
 									</div>
 								</div>
 							</div>
+                            <div class="row" v-else>
+                                <div class="col-md-3"  v-for="(item,index) in all_programmings" :key="index">
+									<div class="small-box bg-primary" >
+										<div class="inner" @click="item.edit=!item.edit">
+                                        <div class="row">
+                                            <h5>{{item.name}}
+                                            </h5>
+                                        </div>
+
+										<span> Meta: {{item.meta}}</span>
+										</div>
+
+										<a href="#" class="small-box-footer" @click="item.edit=!item.edit" >
+											Adicionar Detalle
+										<i :class="item.edit==true?'fa fa-arrow-circle-up':'fa fa-arrow-circle-down'"></i>
+										</a>
+										<transition  name="fade">
+											<input v-if="item.edit" v-model="item.meta" v-on:keyup.enter="item.edit=false" :id='index' :name="index" v-validate="'decimal:2|max_value:'+item.meta_programming" class="form-control" >
+										</transition>
+									</div>
+								</div>
+                            </div>
+
 
                         </div>
                         <div class="modal-footer">
@@ -141,6 +164,8 @@
             total_ponderacion:0,
             programmings:[],
             specific_task_programmings:[],
+            meses:[],
+            all_programmings:[]
 
         }),
         mounted() {
@@ -148,6 +173,15 @@
             console.log(this.task);
             console.log(this.months);
 
+            this.months.forEach(month => {
+                let item = {};
+                // item.programming_id = programming.pivot.id
+                item.name = month.name
+                // item.meta_programming = programming.pivot.meta
+                item.meta = ""
+                item.edit = true;
+                this.all_programmings.push(item);
+            });
             // this.task.programmings.forEach(programming => {
             //     let item={};
             //     item.programming_id = programming.pivot.id
@@ -216,30 +250,31 @@
                         this.total_ponderacion=response.data.ponderacion;
 
                         this.programmings = [];
-                        response.data.specific_programmings.forEach(programming => {
-                            let item={};
-                            item.programming_id = programming.id
-                            item.name = programming.month.name
-                            item.meta_programming = programming.meta
-                            item.meta = ""
-                            item.edit = true;
 
-                            if(this.specific_task_programmings.length > 0)
-                            {
-                              let item_finded = _.find(this.specific_task_programmings, (o) => { return o.programming.month_id == programming.month_id; });
-                               console.log(item_finded)
-                               if(item_finded)
-                               {
-                                   item.id = item_finded.id;
-                                   item.meta_programming += parseFloat (item_finded.meta);
-                                   item.meta = parseFloat(item_finded.meta);
-                               }
-                            }
+                            response.data.specific_programmings.forEach(programming => {
+                                let item={};
+                                item.programming_id = programming.id
+                                item.name = programming.month.name
+                                item.meta_programming = programming.meta
+                                item.meta = ""
+                                item.edit = true;
 
-                            this.programmings.push(item);
-                        });
-                        // this.programmings = response.data.specific_programmings;
-                        //console.log(this.total_meta);
+                                if(this.specific_task_programmings.length > 0)
+                                {
+                                  let item_finded = _.find(this.specific_task_programmings, (o) => { return o.programming.month_id == programming.month_id; });
+                                   console.log(item_finded)
+                                   if(item_finded)
+                                   {
+                                       item.id = item_finded.id;
+                                       item.meta_programming += parseFloat (item_finded.meta);
+                                       item.meta = parseFloat(item_finded.meta);
+                                   }
+                                }
+
+                                this.programmings.push(item);
+                            });
+
+
 
                     });
             }
@@ -267,7 +302,8 @@
                 });
                 // console.log(meta);
                 return meta;
-            }
+            },
+
         },
         components: {
             Switches
