@@ -15,8 +15,10 @@ class CreateSpecificTaskProgrammationsTable extends Migration
     {
         Schema::create('specific_task_programmations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('programming_id');
+            $table->unsignedInteger('programming_id')->nullable();
             $table->foreign('programming_id')->references('id')->on('programmings');
+            $table->unsignedInteger('month_id')->nullable();
+            $table->foreign('month_id')->references('id')->on('months');
             $table->unsignedInteger('specific_task_id');
             $table->foreign('specific_task_id')->references('id')->on('specific_tasks');
             $table->decimal('meta',14,2);
