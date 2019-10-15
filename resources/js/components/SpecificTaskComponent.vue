@@ -26,9 +26,14 @@
                                             <div class="invalid-feedback">{{ errors.first("code") }}</div>
                                         </div>
 
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-4" v-if="form.its_contribution">
                                             <label for="meta">Meta</label>
                                             <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
+                                            <div class="invalid-feedback">{{ errors.first("meta") }}</div>
+                                        </div>
+                                        <div class="form-group col-md-4" v-else>
+                                            <label for="meta">Meta</label>
+                                            <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2'" />
                                             <div class="invalid-feedback">{{ errors.first("meta") }}</div>
                                         </div>
                                         <div class="form-group col-md-4">
@@ -72,15 +77,20 @@
                                 </div>
 
                             </div>
-                            <input type="text" name="specific_programmings" :value="JSON.stringify(this.programmings)" hidden>
-                            <div class="row" v-if="getTotalMeta>0">
-                                <div :class="getTotalMeta> (form.meta || 0) ?'alert alert-danger col-md-12':'alert alert-primary col-md-12'" role="alert">
+                            <div class="row" v-if="!form.its_contribution">
+                                <div :class="getTotalAllMeta <= form.meta?'alert alert-primary col-md-12':'alert alert-danger col-md-12'"  role="alert">
+                                    Meta: {{form.meta}} y  la sumatoria de las metas es: {{getTotalAllMeta}}
+                                </div>
+                            </div>
+                            <!-- <input type="text" name="specific_programmings" :value="JSON.stringify(this.programmings)" hidden> -->
+                            <div class="row" v-else>
+                                <div :class="getTotalMeta > (form.meta || 0) ?'alert alert-danger col-md-12':'alert alert-primary col-md-12'" role="alert">
                                    Meta Tarea Especifica: <strong>{{form.meta}}</strong> y
                                    Sumatoria de las Metas: <strong>{{ getTotalMeta }}</strong>
                                 </div>
                             </div>
-                            <div class="row">
-
+                            <div class="row" v-if="form.its_contribution" >
+                                <input type="text" name="specific_programmings" :value="JSON.stringify(this.programmings)" hidden>
 								<div class="col-md-3"  v-for="(item,index) in programmings" :key="index">
 									<div class="small-box bg-primary" >
 										<div class="inner" @click="item.edit=!item.edit">
@@ -113,6 +123,30 @@
 									</div>
 								</div>
 							</div>
+                            <div class="row" v-else>
+                                <input type="text" name="specific_programmings" :value="JSON.stringify(all_programmings)" hidden>
+                                <div class="col-md-3"  v-for="(item,index) in all_programmings" :key="index">
+									<div class="small-box bg-primary" >
+										<div class="inner" @click="item.edit=!item.edit">
+                                        <div class="row">
+                                            <h5>{{item.name}}
+                                            </h5>
+                                        </div>
+
+										<span> Meta: {{item.meta}}</span>
+										</div>
+
+										<a href="#" class="small-box-footer" @click="item.edit=!item.edit" >
+											Adicionar Detalle
+										<i :class="item.edit==true?'fa fa-arrow-circle-up':'fa fa-arrow-circle-down'"></i>
+										</a>
+										<transition  name="fade">
+											<input v-if="item.edit" v-model="item.meta" v-on:keyup.enter="item.edit=false" :id='index' :name="index"  class="form-control" >
+										</transition>
+									</div>
+								</div>
+                            </div>
+
 
                         </div>
                         <div class="modal-footer">
@@ -131,7 +165,7 @@
 <script>
     import Switches from 'vue-switches';
     export default {
-		props:['url','csrf','task'],
+		props:['url','csrf','task','months'],
         data:()=>({
 			form:{},
             title:'',
@@ -141,12 +175,25 @@
             total_ponderacion:0,
             programmings:[],
             specific_task_programmings:[],
+            meses:[],
+            all_programmings:[]
 
         }),
         mounted() {
 			console.log('Componente SpecificTasks XD')
-			console.log(this.task);
+            console.log(this.task);
+            console.log(this.months);
 
+            this.months.forEach(month => {
+                let item = {};
+                // item.programming_id = programming.pivot.id
+                item.month_id = month.id;
+                item.name = month.name
+                // item.meta_programming = programming.pivot.meta
+                item.meta = ""
+                item.edit = true;
+                this.all_programmings.push(item);
+            });
             // this.task.programmings.forEach(programming => {
             //     let item={};
             //     item.programming_id = programming.pivot.id
@@ -172,7 +219,13 @@
                          this.meta_temp = parseFloat(response.data.specific_task.meta || 0);
                          this.ponderacion_temp = parseFloat(response.data.specific_task.weighing || 0);
                          this.specific_task_programmings = response.data.specific_task_programmation;
-                         this.MetaCheck()
+                         if(this.form.its_contribution)
+                         {
+                            this.MetaCheck()
+                         }else{
+                             this.MetaCheck()
+                            this.loadMonths()
+                         }
                      });
 
 				}else{
@@ -191,56 +244,89 @@
 		methods:{
 			validateBeforeSubmit() {
 				this.$validator.validateAll().then((result) => {
-					if (result) {
-                    if(this.getTotalMeta != this.form.meta)
+                    if (result)
                     {
-                        toastr.error('La sumatoria de las metas dede ser iguala a la meta de la tarea especifica')
-                    }else{
+                        if(this.form.its_contribution)
+                        {
+                            if(this.getTotalMeta != this.form.meta)
+                            {
+                                toastr.error('La sumatoria de las metas dede ser iguala a la meta de la tarea especifica')
+                            }else
+                            {
 
-                        let form = document.getElementById("formSpecificTask");
+                                let form = document.getElementById("formSpecificTask");
 
-                            form.submit();
-                            return;
+                                form.submit();
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            if(this.getTotalAllMeta != this.form.meta)
+                            {
+                                toastr.error('La sumatoria de las metas dede ser iguala a la meta de la tarea especifica')
+                            }else
+                            {
+                                let form = document.getElementById("formSpecificTask");
+
+                                form.submit();
+                                return;
+                            }
                         }
                     }
-					toastr.error('Debe completar la informacion correctamente')
+                    toastr.error('Debe completar la informacion correctamente')
 				});
             },
             MetaCheck(){
 
-                 axios.get(`check_meta_specific_task/${this.task.id}`)
+                axios.get(`check_meta_specific_task/${this.task.id}`)
                       .then(response=>{
                         console.log(response.data);
                         this.total_meta=response.data.meta;
                         this.total_ponderacion=response.data.ponderacion;
 
                         this.programmings = [];
-                        response.data.specific_programmings.forEach(programming => {
-                            let item={};
-                            item.programming_id = programming.id
-                            item.name = programming.month.name
-                            item.meta_programming = programming.meta
-                            item.meta = ""
-                            item.edit = true;
 
-                            if(this.specific_task_programmings.length > 0)
-                            {
-                              let item_finded = _.find(this.specific_task_programmings, (o) => { return o.programming.month_id == programming.month_id; });
-                               console.log(item_finded)
-                               if(item_finded)
-                               {
-                                   item.id = item_finded.id;
-                                   item.meta_programming += parseFloat (item_finded.meta);
-                                   item.meta = parseFloat(item_finded.meta);
-                               }
-                            }
+                            response.data.specific_programmings.forEach(programming => {
+                                let item={};
+                                item.programming_id = programming.id
+                                item.name = programming.month.name
+                                item.meta_programming = programming.meta
+                                item.meta = ""
+                                item.edit = true;
+                                if(this.form.its_contribution)
+                                {
+                                    if(this.specific_task_programmings.length > 0)
+                                    {
+                                      let item_finded = _.find(this.specific_task_programmings, (o) => { return o.programming?o.programming.month_id:0  == programming.month_id; });
+                                       console.log(item_finded)
+                                       if(item_finded)
+                                       {
+                                           item.id = item_finded.id;
+                                           item.meta_programming += parseFloat (item_finded.meta);
+                                           item.meta = parseFloat(item_finded.meta);
+                                       }
+                                    }
+                                }
 
-                            this.programmings.push(item);
-                        });
-                        // this.programmings = response.data.specific_programmings;
-                        //console.log(this.total_meta);
+                                this.programmings.push(item);
+                            });
+
+
 
                     });
+            },
+            loadMonths()
+            {
+                this.all_programmings.forEach(programming => {
+                    let item_finded = _.find(this.specific_task_programmings, (o) => { return o.month_id == programming.month_id; });
+                    console.log(item_finded);
+                    if(item_finded)
+                    {
+                        programming.meta= item_finded.meta;
+                    }
+                    return programming;
+                });
             }
 
 		},
@@ -266,7 +352,16 @@
                 });
                 // console.log(meta);
                 return meta;
+            },
+            getTotalAllMeta()
+            {
+                let meta =0;
+                this.all_programmings.forEach(item => {
+                    meta+= parseFloat(item.meta || 0)
+                });
+                return meta;
             }
+
         },
         components: {
             Switches

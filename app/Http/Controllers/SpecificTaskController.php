@@ -8,6 +8,7 @@ use App\SpecificTask;
 use Illuminate\Support\Facades\DB;
 use App\Programming;
 use App\SpecificTaskProgrammation;
+use App\Month;
 use Log;
 class SpecificTaskController extends Controller
 {
@@ -72,39 +73,73 @@ class SpecificTaskController extends Controller
 
         $specific_programmings = json_decode($request->specific_programmings);
         // return $specific_programmings;
-
-        foreach($specific_programmings  as $specific_programming)
+        if($specific_task->its_contribution)
         {
-            // return json_encode($specific_programming);
-            if($specific_programming->meta > 0)
-            {
 
-                if(isset($specific_programming->id))
+            foreach($specific_programmings  as $specific_programming)
+            {
+                // return json_encode($specific_programming);
+                if($specific_programming->meta > 0)
                 {
-                    Log::info("id specific_programming = ".$specific_programming->id);
-                    $sp_programming = SpecificTaskProgrammation::find($specific_programming->id);
-                    Log::info($sp_programming);
+
+                    if(isset($specific_programming->id))
+                    {
+                        Log::info("id specific_programming = ".$specific_programming->id);
+                        $sp_programming = SpecificTaskProgrammation::find($specific_programming->id);
+                        Log::info($sp_programming);
+                    }else
+                    {
+                        $sp_programming = new SpecificTaskProgrammation;
+                        Log::info('creando una nueva tarea especifica');
+                    }
+                    $sp_programming->programming_id = $specific_programming->programming_id;
+                    $sp_programming->specific_task_id = $specific_task->id;
+                    $sp_programming->meta = $specific_programming->meta;
+                    $sp_programming->save();
                 }else
                 {
-                    $sp_programming = new SpecificTaskProgrammation;
-                    Log::info('creando una nueva tarea especifica');
+                    if(isset($specific_programming->id))
+                    {
+                        Log::info(" borrando id specific_programming = ".$specific_programming->id);
+                        $sp_programming = SpecificTaskProgrammation::find($specific_programming->id);
+                        $sp_programming->delete();
+                        Log::info("se elimino registro");
+                    }
                 }
-                $sp_programming->programming_id = $specific_programming->programming_id;
-                $sp_programming->specific_task_id = $specific_task->id;
-                $sp_programming->meta = $specific_programming->meta;
-                $sp_programming->save();
-            }else
+
+                // return $sp_programming;
+            }
+        }else
+        {
+            // return  $specific_programmings;
+            foreach($specific_programmings  as $specific_programming)
             {
-                if(isset($specific_programming->id))
+                if($specific_programming->meta > 0)
                 {
-                    Log::info(" borrando id specific_programming = ".$specific_programming->id);
-                    $sp_programming = SpecificTaskProgrammation::find($specific_programming->id);
-                    $sp_programming->delete();
-                    Log::info("se elimino registro");
+                    $sp_programming = SpecificTaskProgrammation::where('month_id',$specific_programming->month_id)
+                                                                ->where('specific_task_id',$specific_task->id)
+                                                                ->first();
+                    if(!$sp_programming)
+                    {
+                        $sp_programming = new SpecificTaskProgrammation;
+                    }
+                    $sp_programming->specific_task_id = $specific_task->id;
+                    $sp_programming->meta = $specific_programming->meta;
+                    $sp_programming->month_id = $specific_programming->month_id;
+                    $sp_programming->save();
+
+                }else
+                {
+                    $sp_programming = SpecificTaskProgrammation::where('month_id',$specific_programming->month_id)
+                                                                ->where('specific_task_id',$specific_task->id)
+                                                                ->first();
+                    if($sp_programming)
+                    {
+                        $sp_programming->delete();
+                    }
+
                 }
             }
-
-            // return $sp_programming;
         }
 
         session()->flash('message','se registro '.$specific_task->code);
@@ -179,9 +214,9 @@ class SpecificTaskController extends Controller
 
         $task = Task::with('programmings')->find($task_id);
         $specific_tasks = SpecificTask::where('task_id',$task->id)->get();
-
+        $meses = Month::all();
         $title ='Tareas Especificas ';
-        return view('specific_task.index',compact('task','specific_tasks','title'));
+        return view('specific_task.index',compact('task','specific_tasks','title','meses'));
 
     }
 
