@@ -17,6 +17,8 @@
                             <div class="row">
                                 <div class="col-md-7">
                                     <legend>Tarea</legend>
+                                    {{form.its_contribution}}
+
                                     <div class="row">
                                         <input type="text" name="task_id" v-model="form.id" hidden>
                                         <div class="col-md-4">
@@ -32,7 +34,7 @@
                                         </div>
                                         <div class="form-group col-md-4" v-else>
                                             <label for="meta">Meta</label>
-                                            <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta" v-validate="'required|decimal:2|max_value:'+getMeta" />
+                                            <input type="text" id="meta" name="meta" v-model="form.meta" class="form-control" placeholder="Meta"  v-validate="'required|decimal:2|max_value:'+getMeta" />
                                             <div class="invalid-feedback">{{ errors.first("meta") }}</div>
                                         </div>
                                         <div class="form-group col-md-4">
@@ -59,7 +61,7 @@
                                                 <v-avatar class="green darken-3">
                                                     <v-icon >fa-flag</v-icon>
                                                 </v-avatar>
-                                                    Meta: {{getMeta}}
+                                                    Meta: {{ formatMoney(getMeta) }}
                                             </v-chip>
                                             <v-chip color="bg-info" text-color="white">
                                                 <v-avatar class="cyan darken-3">
@@ -81,8 +83,8 @@
 
                             <div class="row" v-if="getTotalMeta>0">
                                 <div :class="getTotalMeta> (form.meta || 0) ?'alert alert-danger col-md-12':'alert alert-primary col-md-12'" role="alert">
-                                   Meta Tarea Especifica: <strong>{{form.meta}}</strong> y
-                                   Sumatoria de las Metas: <strong>{{ getTotalMeta }}</strong>
+                                   Meta Tarea Especifica: <strong>{{ formatMoney(form.meta) }}</strong> y
+                                   Sumatoria de las Metas: <strong>{{ formatMoney(getTotalMeta) }}</strong>
                                 </div>
                             </div>
 							<legend>Programacion</legend>
@@ -98,6 +100,7 @@
                                                     color="bg-success"
                                                     text-color="white"
                                                     small
+                                                    v-if="form.its_contribution"
                                                     >
                                                     <v-avatar left>
                                                         <v-icon>fa-flag</v-icon>
@@ -268,7 +271,12 @@
 					sum+= parseFloat(element.meta);
 				});
 				return sum;
-			}
+            },
+            formatMoney(number)
+            {
+                return numeral(number).format('0,0.00');
+            }
+
 
 		},
 		computed:{
@@ -282,7 +290,7 @@
 				return this.programming;
             },
             getMeta(){
-                return parseFloat(this.total_meta)+ parseFloat(this.meta_temp);
+                return  parseFloat(this.total_meta)+ parseFloat(this.meta_temp);
             },
             getPonderacion(){
                 return parseFloat(this.total_ponderacion)+ parseFloat(this.ponderacion_temp);

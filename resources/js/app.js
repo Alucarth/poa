@@ -10,6 +10,7 @@ require('./bootstrap');
 import VeeValidate from "vee-validate";
 import Vuetify from 'vuetify';
 import Multiselect from 'vue-multiselect';
+window.Inputmask = require('inputmask');
 import 'jspdf-autotable';
 
 window.Switchery = require('switchery');
@@ -46,6 +47,45 @@ window.moment.locale('es');
 
 window.Chart = require('chart.js');
 window.spanish_lang = require('./datatable_spanish');
+
+
+let moneyInputMask = {
+    alias: "numeric",
+    groupSeparator: ",",
+    autoGroup: true,
+    digits: 2,
+    digitsOptional: false,
+    // prefix: "Bs ",
+    placeholder: "0",
+    max:1000000000
+  };
+  Vue.directive('money',{
+    inserted: function(el) {
+      Inputmask(moneyInputMask).mask(el);
+    }
+  })
+  Vue.directive('decimal',{
+    inserted: function(el) {
+      Inputmask({
+          alias: "decimal",
+          groupSeparator: "",
+          autoGroup: true,
+          digits: 2,
+          digitsOptional: false,
+          placeholder: "0",
+          max:1000000000
+      }).mask(el);
+    }
+  });
+  let dateInputMask = {
+    alias: "datetime",
+    inputFormat: "dd/mm/yyyy"
+  }
+  Vue.directive('date',{
+    inserted: function(el) {
+      Inputmask(dateInputMask).mask(el);
+    }
+  })
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

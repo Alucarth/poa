@@ -58,7 +58,7 @@
                                                 <v-avatar class="green darken-3">
                                                     <v-icon >fa-flag</v-icon>
                                                 </v-avatar>
-                                                    Meta: {{getMeta}}
+                                                    Meta: {{formatMoney(getMeta)}}
                                             </v-chip>
                                             <v-chip color="bg-info" text-color="white">
                                                 <v-avatar class="cyan darken-3">
@@ -79,14 +79,15 @@
                             </div>
                             <div class="row" v-if="!form.its_contribution">
                                 <div :class="getTotalAllMeta <= form.meta?'alert alert-primary col-md-12':'alert alert-danger col-md-12'"  role="alert">
-                                    Meta: {{form.meta}} y  la sumatoria de las metas es: {{getTotalAllMeta}}
+                                    <button type="button" class="btn btn-info btn-sm"><i class="fa fa-trash-restore-alt" @click="clearProgrammations()"></i> </button>  Meta: {{form.meta}} y  la sumatoria de las metas es: {{getTotalAllMeta}}
                                 </div>
                             </div>
                             <!-- <input type="text" name="specific_programmings" :value="JSON.stringify(this.programmings)" hidden> -->
                             <div class="row" v-else>
                                 <div :class="getTotalMeta > (form.meta || 0) ?'alert alert-danger col-md-12':'alert alert-primary col-md-12'" role="alert">
-                                   Meta Tarea Especifica: <strong>{{form.meta}}</strong> y
-                                   Sumatoria de las Metas: <strong>{{ getTotalMeta }}</strong>
+                                    <button type="button" class="btn btn-info btn-sm"><i class="fa fa-trash-restore-alt" @click="clearProgrammations()"></i> </button>
+                                    Meta Tarea Especifica: <strong>{{ formatMoney(form.meta) }}</strong> y
+                                    Sumatoria de las Metas: <strong>{{ formatMoney(getTotalMeta)  }}</strong>
                                 </div>
                             </div>
                             <div class="row" v-if="form.its_contribution" >
@@ -150,7 +151,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            {{getTotalMeta}}
+                            <!-- {{getTotalMeta}} -->
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cancelar</button>
                             <button type="submit" class="btn btn-success">Guardar</button>
                         </div>
@@ -194,6 +195,7 @@
                 item.edit = true;
                 this.all_programmings.push(item);
             });
+            console.log(this.all_programmings);
             // this.task.programmings.forEach(programming => {
             //     let item={};
             //     item.programming_id = programming.pivot.id
@@ -213,20 +215,21 @@
 				if(specific_task)
 				{
                     this.title='Editar '+specific_task.code;
-                     axios.get(`specific_tasks/${specific_task.id}`).then(response=>{
-                         console.log(response.data);
-                         this.form = response.data.specific_task;
-                         this.meta_temp = parseFloat(response.data.specific_task.meta || 0);
-                         this.ponderacion_temp = parseFloat(response.data.specific_task.weighing || 0);
-                         this.specific_task_programmings = response.data.specific_task_programmation;
-                         if(this.form.its_contribution)
-                         {
+                    axios.get(`specific_tasks/${specific_task.id}`).then(response=>{
+                    //  console.log(response.data);
+                        this.form = response.data.specific_task;
+                        this.meta_temp = parseFloat(response.data.specific_task.meta || 0);
+                        this.ponderacion_temp = parseFloat(response.data.specific_task.weighing || 0);
+                        this.specific_task_programmings = response.data.specific_task_programmation;
+                        console.log(this.specific_task_programmings);
+                        if(this.form.its_contribution)
+                        {
+                        this.MetaCheck()
+                        }else{
                             this.MetaCheck()
-                         }else{
-                             this.MetaCheck()
-                            this.loadMonths()
-                         }
-                     });
+                        this.loadMonths()
+                        }
+                    });
 
 				}else{
                     this.form ={};
@@ -280,8 +283,8 @@
             MetaCheck(){
 
                 axios.get(`check_meta_specific_task/${this.task.id}`)
-                      .then(response=>{
-                        console.log(response.data);
+                    .then(response=>{
+                        console.log('check_meta_specific_task',response.data);
                         this.total_meta=response.data.meta;
                         this.total_ponderacion=response.data.ponderacion;
 
@@ -291,26 +294,46 @@
                                 let item={};
                                 item.programming_id = programming.id
                                 item.name = programming.month.name
+                                item.month_id = programming.month_id
                                 item.meta_programming = programming.meta
                                 item.meta = ""
                                 item.edit = true;
-                                if(this.form.its_contribution)
-                                {
-                                    if(this.specific_task_programmings.length > 0)
-                                    {
-                                      let item_finded = _.find(this.specific_task_programmings, (o) => { return o.programming?o.programming.month_id:0  == programming.month_id; });
-                                       console.log(item_finded)
-                                       if(item_finded)
-                                       {
-                                           item.id = item_finded.id;
-                                           item.meta_programming += parseFloat (item_finded.meta);
-                                           item.meta = parseFloat(item_finded.meta);
-                                       }
-                                    }
-                                }
+                                // if(this.form.its_contribution)
+                                // {
+                                //     console.log('iterando si contribuye');
+                                //     if(this.specific_task_programmings.length > 0)
+                                //     {
+
+                                //         let item_finded = _.find(this.specific_task_programmings, (o) => { return o.programming?o.programming.month_id:0  == programming.month_id; });
+                                //         console.log(item_finded)
+                                //         if(item_finded)
+                                //         {
+                                //             item.id = item_finded.id;
+                                //             item.meta_programming = parseFloat (item_finded.meta);
+                                //             item.meta = parseFloat(item_finded.meta);
+                                //         }
+                                //     }
+                                // }
 
                                 this.programmings.push(item);
                             });
+                            if(this.form.its_contribution)
+                            {
+                                if(this.specific_task_programmings.length > 0)
+                                {
+                                    console.log('poblando')
+                                    this.programmings.forEach(item => {
+                                        // console.log(item);
+                                        let item_finded = _.find(this.specific_task_programmings, (o) =>{ return o.programming_id == item.programming_id; });
+                                        if(item_finded){
+                                            item.meta = parseFloat(item_finded.meta)
+                                            item.id = item_finded.id;
+                                            item.meta_programming += parseFloat (item.meta);
+                                        }
+                                        console.log(item_finded);
+                                    });
+                                }
+                            }
 
 
 
@@ -327,6 +350,28 @@
                     }
                     return programming;
                 });
+            },
+            clearProgrammations()
+            {
+                console.log('borrando todos los items');
+                if(this.form.its_contribution)
+                {
+                    this.programmings.forEach(item => {
+                        item.meta='';
+                    });
+                }else{
+
+                    this.all_programmings.forEach(item => {
+                        console.log(item);
+                        item.meta=''
+                    });
+                }
+
+            },
+
+            formatMoney(number)
+            {
+                return numeral(number).format('0,0.00');
             }
 
 		},
