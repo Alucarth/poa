@@ -55,7 +55,7 @@
                                     <td>{{$item->executed??'' }}</td>
                                     <td>{{$item->efficacy?$item->efficacy.'%':'' }}</td>
                                     <td>
-                                        <a href="{{url('action_short_term_year/'.$item->years[0]->id)}}"><i class="material-icons text-warning">folder</i></a>
+                                        <a href="{{url('action_short_term_year/'.$item->year()->id)}}"><i class="material-icons text-warning">folder</i></a>
                                         <a href="#" data-toggle="modal" data-target="#ActionMediumTermModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
                                         {{-- <a href="#"> <i class="material-icons text-danger deleted" data-json='{{$item}}'>delete</i></a> --}}
                                         <a href="#" data-toggle="modal" data-target="#deleteModal" data-backdrop="static" data-keyboard="false" data-json="{{$item}}"><i class="material-icons text-danger">delete</i></a>
@@ -79,29 +79,29 @@
 
 
     </div>
-     <!-- Modal -->
-     {!! Form::open(['action' => 'ActionMediumTermController@delete'] )!!}
-     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-         <div class="modal-dialog" role="document">
-             <div class="modal-content">
-                 <div class="modal-header bg-danger">
-                     <h5 class="modal-title" id="deleteModalLabel">Eliminar la estructura programatica corto plazo</h5>
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                         <span aria-hidden="true">&times;</span>
-                     </button>
-                 </div>
-                 <div class="modal-body">
-                     <span></span>
-                     <input type="text" name="id" hidden>
-                 </div>
-                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                     <button type="submit" class="btn btn-success">Si </button>
-                 </div>
-             </div>
-         </div>
-     </div>
-     {!! Form::close()!!}
+    <!-- Modal -->
+    {!! Form::open(['action' => 'ActionMediumTermController@delete'] )!!}
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title" id="deleteModalLabel">Eliminar la estructura programatica corto plazo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span></span>
+                    <input type="text" name="id" hidden>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-success">Si </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {!! Form::close()!!}
 
 @endsection
 <script>
