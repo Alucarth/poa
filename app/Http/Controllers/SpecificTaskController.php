@@ -40,8 +40,8 @@ class SpecificTaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // return $request->all();
+        // $specific_programmings = json_decode($request->specific_programmings);
+        // return $specific_programmings;
         if($request->has('id')){
             $specific_task = SpecificTask::find($request->id);
         }else{
@@ -52,37 +52,40 @@ class SpecificTaskController extends Controller
         $specific_task->meta = $request->meta;
         $specific_task->weighing = $request->weighing;
         $specific_task->code = $request->code;
-        if($request->its_contribution =='true')
+        if($request->its_contribution == 'true')
         {
             $specific_task->its_contribution = true;
         }else {
             $specific_task->its_contribution = false;
         }
         $specific_task->save();
+
+        //return $specific_task;
         // $specific_task->code= 'TE-'.$specific_task->id;
         // $specific_task->save();
 
           //actualizacion de numeracion
         $specific_tasks= SpecificTask::where('id','>',$specific_task->id)->orderBy('id')->get();
         $num = $specific_task->code ;
-        foreach($specific_tasks as  $specific_task){
+        foreach($specific_tasks as  $specific_task_num){
             $num++;
-            $specific_task->code = $num;
-            $specific_task->save();
+            $specific_task_num->code = $num;
+            $specific_task_num->save();
         }
 
         $specific_programmings = json_decode($request->specific_programmings);
+        // return $specific_task;
         // return $specific_programmings;
         if($specific_task->its_contribution)
         {
-
+            //revisar objectos entrantes XD
             foreach($specific_programmings  as $specific_programming)
             {
                 // return json_encode($specific_programming);
                 if($specific_programming->meta > 0)
                 {
 
-                    if(isset($specific_programming->id))
+                    if(isset($specific_programming->id))  //en caso de contribution
                     {
                         Log::info("id specific_programming = ".$specific_programming->id);
                         $sp_programming = SpecificTaskProgrammation::find($specific_programming->id);
@@ -102,8 +105,11 @@ class SpecificTaskController extends Controller
                     {
                         Log::info(" borrando id specific_programming = ".$specific_programming->id);
                         $sp_programming = SpecificTaskProgrammation::find($specific_programming->id);
-                        $sp_programming->delete();
-                        Log::info("se elimino registro");
+                        if($sp_programming)
+                        {
+                            $sp_programming->delete();
+                            Log::info("se elimino registro");
+                        }
                     }
                 }
 

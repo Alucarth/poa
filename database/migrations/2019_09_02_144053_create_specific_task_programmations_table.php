@@ -15,9 +15,9 @@ class CreateSpecificTaskProgrammationsTable extends Migration
     {
         Schema::create('specific_task_programmations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('programming_id')->nullable();
+            $table->unsignedInteger('programming_id')->nullable(); //en caso de que este ligado a una programacion XD
             $table->foreign('programming_id')->references('id')->on('programmings');
-            $table->unsignedInteger('month_id')->nullable();
+            $table->unsignedInteger('month_id')->nullable();//deberia estar en ambos casos 
             $table->foreign('month_id')->references('id')->on('months');
             $table->unsignedInteger('specific_task_id');
             $table->foreign('specific_task_id')->references('id')->on('specific_tasks');
