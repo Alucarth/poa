@@ -222,7 +222,7 @@
                             // this.form.id = object.id;
                         }else{
                             // this.months=this.meses
-                            this.form = {};
+                            this.form = {programmings:[]};
                             this.meta_temp = 0;
                             this.ponderacion_temp = 0;
                             this.months.forEach((month) => {
@@ -261,8 +261,8 @@
 			},
 			subTotalTask(){
 				let sum=0;
-				this.getPrograming.forEach(element => {
-					sum+= parseFloat(element.meta);
+				this.getMonths.forEach(element => {
+					sum+= parseFloat(element.meta|| 0);
 				});
 				return sum;
             },
@@ -288,7 +288,14 @@
                             //add meta from task programming meta
                             if(item.pivot.meta >0) // success if meta distinc of 0
                             {
-                                let month = {id: item.id, name: item.name, edit:true, meta_item: item.pivot.meta, meta:''};
+                                let meta =0;
+                                if(this.form.id) //en caso de edicion
+                                {
+                                    //poblar informacion
+                                    //buscar el objecto y setear a la meta
+                                    let p = _.find(this.form., (o) => { return o.age < 40; });
+                                }
+                                let month = {id: item.id, name: item.name, edit:true, meta_item: item.pivot.meta, meta:meta};
                                 this.programmation_months.push(month);
                             }
                         });
