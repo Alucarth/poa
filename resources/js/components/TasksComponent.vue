@@ -1,7 +1,7 @@
 <template>
 
 		<div class="modal fade" id="TaskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <form id='formTask' method="post" :action="url" @submit.prevent="validateBeforeSubmit">
 
                     <div class="modal-content">
@@ -83,14 +83,14 @@
 
                             <div class="row" v-if="getTotalMeta>0">
                                 <div :class="getTotalMeta> (form.meta || 0) ?'alert alert-danger col-md-12':'alert alert-primary col-md-12'" role="alert">
-                                   Meta Tarea Especifica: <strong>{{ formatMoney(form.meta) }}</strong> y
-                                   Sumatoria de las Metas: <strong>{{ formatMoney(getTotalMeta) }}</strong>
+                                    Meta Tarea Especifica: <strong>{{ formatMoney(form.meta) }}</strong> y
+                                    Sumatoria de las Metas: <strong>{{ formatMoney(getTotalMeta) }}</strong>
                                 </div>
                             </div>
 							<legend>Programacion</legend>
-							<input type="text" name="programacion" :value="JSON.stringify(getPrograming)" class="form-control" hidden>
+							<input type="text" name="programacion" :value="JSON.stringify(getMonths)" class="form-control" hidden>
 							<div class="row">
-								<div class="col-md-3"  v-for="(item,index) in months" :key="index">
+								<div class="col-md-3"  v-for="(item,index) in getMonths" :key="index">
 									<div class="small-box bg-primary" >
 										<div class="inner" @click="item.edit=!item.edit">
                                         <div class="row">
@@ -105,7 +105,7 @@
                                                     <v-avatar left>
                                                         <v-icon>fa-flag</v-icon>
                                                     </v-avatar>
-                                                    {{item.meta_programming}}
+                                                    {{item.meta_item}}
                                                     </v-chip>
                                             </h5>
                                         </div>
@@ -118,21 +118,13 @@
 										<i :class="item.edit==true?'fa fa-arrow-circle-up':'fa fa-arrow-circle-down'"></i>
 										</a>
 										<transition  name="fade">
-											<input v-if="item.edit" v-model="item.meta" v-on:keyup.enter="item.edit=false" :id='index' :name="index" v-validate="'decimal:2|max_value:'+item.meta_programming" class="form-control" >
+											<input v-if="item.edit && form.its_contribution" v-model="item.meta" v-on:keyup.enter="item.edit=false" :id='index' :name="index" v-validate="'decimal:2|max_value:'+item.meta_item" class="form-control" >
+											<input v-if="item.edit && !form.its_contribution" v-model="item.meta" v-on:keyup.enter="item.edit=false" :id='index' :name="index" v-validate="'decimal:2'" class="form-control" >
 										</transition>
 									</div>
 								</div>
 							</div>
-							<!-- <div class="row" v-if="parseInt(form.meta)>0">
-								<div class="alert alert-warning col-md-12" role="alert" v-show="subTotalIndicadores==parseFloat(form.meta)?false:true">
-									<span v-if="subTotalIndicadores < parseFloat(form.meta)" >
-										Falta <strong> {{parseFloat(form.meta)-subTotalIndicadores}}</strong> para llegar a la <strong> Meta : {{form.meta}}</strong>
-									</span>
-									<span v-else>
-										Se sobrepaso <strong>{{subTotalIndicadores-parseFloat(form.meta)}}</strong> de la <strong> Meta : {{form.meta}}</strong>
-									</span>
-								</div>
-							</div> -->
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cancelar</button>
@@ -150,7 +142,7 @@
     export default {
 		props:['url','csrf','optask','meses'],
         data:()=>({
-			form:{},
+			form:{programmings:[]},
 			title:'',
 			operation:{},
 			months:[],
@@ -160,6 +152,7 @@
             total_meta:0,
             total_ponderacion:0,
             programmings:[],
+            programmation_months:[]
         }),
         mounted() {
 
@@ -168,20 +161,22 @@
 			// 	month.edit =false;
 			// 	month.meta ='';
 			// });
-			console.log('Componente Tasks XD')
+			console.log('Componente Tasks v2 XD')
             // this.operation = JSON.parse(this.optask);
 			this.operation = this.optask;
             // this.operation.operation_programmings.forEach(item => {
             //     let programming = {id:item.pivot.id,name:item.name ,meta: }
             // });
 
-			console.log(this.operation);
+            // note this operation has a list of task programmations for populate boxes(task_programmings);
+            console.log(this.operation);
+
 			// this.months = this.meses;//asignacion de este siempre tiene que ser declarado en el data por la reactividad XD
 			// console.log(this.gestion
 
 			$('#TaskModal').on('show.bs.modal',(event)=> {
 				let button = $(event.relatedTarget) // Button that triggered the modal
-				let object = button.data('json') // Extract info from data-* attributes
+				let object = button.data('json') // task object
 				let programmings = button.data('programmings');
                 this.title ='Nueva Tarea ';
                 // console.log(object);
@@ -192,11 +187,20 @@
                         console.log(response.data);
                         this.total_meta=response.data.meta;
                         this.total_ponderacion=response.data.ponderacion;
-                        this.months= [];
-                        response.data.task_programmings.forEach((item) => {
-                            let month = {id:item.month.id,operation_programming_id:item.id, name: item.month.name,meta_programming:item.meta,edit:true,meta:""};
-                            this.months.push(month);
+                        // this.months= [];
+                        //cargando metas actualizadas
+                        this.operation.operation_programmings.forEach(item => {
+                            let month = _.find( response.data.task_programmings, (o) => { return o.month_id ==item.pivot.month_id });
+                            if(month){
+                                item.pivot.meta = month.meta;
+                            }
                         });
+
+
+                        // response.data.task_programmings.forEach((item) => {
+                        //     let month = {id:item.month.id,operation_programming_id:item.id, name: item.month.name,meta_programming:item.meta,edit:true,meta:""};
+                        //     this.months.push(month);
+                        // });
 
 
                         if(object)
@@ -205,29 +209,29 @@
                             axios.get(`tasks/${object.id}`).then(response=>{
                                     this.form = response.data.task;
                                     // console.log(programmings);
-                                    console.log("imprimiendo la tarea");
-                                    console.log( response.data);
-                                    this.meta_temp = parseFloat(this.form.meta || 0);
-                                    this.ponderacion_temp = parseFloat(this.form.weighing || 0);
+                                    // console.log("imprimiendo la tarea");
+                                    // console.log( response.data);
+                                    // this.meta_temp = parseFloat(this.form.meta || 0);
+                                    // this.ponderacion_temp = parseFloat(this.form.weighing || 0);
 
-                                    this.months.forEach((month) => {
-                                        // console.log(tarea);
-                                        let month_id=month.id;
-                                        let mes_tarea = this.form.programmings.find((mes)=>{return mes.id == month_id });
-                                        // console.log(mes_tarea)
-                                        if(mes_tarea){
-                                            month.meta =mes_tarea.pivot.meta;
-                                        }else{
-                                            month.meta='';
-                                        }
-                                    });
+                                    // this.months.forEach((month) => {
+                                    //     // console.log(tarea);
+                                    //     let month_id=month.id;
+                                    //     let mes_tarea = this.form.programmings.find((mes)=>{return mes.id == month_id });
+                                    //     // console.log(mes_tarea)
+                                    //     if(mes_tarea){
+                                    //         month.meta =mes_tarea.pivot.meta;
+                                    //     }else{
+                                    //         month.meta='';
+                                    //     }
+                                    // });
                             });
                             // this.form.description = object.description;
                             // this.form.meta = object.meta;
                             // this.form.id = object.id;
                         }else{
                             // this.months=this.meses
-                            this.form = {};
+                            this.form = {programmings:[]};
                             this.meta_temp = 0;
                             this.ponderacion_temp = 0;
                             this.months.forEach((month) => {
@@ -259,16 +263,15 @@
 						}else{
 							toastr.info('La meta del Tarea:'+this.form.meta+' debe ser igual a la Suma de las Tareas:'+this.subTotalTask()+' por mes')
 						}
-
-						 return;
+						return;
 					}
 					toastr.error('Debe completar la informacion correctamente')
 				});
 			},
 			subTotalTask(){
 				let sum=0;
-				this.getPrograming.forEach(element => {
-					sum+= parseFloat(element.meta);
+				this.getMonths.forEach(element => {
+					sum+= parseFloat(element.meta|| 0);
 				});
 				return sum;
             },
@@ -280,6 +283,49 @@
 
 		},
 		computed:{
+            getMonths()
+            {
+                this.programmation_months=[];
+                if(this.operation)
+                {
+
+                    if(this.form.its_contribution)
+                    {
+                        //populate data with task_programmations
+                        console.log('operation',this.operation);
+                        this.operation.operation_programmings.forEach(item => {
+                            //add meta from task programming meta
+                            if(item.pivot.meta >0) // success if meta distinc of 0
+                            {
+                                let meta ='';
+
+                                let month = {id: item.id, name: item.name, edit:true, meta_item: item.pivot.meta, operation_programming_id:item.pivot.id, meta:meta};
+                                this.programmation_months.push(month);
+                            }
+                        });
+                    }else{
+                        this.meses.forEach(item => {
+                            let month = {id: item.id, name: item.name, edit:true, meta:''};
+                            this.programmation_months.push(month);
+                        });
+                    }
+
+                    // populate data
+                    if (this.form.id)
+                    {
+                        this.programmation_months.forEach(item => {
+                            let programming =_.find(this.form.programmings, (o) => { return o.month_id ==item.id });
+                            if(programming)
+                            {
+                                item.meta= programming.meta;
+                                item.meta_item += parseFloat(item.meta);
+                            }
+                        });
+                    }
+
+                }
+                return this.programmation_months;
+            },
 			getPrograming(){
 				this.programming=[];
 				this.months.forEach(month => {
@@ -297,7 +343,7 @@
             },
             getTotalMeta(){
                 let meta =0;
-                this.months.forEach(item => {
+                this.programmation_months.forEach(item => {
                     meta += parseFloat(item.meta || 0)
                 });
                 // console.log(meta);

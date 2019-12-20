@@ -41,19 +41,20 @@ class TaskController extends Controller
     {
         //
         // return $request->all();
-        $programaciones = json_decode($request->programacion);
+
+
         // dd($programaciones) ;
-        $programmings=[];
-        foreach($programaciones as $programacion){
-            // $programming = new Programming;
-            // $programming->task_id = $task->id;
-            // $programming->month_id = $programacion->id;
-            // $programming->meta = $programacion->meta;
-            // $programming->save();
+        // $programmings=[];
+        // foreach($programaciones as $programacion){
+        //     // $programming = new Programming;
+        //     // $programming->task_id = $task->id;
+        //     // $programming->month_id = $programacion->id;
+        //     // $programming->meta = $programacion->meta;
+        //     // $programming->save();
 
-            $programmings+=array(''.$programacion->id => ['meta' => $programacion->meta,'operation_programming_id'=>$programacion->operation_programming_id]);
+        //     $programmings+=array(''.$programacion->id => ['meta' => $programacion->meta,'operation_programming_id'=>$programacion->operation_programming_id]);
 
-        }
+        // }
         // dd($programmings);
         if($request->task_id!=''){
             $task = Task::find($request->task_id);
@@ -73,20 +74,55 @@ class TaskController extends Controller
         }
         $task->save();
 
+        $meses = json_decode($request->programacion);
+        // return $meses;
+        // first obtain object with meta > 0
+        $programaciones=[];
+        foreach($meses as $mes)
+        {
+            if($mes->meta > 0)
+            {
+                $programaciones[] = $mes;
+            }
+        }
+        //eliminar los datos que no se encuentren en los casos de edicion
+        $programmings = Programming::where('task_id',$task->id)->get();
+        foreach($programmings as $programming)
+        {
+            $programming->delete();
+        }
+        //
+        foreach($programaciones as $mes)
+        {
+            $programming = new Programming;
+            $programming->task_id=$task->id;
+            $programming->month_id = $mes->id;
+            $programming->meta = $mes->meta;
+            if($task->its_contribution)
+            {
+                $programming->operation_programming_id = $mes->operation_programming_id;
+            }
+            $programming->save();
+        }
+
+
+        // return $programaciones;
+
+
         // return $task;
         // $task->code = 'T-'.$task->id;
         // $task->save();
-        $task->programmings()->sync($programmings);
+        // $task->programmings()->sync($programmings);
 
 
          //actualizacion de numeracion
-         $tasks= Task::where('id','>',$task->id)->orderBy('id')->get();
-         $num = $task->code ;
-         foreach($tasks as  $task){
-             $num++;
-             $task->code = $num;
-             $task->save();
-         }
+        $tasks= Task::where('id','>',$task->id)->orderBy('id')->get();
+        $num = $task->code ;
+        foreach($tasks as  $task){
+            $num++;
+            $task->code = $num;
+            $task->save();
+        }
 
         session()->flash('message','se registro '.$task->code);
         return back()->withInput();

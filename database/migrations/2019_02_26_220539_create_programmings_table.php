@@ -15,7 +15,7 @@ class CreateProgrammingsTable extends Migration
     {
         Schema::create('programmings', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('operation_programming_id');
+            $table->unsignedInteger('operation_programming_id')->nullable();
             $table->foreign('operation_programming_id')->references('id')->on('operation_programmings');
             $table->unsignedInteger('task_id');
             $table->foreign('task_id')->references('id')->on('tasks');

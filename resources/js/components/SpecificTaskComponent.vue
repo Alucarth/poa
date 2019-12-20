@@ -1,7 +1,7 @@
 <template>
     <div >
 		<div class="modal fade" id="SpecificTaskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <form id='formSpecificTask' method="post" :action="url" @submit.prevent="validateBeforeSubmit">
 
                     <div class="modal-content">
@@ -216,19 +216,19 @@
 				{
                     this.title='Editar '+specific_task.code;
                     axios.get(`specific_tasks/${specific_task.id}`).then(response=>{
-                    //  console.log(response.data);
-                        this.form = response.data.specific_task;
-                        this.meta_temp = parseFloat(response.data.specific_task.meta || 0);
-                        this.ponderacion_temp = parseFloat(response.data.specific_task.weighing || 0);
-                        this.specific_task_programmings = response.data.specific_task_programmation;
-                        console.log(this.specific_task_programmings);
-                        if(this.form.its_contribution)
-                        {
-                        this.MetaCheck()
-                        }else{
-                            this.MetaCheck()
-                        this.loadMonths()
-                        }
+                        console.log(response.data);
+                        // this.form = response.data.specific_task;
+                        // this.meta_temp = parseFloat(response.data.specific_task.meta || 0);
+                        // this.ponderacion_temp = parseFloat(response.data.specific_task.weighing || 0);
+                        // this.specific_task_programmings = response.data.specific_task_programmation;
+                        // console.log(this.specific_task_programmings);
+                        // if(this.form.its_contribution)
+                        // {
+                        //     this.MetaCheck()
+                        // }else{
+                        //     this.MetaCheck()
+                        // this.loadMonths()
+                        // }
                     });
 
 				}else{
