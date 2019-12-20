@@ -187,11 +187,20 @@
                         console.log(response.data);
                         this.total_meta=response.data.meta;
                         this.total_ponderacion=response.data.ponderacion;
-                        this.months= [];
-                        response.data.task_programmings.forEach((item) => {
-                            let month = {id:item.month.id,operation_programming_id:item.id, name: item.month.name,meta_programming:item.meta,edit:true,meta:""};
-                            this.months.push(month);
+                        // this.months= [];
+                        //cargando metas actualizadas
+                        this.operation.operation_programmings.forEach(item => {
+                            let month = _.find( response.data.task_programmings, (o) => { return o.month_id ==item.pivot.month_id });
+                            if(month){
+                                item.pivot.meta = month.meta;
+                            }
                         });
+
+
+                        // response.data.task_programmings.forEach((item) => {
+                        //     let month = {id:item.month.id,operation_programming_id:item.id, name: item.month.name,meta_programming:item.meta,edit:true,meta:""};
+                        //     this.months.push(month);
+                        // });
 
 
                         if(object)
@@ -200,22 +209,22 @@
                             axios.get(`tasks/${object.id}`).then(response=>{
                                     this.form = response.data.task;
                                     // console.log(programmings);
-                                    console.log("imprimiendo la tarea");
-                                    console.log( response.data);
-                                    this.meta_temp = parseFloat(this.form.meta || 0);
-                                    this.ponderacion_temp = parseFloat(this.form.weighing || 0);
+                                    // console.log("imprimiendo la tarea");
+                                    // console.log( response.data);
+                                    // this.meta_temp = parseFloat(this.form.meta || 0);
+                                    // this.ponderacion_temp = parseFloat(this.form.weighing || 0);
 
-                                    this.months.forEach((month) => {
-                                        // console.log(tarea);
-                                        let month_id=month.id;
-                                        let mes_tarea = this.form.programmings.find((mes)=>{return mes.id == month_id });
-                                        // console.log(mes_tarea)
-                                        if(mes_tarea){
-                                            month.meta =mes_tarea.pivot.meta;
-                                        }else{
-                                            month.meta='';
-                                        }
-                                    });
+                                    // this.months.forEach((month) => {
+                                    //     // console.log(tarea);
+                                    //     let month_id=month.id;
+                                    //     let mes_tarea = this.form.programmings.find((mes)=>{return mes.id == month_id });
+                                    //     // console.log(mes_tarea)
+                                    //     if(mes_tarea){
+                                    //         month.meta =mes_tarea.pivot.meta;
+                                    //     }else{
+                                    //         month.meta='';
+                                    //     }
+                                    // });
                             });
                             // this.form.description = object.description;
                             // this.form.meta = object.meta;
@@ -288,14 +297,9 @@
                             //add meta from task programming meta
                             if(item.pivot.meta >0) // success if meta distinc of 0
                             {
-                                let meta =0;
-                                if(this.form.id) //en caso de edicion
-                                {
-                                    //poblar informacion
-                                    //buscar el objecto y setear a la meta
-                                    let p = _.find(this.form., (o) => { return o.age < 40; });
-                                }
-                                let month = {id: item.id, name: item.name, edit:true, meta_item: item.pivot.meta, meta:meta};
+                                let meta ='';
+
+                                let month = {id: item.id, name: item.name, edit:true, meta_item: item.pivot.meta, operation_programming_id:item.pivot.id, meta:meta};
                                 this.programmation_months.push(month);
                             }
                         });
@@ -305,6 +309,20 @@
                             this.programmation_months.push(month);
                         });
                     }
+
+                    // populate data
+                    if (this.form.id)
+                    {
+                        this.programmation_months.forEach(item => {
+                            let programming =_.find(this.form.programmings, (o) => { return o.month_id ==item.id });
+                            if(programming)
+                            {
+                                item.meta= programming.meta;
+                                item.meta_item += parseFloat(item.meta);
+                            }
+                        });
+                    }
+
                 }
                 return this.programmation_months;
             },
@@ -325,7 +343,7 @@
             },
             getTotalMeta(){
                 let meta =0;
-                this.months.forEach(item => {
+                this.programmation_months.forEach(item => {
                     meta += parseFloat(item.meta || 0)
                 });
                 // console.log(meta);

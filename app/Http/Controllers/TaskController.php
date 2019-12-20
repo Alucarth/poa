@@ -75,7 +75,7 @@ class TaskController extends Controller
         $task->save();
 
         $meses = json_decode($request->programacion);
-
+        // return $meses;
         // first obtain object with meta > 0
         $programaciones=[];
         foreach($meses as $mes)
@@ -86,7 +86,11 @@ class TaskController extends Controller
             }
         }
         //eliminar los datos que no se encuentren en los casos de edicion
-
+        $programmings = Programming::where('task_id',$task->id)->get();
+        foreach($programmings as $programming)
+        {
+            $programming->delete();
+        }
         //
         foreach($programaciones as $mes)
         {
