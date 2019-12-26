@@ -17,7 +17,7 @@ class ActionMediumTermController extends Controller
     {
         //
         $title = 'Acciones a Mediano Plazo';
-        $lista = ActionMediumTerm::with('programmatic_structure')->orderBy('code')->get();
+        $lista = ActionMediumTerm::with('programmatic_structure','years')->orderBy('code')->get();
         $ponderacion = 0;
         foreach($lista as $asm)
         {
